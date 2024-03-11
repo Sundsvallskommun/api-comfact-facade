@@ -5,6 +5,7 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 
 import jakarta.validation.Valid;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,8 +30,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @Validated
-@RequestMapping("/signing")
-@Tag(name = "Signing", description = "Signing operations")
+@RequestMapping("/signings")
+@Tag(name = "Signings", description = "Signing operations")
 @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {Problem.class, ConstraintViolationProblem.class})))
 @ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 public class SigningResource {
@@ -39,7 +40,7 @@ public class SigningResource {
 
 	public SigningResource(final SigningService signingService) {this.signingService = signingService;}
 
-	@PostMapping()
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = {APPLICATION_PROBLEM_JSON_VALUE})
 	@Operation(summary = "Create Signing request.")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	public ResponseEntity<Void> createSigningRequest(@Valid @RequestBody final SigningRequest signingRequest) {
@@ -47,7 +48,7 @@ public class SigningResource {
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping(path = "{signingId}")
+	@DeleteMapping(path = "{signingId}", produces = {APPLICATION_PROBLEM_JSON_VALUE})
 	@Operation(summary = "Annul a signing request.")
 	@ApiResponse(responseCode = "204", description = "Successful operation", useReturnTypeSchema = true)
 	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
@@ -56,7 +57,7 @@ public class SigningResource {
 		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping(path = "{signingId}")
+	@GetMapping(path = "{signingId}", produces = {APPLICATION_PROBLEM_JSON_VALUE})
 	@Operation(summary = "Get status of a signing request.")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
@@ -65,7 +66,7 @@ public class SigningResource {
 	}
 
 
-	@GetMapping(path = "{signingId}/document")
+	@GetMapping(path = "{signingId}/document", produces = {APPLICATION_PROBLEM_JSON_VALUE})
 	@Operation(summary = "Get signed document.")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
