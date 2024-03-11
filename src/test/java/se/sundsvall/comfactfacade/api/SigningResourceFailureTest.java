@@ -37,7 +37,7 @@ class SigningResourceFailureTest {
 
 		// Act
 		final var response = webTestClient.post()
-			.uri("/signing")
+			.uri("/signings")
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -67,7 +67,7 @@ class SigningResourceFailureTest {
 
 		// Act
 		final var response = webTestClient.post()
-			.uri("/signing")
+			.uri("/signings")
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -96,7 +96,7 @@ class SigningResourceFailureTest {
 
 		// Act
 		final var response = webTestClient.post()
-			.uri("/signing")
+			.uri("/signings")
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -131,7 +131,7 @@ class SigningResourceFailureTest {
 
 		// Act
 		final var response = webTestClient.post()
-			.uri("/signing")
+			.uri("/signings")
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -165,7 +165,7 @@ class SigningResourceFailureTest {
 
 		// Act
 		final var response = webTestClient.post()
-			.uri("/signing")
+			.uri("/signings")
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -199,7 +199,7 @@ class SigningResourceFailureTest {
 
 		// Act
 		final var response = webTestClient.post()
-			.uri("/signing")
+			.uri("/signings")
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -227,7 +227,7 @@ class SigningResourceFailureTest {
 		final var signingRequest = new TestUtil.SigningRequestBuilder().withDocument(new Document(null, null, null, null)).build();
 		// Act
 		final var response = webTestClient.post()
-			.uri("/signing")
+			.uri("/signings")
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()

@@ -42,7 +42,7 @@ class SigningResourceTest {
 		final var signingRequest = new TestUtil.SigningRequestBuilder().build();
 		// Act
 		webTestClient.post()
-			.uri("/signing")
+			.uri("/signings")
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -56,10 +56,10 @@ class SigningResourceTest {
 	void cancelSigningRequest() {
 		// Arrange
 		final String signingId = "someSigningId";
-		
+
 		// Act
 		webTestClient.delete()
-			.uri("/signing/{signingId}", signingId)
+			.uri("/signings/{signingId}", signingId)
 			.exchange()
 			.expectStatus().isNoContent();
 
@@ -75,7 +75,7 @@ class SigningResourceTest {
 
 		// Act
 		final var result = webTestClient.delete()
-			.uri("/signing/{signingId}", signingId)
+			.uri("/signings/{signingId}", signingId)
 			.exchange()
 			.expectStatus().isNotFound()
 			.expectHeader().contentType(APPLICATION_PROBLEM_JSON)
@@ -99,7 +99,7 @@ class SigningResourceTest {
 
 		// Act & Assert
 		webTestClient.get()
-			.uri("/signing/{signingId}", signingId)
+			.uri("/signings/{signingId}", signingId)
 			.exchange()
 			.expectStatus().isOk()
 			.expectBody(String.class)
@@ -118,7 +118,7 @@ class SigningResourceTest {
 
 		// Act & Assert
 		final var result = webTestClient.get()
-			.uri("/signing/{signingId}", signingId)
+			.uri("/signings/{signingId}", signingId)
 			.exchange()
 			.expectStatus().isNotFound()
 			.expectHeader().contentType(APPLICATION_PROBLEM_JSON)
@@ -149,7 +149,7 @@ class SigningResourceTest {
 
 		// Act & Assert
 		webTestClient.get()
-			.uri("/signing/{signingId}/document", signingId)
+			.uri("/signings/{signingId}/document", signingId)
 			.exchange()
 			.expectStatus().isOk()
 			.expectBody(Document.class)
@@ -166,7 +166,7 @@ class SigningResourceTest {
 
 		// Act & Assert
 		final var result = webTestClient.get()
-			.uri("/signing/{signingId}/document", signingId)
+			.uri("/signings/{signingId}/document", signingId)
 			.exchange()
 			.expectStatus().isNotFound()
 			.expectHeader().contentType(APPLICATION_PROBLEM_JSON)
