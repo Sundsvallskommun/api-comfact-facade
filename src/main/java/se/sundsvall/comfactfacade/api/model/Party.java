@@ -35,7 +35,7 @@ public record Party(
 	@Schema(description = "Language parameter that overwrites the language of the Signing Instance for the current party.", example = "sv")
 	String language,
 
-	@Schema(description = "The means of identification to use to identify the signatory.")
+	@Schema(description = "The means of identification to use to identify the signatory.", implementation = Identification.class)
 	Identification identification
 ) {
 
