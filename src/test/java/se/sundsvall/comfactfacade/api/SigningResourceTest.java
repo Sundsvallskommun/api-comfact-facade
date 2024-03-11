@@ -3,7 +3,6 @@ package se.sundsvall.comfactfacade.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -57,8 +56,7 @@ class SigningResourceTest {
 	void cancelSigningRequest() {
 		// Arrange
 		final String signingId = "someSigningId";
-		doNothing().when(signingServiceMock).cancelSigningRequest(signingId);
-
+		
 		// Act
 		webTestClient.delete()
 			.uri("/signing/{signingId}", signingId)
