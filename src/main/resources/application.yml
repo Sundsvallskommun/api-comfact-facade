@@ -11,3 +11,27 @@ openapi:
 spring:
   application:
     name: api-comfact-facade
+  datasource:
+    url: jdbc:mariadb://localhost:3306/casestatus
+    username: root
+    password: p4ssw0rd
+
+integration:
+  comfact:
+    connectTimeout: 5
+    readTimeout: 30
+    url: https://test.comfact.com/signingservice/service.asmx
+    username: overrideme
+    password: overrideme
+
+
+logbook:
+  body-filters:
+    # Exclude base64-encoded content from incoming requests.
+    json-path:
+      - key: '$..content'
+        value: '[base64]'
+    # Exclude base64-encoded content from traffic to/from skatteverket
+    xPath:
+      - key: '//*[contains(local-name(), "Content")]'
+        value: '[base64]'

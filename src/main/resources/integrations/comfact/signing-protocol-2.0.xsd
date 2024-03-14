@@ -1,0 +1,624 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:pssp="urn:comfact:prosale:signing:2.0:protocol"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   targetNamespace="urn:comfact:prosale:signing:2.0:protocol" version="2.0">
+
+	<xs:annotation>
+		<xs:documentation>
+			ProSale Signing Service Protocol
+			Copyright (c) Comfact AB, Sweden
+			ALL RIGHTS RESERVED
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="CreateSigningInstanceRequest" type="pssp:CreateSigningInstanceRequestType"/>
+	<xs:element name="CreateSigningInstanceResponse" type="pssp:CreateSigningInstanceResponseType"/>
+
+	<xs:element name="UpdateSigningInstanceRequest" type="pssp:UpdateSigningInstanceRequestType"/>
+	<xs:element name="UpdateSigningInstanceResponse" type="pssp:UpdateSigningInstanceResponseType"/>
+
+	<xs:element name="WithdrawSigningInstanceRequest"
+				type="pssp:WithdrawSigningInstanceRequestType"/>
+	<xs:element name="WithdrawSigningInstanceResponse"
+				type="pssp:WithdrawSigningInstanceResponseType"/>
+
+	<xs:element name="GetSigningInstanceRequest" type="pssp:GetSigningInstanceRequestType"/>
+	<xs:element name="GetSigningInstanceResponse" type="pssp:GetSigningInstanceResponseType"/>
+
+	<xs:element name="GetSigningInstanceInfoRequest" type="pssp:GetSigningInstanceInfoRequestType"/>
+	<xs:element name="GetSigningInstanceInfoResponse"
+				type="pssp:GetSigningInstanceInfoResponseType"/>
+
+	<xs:element name="RemindSignatoryRequest" type="pssp:RemindSignatoryRequestType"/>
+	<xs:element name="RemindSignatoryResponse" type="pssp:ResponseType"/>
+
+	<xs:element name="ApproveDocumentRequest" type="pssp:SignatoryRequestType"/>
+	<xs:element name="ApproveDocumentResponse" type="pssp:ResponseType"/>
+
+	<xs:element name="DeclineDocumentRequest" type="pssp:SignatoryRequestType"/>
+	<xs:element name="DeclineDocumentResponse" type="pssp:ResponseType"/>
+
+	<xs:element name="GetDocumentRequest" type="pssp:GetDocumentRequestType"/>
+	<xs:element name="GetDocumentResponse" type="pssp:GetDocumentResponseType"/>
+
+	<xs:element name="VerifySignedDocumentRequest" type="pssp:VerifySignedDocumentRequestType"/>
+	<xs:element name="VerifySignedDocumentResponse" type="pssp:VerifySignedDocumentResponseType"/>
+
+	<xs:element name="GetIdentificationListRequest" type="pssp:GetIdentificationListRequestType"/>
+	<xs:element name="GetIdentificationListResponse" type="pssp:GetIdentificationListResponseType"/>
+
+	<xs:element name="GetAuthRequestUrlRequest" type="pssp:GetAuthRequestUrlRequestType"/>
+	<xs:element name="GetAuthRequestUrlResponse" type="pssp:GetAuthRequestUrlResponseType"/>
+
+	<xs:element name="GetSignatoryRequest" type="pssp:GetSignatoryRequestType"/>
+	<xs:element name="GetSignatoryResponse" type="pssp:GetSignatoryResponseType"/>
+
+	<xs:element name="Credentials" type="pssp:CredentialsType"/>
+	<xs:element name="UserId" type="xs:string"/>
+	<xs:element name="Password" type="xs:string"/>
+
+	<xs:element name="RequestingSource" type="xs:string"/>
+
+	<xs:element name="Result" type="pssp:ResultType"/>
+	<xs:element name="ResultCode" type="xs:string"/>
+	<xs:element name="ResultMessage" type="xs:string"/>
+
+	<xs:element name="Status" type="pssp:StatusType"/>
+	<xs:element name="StatusCode" type="xs:string"/>
+	<xs:element name="StatusMessage" type="xs:string"/>
+
+	<xs:element name="Initiator" type="pssp:PartyType"/>
+	<xs:element name="AdditionalParty" type="pssp:PartyType"/>
+	<xs:element name="Signatory" type="pssp:SignatoryType"/>
+
+	<xs:element name="Name" type="xs:string"/>
+	<xs:element name="Title" type="xs:string"/>
+	<xs:element name="Organization" type="xs:string"/>
+	<xs:element name="PersonalNumber" type="xs:string"/>
+	<xs:element name="EmailAddress" type="xs:string"/>
+	<xs:element name="AccountId" type="xs:string"/>
+	<xs:element name="MobilePhoneNumber" type="xs:string"/>
+
+	<xs:element name="Custom" type="pssp:CustomType"/>
+
+	<xs:element name="Reason" type="xs:string"/>
+	<xs:element name="IdentificationToken" type="pssp:IdentificationTokenType"/>
+	<xs:element name="Identification" type="pssp:IdentificationType"/>
+	<xs:element name="SignatoryAction" type="pssp:SignatoryActionType"/>
+	<xs:element name="Alias" type="xs:string"/>
+
+	<xs:element name="SigningInstanceInput" type="pssp:SigningInstanceInputType"/>
+	<xs:element name="SigningInstance" type="pssp:SigningInstanceType"/>
+	<xs:element name="ReferenceNumber" type="xs:string"/>
+	<xs:element name="CustomerReferenceNumber" type="xs:string"/>
+	<xs:element name="Created" type="xs:dateTime"/>
+	<xs:element name="Changed" type="xs:dateTime"/>
+	<xs:element name="Expires" type="xs:dateTime"/>
+	<xs:element name="SigningInstanceId" type="xs:string"/>
+
+	<xs:element name="SignatoryReminder" type="pssp:SignatoryReminderType"/>
+	<xs:element name="ReminderMessage" type="pssp:MessageType"/>
+	<xs:element name="StartDate" type="xs:dateTime"/>
+	<xs:element name="HourInterval" type="xs:int"/>
+
+	<xs:element name="NotificationMessage" type="pssp:MessageType"/>
+	<xs:element name="Subject" type="xs:string"/>
+	<xs:element name="Body" type="xs:string"/>
+
+	<xs:element name="SigningInstanceInfo" type="pssp:SigningInstanceInfoType"/>
+	<xs:element name="SigningInstanceInfoFilter" type="pssp:SigningInstanceInfoFilterType"/>
+	<xs:element name="Property" type="xs:string"/>
+	<xs:element name="Operator" type="xs:string"/>
+	<xs:element name="Value" type="xs:string"/>
+
+	<xs:element name="DocumentName" type="xs:string"/>
+	<xs:element name="FileName" type="xs:string"/>
+	<xs:element name="Encoding" type="xs:string"/>
+	<xs:element name="Size" type="xs:long"/>
+	<xs:element name="MimeType" type="xs:string"/>
+	<xs:element name="DocumentPassword" type="xs:string"/>
+	<xs:element name="Content" type="xs:base64Binary"/>
+	<xs:element name="Document" type="pssp:DocumentType"/>
+	<xs:element name="DocumentAttachment" type="pssp:DocumentType"/>
+	<xs:element name="SignedDocument" type="pssp:DocumentType"/>
+	<xs:element name="SignedDocumentAttachment" type="pssp:DocumentType"/>
+
+	<xs:element name="SignatureValid" type="xs:boolean"/>
+
+	<xs:element name="IdentificationEntity" type="pssp:IdentificationEntityType"/>
+	<xs:element name="Description" type="pssp:MessageType"/>
+	<xs:element name="RelayState" type="xs:string"/>
+	<xs:element name="AuthRequestUrl" type="xs:string"/>
+
+	<xs:element name="PartyId" type="xs:string"/>
+	<xs:element name="SignatoryUrl" type="pssp:SignatoryUrlType"/>
+	<xs:element name="SignatoryFilter" type="pssp:SignatoryFilterType"/>
+
+	<xs:element name="Log" type="pssp:LogType"/>
+	<xs:element name="Event" type="pssp:EventType"/>
+
+	<xs:complexType name="RequestType">
+		<xs:sequence>
+			<xs:element ref="pssp:Credentials" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:RequestingSource" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:Custom" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="requestId" type="xs:string" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="CredentialsType">
+		<xs:sequence>
+			<xs:element ref="pssp:UserId" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:Password" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:Custom" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="SignatoryRequestType">
+		<xs:complexContent>
+			<xs:extension base="pssp:RequestType">
+				<xs:sequence>
+					<xs:element ref="pssp:SigningInstanceId" minOccurs="1" maxOccurs="1"/>
+					<xs:element ref="pssp:PartyId" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="pssp:Reason" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="pssp:IdentificationToken" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="IdentificationTokenType">
+		<xs:sequence>
+			<xs:any processContents="lax" namespace="##any" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="identificationTokenId" type="xs:string" use="optional"/>
+		<xs:attribute name="timestamp" type="xs:dateTime" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="ResponseType">
+		<xs:sequence>
+			<xs:element ref="pssp:Result" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:Custom" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="responseId" type="xs:string" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="ResultType">
+		<xs:sequence>
+			<xs:element ref="pssp:ResultCode" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:ResultMessage" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="success" type="xs:boolean" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="StatusType">
+		<xs:sequence>
+			<xs:element ref="pssp:StatusCode" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:StatusMessage" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PartyType">
+		<xs:sequence>
+			<xs:element ref="pssp:Name" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:Title" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:Organization" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:PersonalNumber" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:EmailAddress" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:AccountId" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:MobilePhoneNumber" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:Custom" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="partyId" type="xs:string" use="optional"/>
+		<xs:attribute name="language" type="xs:language" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="SignatoryType">
+		<xs:complexContent>
+			<xs:extension base="pssp:PartyType">
+				<xs:sequence>
+					<xs:element ref="pssp:NotificationMessage" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="pssp:Identification" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element ref="pssp:IdentificationToken" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element ref="pssp:SignatoryAction" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="SignatoryActionType">
+		<xs:sequence>
+			<xs:element ref="pssp:Reason" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="action" type="pssp:ActionType" use="required"/>
+		<xs:attribute name="timestamp" type="xs:dateTime" use="required"/>
+		<xs:attribute name="identificationTokenIdRef" type="xs:string" use="required"/>
+	</xs:complexType>
+
+	<xs:simpleType name="ActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Approved"/>
+			<xs:enumeration value="Declined"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="IdentificationType">
+		<xs:sequence>
+			<xs:element ref="pssp:Alias" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:Custom" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="SigningInstanceInputType">
+		<xs:sequence>
+			<xs:element ref="pssp:CustomerReferenceNumber" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:Expires" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:NotificationMessage" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="pssp:SignatoryReminder" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:Initiator" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:AdditionalParty" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="pssp:Signatory" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="pssp:Document" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:DocumentAttachment" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="pssp:Custom" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="workflow" type="pssp:WorkflowType" use="optional" default="Sequential"/>
+		<xs:attribute name="language" type="xs:language" use="optional" default="en-us"/>
+	</xs:complexType>
+
+	<xs:complexType name="SigningInstanceType">
+		<xs:complexContent>
+			<xs:extension base="pssp:SigningInstanceInputType">
+				<xs:sequence>
+					<xs:element ref="pssp:Status" minOccurs="1" maxOccurs="1"/>
+					<xs:element ref="pssp:ReferenceNumber" minOccurs="1" maxOccurs="1"/>
+					<xs:element ref="pssp:Created" minOccurs="1" maxOccurs="1"/>
+					<xs:element ref="pssp:Changed" minOccurs="1" maxOccurs="1"/>
+					<xs:element ref="pssp:SignedDocument" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="pssp:SignedDocumentAttachment" minOccurs="0"
+								maxOccurs="unbounded"/>
+					<xs:element ref="pssp:Log" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+				<xs:attribute name="signingInstanceId" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="SignatoryReminderType">
+		<xs:sequence>
+			<xs:element ref="pssp:StartDate" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:HourInterval" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:ReminderMessage" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="enabled" type="xs:boolean" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="LogType">
+		<xs:sequence>
+			<xs:element ref="pssp:Event" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="EventType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="status" type="pssp:EventStatusType" use="required"/>
+				<xs:attribute name="timestamp" type="xs:dateTime" use="required"/>
+				<xs:attribute name="code" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:simpleType name="EventStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Information"/>
+			<xs:enumeration value="Warning"/>
+			<xs:enumeration value="Error"/>
+			<xs:enumeration value="Critical"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="MessageType">
+		<xs:sequence>
+			<xs:element ref="pssp:Subject" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:Body" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="language" type="xs:language" use="required"/>
+	</xs:complexType>
+
+	<xs:simpleType name="WorkflowType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Sequential"/>
+			<xs:enumeration value="Parallel"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="CustomType">
+		<xs:sequence>
+			<xs:any processContents="lax" namespace="##any" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="SigningInstanceInfoType">
+		<xs:sequence>
+			<xs:element ref="pssp:Status" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:ReferenceNumber" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:CustomerReferenceNumber" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:Created" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:Changed" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:Expires" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:Custom" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="signingInstanceId" type="xs:string" use="required"/>
+		<xs:attribute name="language" type="xs:language" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="DocumentType">
+		<xs:sequence>
+			<xs:element ref="pssp:DocumentName" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:FileName" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:Encoding" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:Size" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:MimeType" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:DocumentPassword" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pssp:Content" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="documentId" type="xs:string" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="CreateSigningInstanceRequestType">
+		<xs:complexContent>
+			<xs:extension base="pssp:RequestType">
+				<xs:sequence>
+					<xs:element ref="pssp:SigningInstanceInput" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="CreateSigningInstanceResponseType">
+		<xs:complexContent>
+			<xs:extension base="pssp:ResponseType">
+				<xs:sequence>
+					<xs:element ref="pssp:SigningInstanceId" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="pssp:SignatoryUrl" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="SignatoryUrlType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="partyId" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="UpdateSigningInstanceRequestType">
+		<xs:complexContent>
+			<xs:extension base="pssp:RequestType">
+				<xs:sequence>
+					<xs:element ref="pssp:SigningInstanceId" minOccurs="1" maxOccurs="1"/>
+					<xs:element ref="pssp:SigningInstanceInput" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="UpdateSigningInstanceResponseType">
+		<xs:complexContent>
+			<xs:extension base="pssp:ResponseType">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="WithdrawSigningInstanceRequestType">
+		<xs:complexContent>
+			<xs:extension base="pssp:RequestType">
+				<xs:sequence>
+					<xs:element ref="pssp:SigningInstanceId" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="WithdrawSigningInstanceResponseType">
+		<xs:complexContent>
+			<xs:extension base="pssp:ResponseType">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="GetSigningInstanceRequestType">
+		<xs:complexContent>
+			<xs:extension base="pssp:RequestType">
+				<xs:sequence>
+					<xs:element ref="pssp:SigningInstanceId" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="GetSigningInstanceResponseType">
+		<xs:complexContent>
+			<xs:extension base="pssp:ResponseType">
+				<xs:sequence>
+					<xs:element ref="pssp:SigningInstance" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="GetSigningInstanceInfoRequestType">
+		<xs:complexContent>
+			<xs:extension base="pssp:RequestType">
+				<xs:sequence>
+					<xs:element ref="pssp:SigningInstanceInfoFilter" minOccurs="0"
+								maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="GetSigningInstanceInfoResponseType">
+		<xs:complexContent>
+			<xs:extension base="pssp:ResponseType">
+				<xs:sequence>
+					<xs:element ref="pssp:SigningInstanceInfo" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="RemindSignatoryRequestType">
+		<xs:complexContent>
+			<xs:extension base="pssp:RequestType">
+				<xs:sequence>
+					<xs:element ref="pssp:SigningInstanceId" minOccurs="1" maxOccurs="1"/>
+					<xs:element ref="pssp:PartyId" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="pssp:ReminderMessage" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="GetDocumentRequestType">
+		<xs:complexContent>
+			<xs:extension base="pssp:SignatoryRequestType">
+				<xs:attribute name="documentSelection" type="pssp:DocumentSelectionType"
+							  use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="GetDocumentResponseType">
+		<xs:complexContent>
+			<xs:extension base="pssp:ResponseType">
+				<xs:sequence>
+					<xs:element ref="pssp:Document" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="pssp:DocumentAttachment" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="VerifySignedDocumentRequestType">
+		<xs:complexContent>
+			<xs:extension base="pssp:RequestType">
+				<xs:sequence>
+					<xs:element ref="pssp:Document" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="VerifySignedDocumentResponseType">
+		<xs:complexContent>
+			<xs:extension base="pssp:ResponseType">
+				<xs:sequence>
+					<xs:element ref="pssp:SignatureValid" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="GetIdentificationListRequestType">
+		<xs:complexContent>
+			<xs:extension base="pssp:RequestType">
+				<xs:sequence>
+					<xs:element ref="pssp:SigningInstanceId" minOccurs="1" maxOccurs="1"/>
+					<xs:element ref="pssp:PartyId" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="GetIdentificationListResponseType">
+		<xs:complexContent>
+			<xs:extension base="pssp:ResponseType">
+				<xs:sequence>
+					<xs:element ref="pssp:IdentificationEntity" minOccurs="0"
+								maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="IdentificationEntityType">
+		<xs:sequence>
+			<xs:element ref="pssp:Alias" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:Description" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GetAuthRequestUrlRequestType">
+		<xs:complexContent>
+			<xs:extension base="pssp:RequestType">
+				<xs:sequence>
+					<xs:element ref="pssp:SigningInstanceId" minOccurs="1" maxOccurs="1"/>
+					<xs:element ref="pssp:PartyId" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="pssp:Alias" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="pssp:RelayState" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="GetAuthRequestUrlResponseType">
+		<xs:complexContent>
+			<xs:extension base="pssp:ResponseType">
+				<xs:sequence>
+					<xs:element ref="pssp:AuthRequestUrl" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="GetSignatoryRequestType">
+		<xs:complexContent>
+			<xs:extension base="pssp:RequestType">
+				<xs:sequence>
+					<xs:element ref="pssp:SigningInstanceId" minOccurs="1" maxOccurs="1"/>
+					<xs:choice>
+						<xs:element ref="pssp:PartyId" minOccurs="1" maxOccurs="1"/>
+						<xs:element ref="pssp:SignatoryFilter" minOccurs="1" maxOccurs="1"/>
+					</xs:choice>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="GetSignatoryResponseType">
+		<xs:complexContent>
+			<xs:extension base="pssp:ResponseType">
+				<xs:sequence>
+					<xs:element ref="pssp:Signatory" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="SigningInstanceInfoFilterType">
+		<xs:sequence>
+			<xs:element ref="pssp:Property" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:Operator" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pssp:Value" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="DocumentSelectionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Original"/>
+			<xs:enumeration value="Signed"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="SignatoryFilterType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="All"/>
+			<xs:enumeration value="Current"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

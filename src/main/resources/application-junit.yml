@@ -4,3 +4,10 @@
 logging:
   level:
     root: DEBUG
+
+#========================================
+integration:
+  comfact:
+    url: http://comfact.url
+    username: comfact-username
+    password: comfact-password
