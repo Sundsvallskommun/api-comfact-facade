@@ -18,10 +18,8 @@ import comfact.UpdateSigningInstanceRequest;
 import comfact.UpdateSigningInstanceResponse;
 import comfact.WithdrawSigningInstanceRequest;
 import comfact.WithdrawSigningInstanceResponse;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @FeignClient(name = "comfact", url = "${integration.comfact.url}", configuration = ComfactConfiguration.class)
-@CircuitBreaker(name = "minutmiljo")
 public interface ComfactClient {
 
 	String TEXT_XML_UTF8 = "text/xml;charset=UTF-8";
@@ -33,7 +31,7 @@ public interface ComfactClient {
 	 * return {@link CreateSigningInstanceResponse} containing the signing instance id and URL for each signatory to start their
 	 * signing flow
 	 */
-	@PostMapping(consumes = TEXT_XML_UTF8, headers = {"SOAPAction=CreateSigningInstance"})
+	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {"SOAPAction=CreateSigningInstance"})
 	CreateSigningInstanceResponse createSigningInstance(CreateSigningInstanceRequest createSigningInstance);
 
 	/**
@@ -42,7 +40,7 @@ public interface ComfactClient {
 	 * @param updateSigningInstance the request to update a signing instance
 	 * @return {@link UpdateSigningInstanceResponse} containing information if request was successful or not
 	 */
-	@PostMapping(consumes = TEXT_XML_UTF8, headers = {"SOAPAction=UpdateSigningInstance"})
+	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {"SOAPAction=UpdateSigningInstance"})
 	UpdateSigningInstanceResponse updateSigningInstance(UpdateSigningInstanceRequest updateSigningInstance);
 
 	/**
@@ -51,7 +49,7 @@ public interface ComfactClient {
 	 * @param withdrawSigningInstance the request to withdraw a signing instance
 	 * @return {@link WithdrawSigningInstanceResponse} containing information if request was successful or not
 	 */
-	@PostMapping(consumes = TEXT_XML_UTF8, headers = {"SOAPAction=WithdrawSigningInstance"})
+	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {"SOAPAction=WithdrawSigningInstance"})
 	WithdrawSigningInstanceResponse withdrawSigningInstance(WithdrawSigningInstanceRequest withdrawSigningInstance);
 
 
@@ -61,7 +59,7 @@ public interface ComfactClient {
 	 * @param getSigningInstanceRequest the request et a signing instance
 	 * @return {@link GetSigningInstanceResponse} containing the signing instance
 	 */
-	@PostMapping(consumes = TEXT_XML_UTF8, headers = {"SOAPAction=GetSigningInstance"})
+	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {"SOAPAction=GetSigningInstance"})
 	GetSigningInstanceResponse getSigningInstance(GetSigningInstanceRequest getSigningInstanceRequest);
 
 	/**
@@ -70,7 +68,7 @@ public interface ComfactClient {
 	 * @param getSigningInstanceRequest the request to get general information of existing SigningInstances
 	 * @return {@link GetSigningInstanceInfoResponse} containing the general information of existing SigningInstances
 	 */
-	@PostMapping(consumes = TEXT_XML_UTF8, headers = {"SOAPAction=GetSigningInstanceInfo"})
+	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {"SOAPAction=GetSigningInstanceInfo"})
 	GetSigningInstanceInfoResponse getSigningInstanceInfo(GetSigningInstanceInfoRequest getSigningInstanceRequest);
 
 
@@ -80,7 +78,7 @@ public interface ComfactClient {
 	 * @param getSignatoryRequest the request to get signatory
 	 * @return {@link GetSignatoryResponse} containing the signatory information
 	 */
-	@PostMapping(consumes = TEXT_XML_UTF8, headers = {"SOAPAction=GetSignatory"})
+	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {"SOAPAction=GetSignatory"})
 	GetSignatoryResponse getSignatory(GetSignatoryRequest getSignatoryRequest);
 
 

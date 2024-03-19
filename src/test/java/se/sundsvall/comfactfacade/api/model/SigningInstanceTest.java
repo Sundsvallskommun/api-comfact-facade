@@ -24,7 +24,7 @@ class SigningInstanceTest {
 	}
 
 	@Test
-	void testBean() {
+	void bean() {
 		MatcherAssert.assertThat(SigningInstance.class, allOf(
 			hasValidBeanConstructor(),
 			hasValidGettersAndSetters(),
@@ -34,7 +34,7 @@ class SigningInstanceTest {
 	}
 
 	@Test
-	void testConstructorAndGetters() {
+	void builder() {
 		// Arrange
 		final var notificationMessage = List.of(new NotificationMessage());
 		final var initiator = new Party();
@@ -85,7 +85,7 @@ class SigningInstanceTest {
 	}
 
 	@Test
-	void testNoDirtOnCreatedBean() {
+	void noDirtOnCreatedBean() {
 		assertThat(SigningInstance.builder().build()).hasAllNullFieldsOrProperties();
 		assertThat(new SigningInstance()).hasAllNullFieldsOrProperties();
 	}

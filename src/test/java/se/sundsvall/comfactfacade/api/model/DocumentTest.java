@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class DocumentTest {
 
 	@Test
-	void testBean() {
+	void bean() {
 		MatcherAssert.assertThat(Document.class, allOf(
 			hasValidBeanConstructor(),
 			hasValidGettersAndSetters(),
@@ -24,7 +24,7 @@ class DocumentTest {
 	}
 
 	@Test
-	void constructorAndGetter() {
+	void builder() {
 		// Arrange
 		final var name = "someName";
 		final var fileName = "someFileName";
@@ -32,9 +32,15 @@ class DocumentTest {
 		final var content = "someContent";
 
 		// Act
-		final var result = new Document(name, fileName, mimeType, content);
+		final var result = Document.builder()
+			.withName(name)
+			.withFileName(fileName)
+			.withMimeType(mimeType)
+			.withContent(content)
+			.build();
 
 		// Assert
+		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(result.getName()).isEqualTo(name);
 		assertThat(result.getFileName()).isEqualTo(fileName);
 		assertThat(result.getMimeType()).isEqualTo(mimeType);
@@ -42,7 +48,7 @@ class DocumentTest {
 	}
 
 	@Test
-	void testNoDirtOnCreatedBean() {
+	void noDirtOnCreatedBean() {
 		assertThat(Document.builder().build()).hasAllNullFieldsOrProperties();
 		assertThat(new Document()).hasAllNullFieldsOrProperties();
 	}

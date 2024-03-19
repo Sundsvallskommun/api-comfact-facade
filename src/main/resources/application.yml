@@ -11,19 +11,11 @@ openapi:
 spring:
   application:
     name: api-comfact-facade
-  datasource:
-    url: jdbc:mariadb://localhost:3306/casestatus
-    username: root
-    password: p4ssw0rd
 
 integration:
   comfact:
     connectTimeout: 5
     readTimeout: 30
-    url: https://test.comfact.com/signingservice/service.asmx
-    username: overrideme
-    password: overrideme
-
 
 logbook:
   body-filters:

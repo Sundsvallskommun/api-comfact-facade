@@ -2,10 +2,10 @@ package se.sundsvall.comfactfacade.api;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import java.util.List;
@@ -71,7 +71,7 @@ class SigningResourceTest {
 				.build())
 			.build();
 
-		when(signingServiceMock.createSigningRequest(any(SigningRequest.class)))
+		when(signingServiceMock.createSigningRequest(signingRequest))
 			.thenReturn("someSigningId");
 
 		// Act
@@ -82,11 +82,11 @@ class SigningResourceTest {
 			.exchange()
 			.expectStatus()
 			.isCreated()
-			.expectHeader()
-			.location("/signings/someSigningId");
+			.expectHeader().contentType(ALL_VALUE)
+			.expectHeader().location("/signings/someSigningId");
 
 		// Assert
-		verify(signingServiceMock).createSigningRequest(any(SigningRequest.class));
+		verify(signingServiceMock).createSigningRequest(signingRequest);
 	}
 
 	@Test
@@ -113,7 +113,7 @@ class SigningResourceTest {
 			.isNoContent();
 
 		// Assert
-		verify(signingServiceMock).updateSigningRequest(any(String.class), any(SigningRequest.class));
+		verify(signingServiceMock).updateSigningRequest(signingId, signingRequest);
 	}
 
 
@@ -130,7 +130,7 @@ class SigningResourceTest {
 			.isNoContent();
 
 		// Assert
-		verify(signingServiceMock).cancelSigningRequest(any(String.class));
+		verify(signingServiceMock).cancelSigningRequest(signingId);
 	}
 
 
@@ -138,7 +138,7 @@ class SigningResourceTest {
 	void getSigningRequest() {
 		// Arrange
 		final var signingId = "someSigningId";
-		when(signingServiceMock.getSigningRequest(any(String.class))).thenReturn(new SigningInstance());
+		when(signingServiceMock.getSigningRequest(signingId)).thenReturn(new SigningInstance());
 
 		// Act
 		final var result = webTestClient.get()
@@ -149,7 +149,7 @@ class SigningResourceTest {
 			.returnResult().getResponseBody();
 
 		// Assert
-		verify(signingServiceMock).getSigningRequest(any(String.class));
+		verify(signingServiceMock).getSigningRequest(signingId);
 		assertThat(result).isNotNull();
 	}
 
@@ -172,7 +172,7 @@ class SigningResourceTest {
 
 
 		// Assert
-		verify(signingServiceMock).getSignatory(any(String.class), any(String.class));
+		verify(signingServiceMock).getSignatory(signingId, partyId);
 		assertThat(result).isNotNull();
 	}
 

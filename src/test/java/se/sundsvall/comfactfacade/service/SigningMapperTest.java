@@ -45,9 +45,6 @@ class SigningMapperTest {
 
 		final var status = new Status();
 		final var customerReferenceNumber = "customerReferenceNumber";
-		final var created = xmlGregorianCalendar;
-		final var changed = xmlGregorianCalendar;
-		final var expires = xmlGregorianCalendar;
 		final var document = new DocumentType();
 		final var initiator = new PartyType();
 		final var additionalParties = List.of(new PartyType());
@@ -62,9 +59,9 @@ class SigningMapperTest {
 				.withSigningInstanceId(signingId)
 				.withStatus(status)
 				.withCustomerReferenceNumber(customerReferenceNumber)
-				.withCreated(created)
-				.withChanged(changed)
-				.withExpires(expires)
+				.withCreated(xmlGregorianCalendar)
+				.withChanged(xmlGregorianCalendar)
+				.withExpires(xmlGregorianCalendar)
 				.withDocument(document)
 				.withInitiator(initiator)
 				.withAdditionalParties(additionalParties)

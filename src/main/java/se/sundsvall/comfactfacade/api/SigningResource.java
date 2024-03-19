@@ -1,6 +1,8 @@
 package se.sundsvall.comfactfacade.api;
 
 
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import static org.springframework.web.util.UriComponentsBuilder.fromPath;
@@ -63,12 +65,13 @@ public class SigningResource {
 	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_PROBLEM_JSON_VALUE})
 	@Operation(summary = "Create Signing instance.")
 	@ApiResponse(responseCode = "201", description = "Created", useReturnTypeSchema = true)
-	public ResponseEntity<String> createSigningRequest(@Valid @RequestBody final SigningRequest signingRequest) {
-		
+	public ResponseEntity<Void> createSigningRequest(@Valid @RequestBody final SigningRequest signingRequest) {
+
 		return ResponseEntity.created(
 				fromPath("/signings/{signingId}")
 					.buildAndExpand(signingService.createSigningRequest(signingRequest))
 					.toUri())
+			.header(CONTENT_TYPE, ALL_VALUE)
 			.build();
 	}
 

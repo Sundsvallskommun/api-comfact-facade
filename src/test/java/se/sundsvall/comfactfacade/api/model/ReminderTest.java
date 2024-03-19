@@ -23,7 +23,7 @@ class ReminderTest {
 	}
 
 	@Test
-	void testBean() {
+	void bean() {
 		MatcherAssert.assertThat(Reminder.class, allOf(
 			hasValidBeanConstructor(),
 			hasValidGettersAndSetters(),
@@ -33,7 +33,7 @@ class ReminderTest {
 	}
 
 	@Test
-	void testConstructorAndGetters() {
+	void builder() {
 
 		// Arrange
 		final var enabled = true;
@@ -50,7 +50,7 @@ class ReminderTest {
 			.build();
 
 		// Assert
-		assertThat(result).hasNoNullFieldsOrProperties();
+		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(result.isEnabled()).isEqualTo(enabled);
 		assertThat(result.getIntervalInHours()).isEqualTo(intervalInHours);
 		assertThat(result.getMessage()).isEqualTo(message);
@@ -60,7 +60,7 @@ class ReminderTest {
 
 
 	@Test
-	void testNoDirtOnCreatedBean() {
+	void noDirtOnCreatedBean() {
 		assertThat(Reminder.builder().build()).hasAllNullFieldsOrPropertiesExcept("enabled", "intervalInHours");
 		assertThat(new Reminder()).hasAllNullFieldsOrPropertiesExcept("enabled", "intervalInHours");
 	}

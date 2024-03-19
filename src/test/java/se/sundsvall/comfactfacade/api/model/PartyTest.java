@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 class PartyTest {
 
 	@Test
-	void testBean() {
+	void bean() {
 		MatcherAssert.assertThat(Party.class, allOf(
 			hasValidBeanConstructor(),
 			hasValidGettersAndSetters(),
@@ -26,7 +26,7 @@ class PartyTest {
 	}
 
 	@Test
-	void constructorAndGetter() {
+	void builder() {
 		// Arrange
 		final var name = "someName";
 		final var email = "someEmail";
@@ -40,9 +40,21 @@ class PartyTest {
 		final var notificationMessage = new NotificationMessage("defaultSubject", "defaultBody", "sv-SE");
 
 		// Act
-		final var result = new Party(name, partyId, notificationMessage, title, personalNumber, email, phone, organization, language, identification);
+		final var result = Party.builder()
+			.withName(name)
+			.withEmail(email)
+			.withPhoneNumber(phone)
+			.withPartyId(partyId)
+			.withTitle(title)
+			.withPersonalNumber(personalNumber)
+			.withOrganization(organization)
+			.withLanguage(language)
+			.withIdentifications(identification)
+			.withNotificationMessage(notificationMessage)
+			.build();
 
 		// Assert
+		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(result.getName()).isEqualTo(name);
 		assertThat(result.getPartyId()).isEqualTo(partyId);
 		assertThat(result.getTitle()).isEqualTo(title);
@@ -57,7 +69,7 @@ class PartyTest {
 
 
 	@Test
-	void testNoDirtOnCreatedBean() {
+	void noDirtOnCreatedBean() {
 		assertThat(Party.builder().build()).hasAllNullFieldsOrProperties();
 		assertThat(new Party()).hasAllNullFieldsOrProperties();
 	}

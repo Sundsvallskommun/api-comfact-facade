@@ -1,7 +1,6 @@
 package se.sundsvall.comfactfacade.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -334,7 +333,7 @@ class SigningResourceFailureTest {
 		final var signingId = "someSigningId";
 		final var partyId = "somePartyId";
 		doThrow(Problem.valueOf(Status.NOT_FOUND, "The signing request with id someSigningId was not found"))
-			.when(signingServiceMock).getSignatory(any(), any());
+			.when(signingServiceMock).getSignatory(signingId, partyId);
 
 		// Act & Assert
 		final var result = webTestClient.get()

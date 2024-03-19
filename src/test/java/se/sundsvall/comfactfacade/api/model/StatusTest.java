@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class StatusTest {
 
 	@Test
-	void testBean() {
+	void bean() {
 		MatcherAssert.assertThat(Status.class, allOf(
 			hasValidBeanConstructor(),
 			hasValidGettersAndSetters(),
@@ -24,7 +24,7 @@ class StatusTest {
 	}
 
 	@Test
-	void testConstructorAndGetters() {
+	void builder() {
 		// Arrange
 		final var code = "someCode";
 		final var message = "someMessage";
@@ -42,7 +42,7 @@ class StatusTest {
 	}
 
 	@Test
-	void testNoDirtOnCreatedBean() {
+	void noDirtOnCreatedBean() {
 		assertThat(Status.builder().build()).hasAllNullFieldsOrProperties();
 		assertThat(new Status()).hasAllNullFieldsOrProperties();
 	}

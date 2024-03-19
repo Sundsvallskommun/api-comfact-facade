@@ -25,7 +25,7 @@ class SigningRequestTest {
 	}
 
 	@Test
-	void testBean() {
+	void bean() {
 		MatcherAssert.assertThat(SigningRequest.class, allOf(
 			hasValidBeanConstructor(),
 			hasValidGettersAndSetters(),
@@ -35,7 +35,7 @@ class SigningRequestTest {
 	}
 
 	@Test
-	void testConstructorAndGetters() {
+	void builder() {
 		// Arrange
 		final var customerReference = "someCustomerReference";
 		final var expires = now();
@@ -62,7 +62,7 @@ class SigningRequestTest {
 			.build();
 
 		// Assert
-		assertThat(result).hasNoNullFieldsOrProperties();
+		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(result.getCustomerReference()).isEqualTo(customerReference);
 		assertThat(result.getExpires()).isEqualTo(expires);
 		assertThat(result.getNotificationMessage()).isEqualTo(notificationMessage);
@@ -77,7 +77,7 @@ class SigningRequestTest {
 	}
 
 	@Test
-	void testNoDirtOnCreatedBean() {
+	void noDirtOnCreatedBean() {
 		assertThat(SigningRequest.builder().build()).hasAllNullFieldsOrProperties();
 		assertThat(new SigningRequest()).hasAllNullFieldsOrProperties();
 	}

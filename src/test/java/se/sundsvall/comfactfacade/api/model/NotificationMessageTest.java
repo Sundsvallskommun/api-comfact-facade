@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class NotificationMessageTest {
 
 	@Test
-	void testBean() {
+	void bean() {
 		MatcherAssert.assertThat(NotificationMessage.class, allOf(
 			hasValidBeanConstructor(),
 			hasValidGettersAndSetters(),
@@ -24,7 +24,7 @@ class NotificationMessageTest {
 	}
 
 	@Test
-	void testConstructorAndGetters() {
+	void builder() {
 
 		// Arrange
 		final String subject = "someSubject";
@@ -32,7 +32,11 @@ class NotificationMessageTest {
 		final String language = "sv-SE";
 
 		// Act
-		final NotificationMessage testObject = new NotificationMessage(subject, body, language);
+		final NotificationMessage testObject = NotificationMessage.builder()
+			.withSubject(subject)
+			.withBody(body)
+			.withLanguage(language)
+			.build();
 
 		// Assert
 		assertThat(testObject.getSubject()).isEqualTo(subject);
@@ -42,7 +46,7 @@ class NotificationMessageTest {
 	}
 
 	@Test
-	void testNoDirtOnCreatedBean() {
+	void noDirtOnCreatedBean() {
 		assertThat(NotificationMessage.builder().build()).hasAllNullFieldsOrProperties();
 		assertThat(new NotificationMessage()).hasAllNullFieldsOrProperties();
 	}

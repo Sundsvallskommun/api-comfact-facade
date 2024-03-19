@@ -25,10 +25,10 @@ import comfact.Signatory;
 @Service
 public class SigningService {
 
-	private final ComfactIntegration comfactClient;
+	private final ComfactIntegration comfactIntegration;
 
-	public SigningService(final ComfactIntegration comfactClient) {
-		this.comfactClient = comfactClient;
+	public SigningService(final ComfactIntegration comfactIntegration) {
+		this.comfactIntegration = comfactIntegration;
 	}
 
 	static Signatory toSignatory(final GetSignatoryResponse response) {
@@ -37,30 +37,30 @@ public class SigningService {
 	}
 
 	public String createSigningRequest(final SigningRequest signingRequest) {
-		final var response = comfactClient.createSigningInstance(toCreateSigningInstanceRequestType(signingRequest));
+		final var response = comfactIntegration.createSigningInstance(toCreateSigningInstanceRequestType(signingRequest));
 		return response.getSigningInstanceId();
 	}
 
 	public void updateSigningRequest(final String signingId, final SigningRequest signingRequest) {
-		comfactClient.updateSigningInstance(toUpdateSigningInstanceRequestType(signingId, signingRequest));
+		comfactIntegration.updateSigningInstance(toUpdateSigningInstanceRequestType(signingId, signingRequest));
 	}
 
 	public void cancelSigningRequest(final String signingId) {
-		comfactClient.withdrawSigningInstance(toWithdrawSigningInstanceRequestType(signingId));
+		comfactIntegration.withdrawSigningInstance(toWithdrawSigningInstanceRequestType(signingId));
 	}
 
 	public SigningInstance getSigningRequest(final String signingId) {
-		final var response = comfactClient.getSigningInstance(new GetSigningInstanceRequest().withSigningInstanceId(signingId));
+		final var response = comfactIntegration.getSigningInstance(new GetSigningInstanceRequest().withSigningInstanceId(signingId));
 		return toSigningResponse(response);
 	}
 
 	public List<SigningInstance> getSigningRequests() {
-		final var response = comfactClient.getSigningInstanceInfo(new GetSigningInstanceInfoRequest());
+		final var response = comfactIntegration.getSigningInstanceInfo(new GetSigningInstanceInfoRequest());
 		return response.getSigningInstanceInfos().stream().map(SigningMapper::toSigningInstanceInfoType).toList();
 	}
 
 	public Party getSignatory(final String signingId, final String partyId) {
-		final var response = comfactClient.getSignatory(new GetSignatoryRequest().withPartyId(partyId).withSigningInstanceId(signingId));
+		final var response = comfactIntegration.getSignatory(new GetSignatoryRequest().withPartyId(partyId).withSigningInstanceId(signingId));
 		return toParty(response.getSignatories().getFirst());
 
 	}
