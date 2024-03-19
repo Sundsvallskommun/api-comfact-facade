@@ -1,13 +1,14 @@
 package se.sundsvall.comfactfacade.api;
 
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
+import static org.springframework.web.util.UriComponentsBuilder.fromPath;
 
 import java.util.List;
 
 import jakarta.validation.Valid;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,14 +45,14 @@ public class SigningResource {
 
 	public SigningResource(final SigningService signingService) {this.signingService = signingService;}
 
-	@GetMapping
+	@GetMapping(produces = {APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE})
 	@Operation(summary = "Get all signing instances.")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	public ResponseEntity<List<SigningInstance>> getSigningRequests() {
 		return ResponseEntity.ok(signingService.getSigningRequests());
 	}
 
-	@GetMapping(path = "{signingId}", produces = {APPLICATION_PROBLEM_JSON_VALUE})
+	@GetMapping(path = "{signingId}", produces = {APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE})
 	@Operation(summary = "Get a signing request.")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
@@ -59,15 +60,19 @@ public class SigningResource {
 		return ResponseEntity.ok(signingService.getSigningRequest(signingId));
 	}
 
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = {APPLICATION_PROBLEM_JSON_VALUE})
+	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_PROBLEM_JSON_VALUE})
 	@Operation(summary = "Create Signing instance.")
-	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
-	public ResponseEntity<Void> createSigningRequest(@Valid @RequestBody final SigningRequest signingRequest) {
-		signingService.createSigningRequest(signingRequest);
-		return ResponseEntity.ok().build();
+	@ApiResponse(responseCode = "201", description = "Created", useReturnTypeSchema = true)
+	public ResponseEntity<String> createSigningRequest(@Valid @RequestBody final SigningRequest signingRequest) {
+		
+		return ResponseEntity.created(
+				fromPath("/signings/{signingId}")
+					.buildAndExpand(signingService.createSigningRequest(signingRequest))
+					.toUri())
+			.build();
 	}
 
-	@PatchMapping(path = "{signingId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = {APPLICATION_PROBLEM_JSON_VALUE})
+	@PatchMapping(path = "{signingId}", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_PROBLEM_JSON_VALUE})
 	@Operation(summary = "Update a signing instance.")
 	@ApiResponse(responseCode = "204", description = "Successful operation", useReturnTypeSchema = true)
 	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
@@ -85,7 +90,7 @@ public class SigningResource {
 		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping(path = "{signingId}/signatory/{partyId}", produces = {APPLICATION_PROBLEM_JSON_VALUE})
+	@GetMapping(path = "{signingId}/signatory/{partyId}", produces = {APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE})
 	@Operation(summary = "Get information about the current signatory")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))

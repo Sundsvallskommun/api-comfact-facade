@@ -59,6 +59,7 @@ class SigningResourceTest {
 
 	@Test
 	void createSigningRequest() {
+
 		// Arrange
 		final var signingRequest = SigningRequest.builder()
 			.withSignatory(Party.builder().build())
@@ -70,6 +71,9 @@ class SigningResourceTest {
 				.build())
 			.build();
 
+		when(signingServiceMock.createSigningRequest(any(SigningRequest.class)))
+			.thenReturn("someSigningId");
+
 		// Act
 		webTestClient.post()
 			.uri("/signings")
@@ -77,7 +81,9 @@ class SigningResourceTest {
 			.bodyValue(signingRequest)
 			.exchange()
 			.expectStatus()
-			.isOk();
+			.isCreated()
+			.expectHeader()
+			.location("/signings/someSigningId");
 
 		// Assert
 		verify(signingServiceMock).createSigningRequest(any(SigningRequest.class));
