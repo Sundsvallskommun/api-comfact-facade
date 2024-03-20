@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions targetNamespace="urn:comfact:prosale:signing:2.0:service"
+  xmlns:pssd="urn:comfact:prosale:signing:2.0:service"
+  xmlns:pssp="urn:comfact:prosale:signing:2.0:protocol"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:annotation>
+    <xs:documentation>
+      ProSale Signing Service Definition
+      Copyright (c) Comfact AB, Sweden
+      ALL RIGHTS RESERVED
+    </xs:documentation>
+  </xs:annotation>
+
+  <wsdl:types>
+    <xs:schema>
+      <xs:import namespace="urn:comfact:prosale:signing:2.0:protocol" schemaLocation="signing-protocol-2.0.xsd" />
+    </xs:schema>
+  </wsdl:types>
+
+  <wsdl:message name="CreateSigningInstanceRequestMessage">
+    <wsdl:part name="parameter" element="pssp:CreateSigningInstanceRequest" />
+  </wsdl:message>
+  <wsdl:message name="CreateSigningInstanceResponseMessage">
+    <wsdl:part name="parameter" element="pssp:CreateSigningInstanceResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="UpdateSigningInstanceRequestMessage">
+    <wsdl:part name="parameter" element="pssp:UpdateSigningInstanceRequest" />
+  </wsdl:message>
+  <wsdl:message name="UpdateSigningInstanceResponseMessage">
+    <wsdl:part name="parameter" element="pssp:UpdateSigningInstanceResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="WithdrawSigningInstanceRequestMessage">
+    <wsdl:part name="parameter" element="pssp:WithdrawSigningInstanceRequest" />
+  </wsdl:message>
+  <wsdl:message name="WithdrawSigningInstanceResponseMessage">
+    <wsdl:part name="parameter" element="pssp:WithdrawSigningInstanceResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="GetSigningInstanceRequestMessage">
+    <wsdl:part name="parameter" element="pssp:GetSigningInstanceRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetSigningInstanceResponseMessage">
+    <wsdl:part name="parameter" element="pssp:GetSigningInstanceResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="GetSigningInstanceInfoRequestMessage">
+    <wsdl:part name="parameter" element="pssp:GetSigningInstanceInfoRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetSigningInstanceInfoResponseMessage">
+    <wsdl:part name="parameter" element="pssp:GetSigningInstanceInfoResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="RemindSignatoryRequestMessage">
+    <wsdl:part name="parameter" element="pssp:RemindSignatoryRequest" />
+  </wsdl:message>
+  <wsdl:message name="RemindSignatoryResponseMessage">
+    <wsdl:part name="parameter" element="pssp:RemindSignatoryResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="ApproveDocumentRequestMessage">
+    <wsdl:part name="parameter" element="pssp:ApproveDocumentRequest" />
+  </wsdl:message>
+  <wsdl:message name="ApproveDocumentResponseMessage">
+    <wsdl:part name="parameter" element="pssp:ApproveDocumentResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="DeclineDocumentRequestMessage">
+    <wsdl:part name="parameter" element="pssp:DeclineDocumentRequest" />
+  </wsdl:message>
+  <wsdl:message name="DeclineDocumentResponseMessage">
+    <wsdl:part name="parameter" element="pssp:DeclineDocumentResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="GetDocumentRequestMessage">
+    <wsdl:part name="parameter" element="pssp:GetDocumentRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetDocumentResponseMessage">
+    <wsdl:part name="parameter" element="pssp:GetDocumentResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="VerifySignedDocumentRequestMessage">
+    <wsdl:part name="parameter" element="pssp:VerifySignedDocumentRequest" />
+  </wsdl:message>
+  <wsdl:message name="VerifySignedDocumentResponseMessage">
+    <wsdl:part name="parameter" element="pssp:VerifySignedDocumentResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="GetIdentificationListRequestMessage">
+    <wsdl:part name="parameter" element="pssp:GetIdentificationListRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetIdentificationListResponseMessage">
+    <wsdl:part name="parameter" element="pssp:GetIdentificationListResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="GetAuthRequestUrlRequestMessage">
+    <wsdl:part name="parameter" element="pssp:GetAuthRequestUrlRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetAuthRequestUrlResponseMessage">
+    <wsdl:part name="parameter" element="pssp:GetAuthRequestUrlResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="GetSignatoryRequestMessage">
+    <wsdl:part name="parameter" element="pssp:GetSignatoryRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetSignatoryResponseMessage">
+    <wsdl:part name="parameter" element="pssp:GetSignatoryResponse" />
+  </wsdl:message>
+
+  <wsdl:portType name="SigningInterface">
+    <wsdl:operation name="CreateSigningInstance">
+      <wsdl:input message="pssd:CreateSigningInstanceRequestMessage" />
+      <wsdl:output message="pssd:CreateSigningInstanceResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSigningInstance">
+      <wsdl:input message="pssd:UpdateSigningInstanceRequestMessage" />
+      <wsdl:output message="pssd:UpdateSigningInstanceResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="WithdrawSigningInstance">
+      <wsdl:input message="pssd:WithdrawSigningInstanceRequestMessage" />
+      <wsdl:output message="pssd:WithdrawSigningInstanceResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSigningInstance">
+      <wsdl:input message="pssd:GetSigningInstanceRequestMessage" />
+      <wsdl:output message="pssd:GetSigningInstanceResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSigningInstanceInfo">
+      <wsdl:input message="pssd:GetSigningInstanceInfoRequestMessage" />
+      <wsdl:output message="pssd:GetSigningInstanceInfoResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemindSignatory">
+      <wsdl:input message="pssd:RemindSignatoryRequestMessage" />
+      <wsdl:output message="pssd:RemindSignatoryResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ApproveDocument">
+      <wsdl:input message="pssd:ApproveDocumentRequestMessage" />
+      <wsdl:output message="pssd:ApproveDocumentResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeclineDocument">
+      <wsdl:input message="pssd:DeclineDocumentRequestMessage" />
+      <wsdl:output message="pssd:DeclineDocumentResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDocument">
+      <wsdl:input message="pssd:GetDocumentRequestMessage" />
+      <wsdl:output message="pssd:GetDocumentResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VerifySignedDocument">
+      <wsdl:input message="pssd:VerifySignedDocumentRequestMessage" />
+      <wsdl:output message="pssd:VerifySignedDocumentResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetIdentificationList">
+      <wsdl:input message="pssd:GetIdentificationListRequestMessage" />
+      <wsdl:output message="pssd:GetIdentificationListResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthRequestUrl">
+      <wsdl:input message="pssd:GetAuthRequestUrlRequestMessage" />
+      <wsdl:output message="pssd:GetAuthRequestUrlResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSignatory">
+      <wsdl:input message="pssd:GetSignatoryRequestMessage" />
+      <wsdl:output message="pssd:GetSignatoryResponseMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="SigningSoapHttpBinding" type="pssd:SigningInterface">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateSigningInstance">
+      <soap:operation soapAction="CreateSigningInstance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSigningInstance">
+      <soap:operation soapAction="UpdateSigningInstance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WithdrawSigningInstance">
+      <soap:operation soapAction="WithdrawSigningInstance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSigningInstance">
+      <soap:operation soapAction="GetSigningInstance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSigningInstanceInfo">
+      <soap:operation soapAction="GetSigningInstanceInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemindSignatory">
+      <soap:operation soapAction="RemindSignatory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ApproveDocument">
+      <soap:operation soapAction="ApproveDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeclineDocument">
+      <soap:operation soapAction="DeclineDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocument">
+      <soap:operation soapAction="GetDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerifySignedDocument">
+      <soap:operation soapAction="VerifySignedDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetIdentificationList">
+      <soap:operation soapAction="GetIdentificationList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthRequestUrl">
+      <soap:operation soapAction="GetAuthRequestUrl" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSignatory">
+      <soap:operation soapAction="GetSignatory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="SigningService">
+    <wsdl:port name="SigningSoapHttpPort" binding="pssd:SigningSoapHttpBinding">
+      <soap:address location="https://www.comfact.com/prosale/signing/service" />
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>

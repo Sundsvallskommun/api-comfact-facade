@@ -11,3 +11,19 @@ openapi:
 spring:
   application:
     name: api-comfact-facade
+
+integration:
+  comfact:
+    connectTimeout: 5
+    readTimeout: 30
+
+logbook:
+  body-filters:
+    # Exclude base64-encoded content from incoming requests.
+    json-path:
+      - key: '$..content'
+        value: '[base64]'
+    # Exclude base64-encoded content from traffic to/from skatteverket
+    xPath:
+      - key: '//*[contains(local-name(), "Content")]'
+        value: '[base64]'

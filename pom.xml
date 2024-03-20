@@ -19,6 +19,12 @@
 		<docker.image.name>ms-comfact-facade</docker.image.name>
 		<published.container.port.test>8730</published.container.port.test>
 		<published.container.port.production>8730</published.container.port.production>
+		<!--- Service properties -->
+		<generated-sources-path>${project.build.directory}/generated-sources
+		</generated-sources-path>
+		<generated-sources-java-path>src/main/java</generated-sources-java-path>
+		<jaxb2-maven-plugin.version>3.1.0</jaxb2-maven-plugin.version>
+		<jaxb2-fluent-api.version>3.0</jaxb2-fluent-api.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -26,6 +32,10 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>se.sundsvall.dept44</groupId>
+			<artifactId>dept44-starter-feign</artifactId>
 		</dependency>
 		<!-- Test -->
 		<dependency>
@@ -37,6 +47,11 @@
 			<groupId>se.sundsvall.dept44</groupId>
 			<artifactId>dept44-common-validators</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -46,9 +61,48 @@
 				<configuration>
 					<excludes>
 						<exclude>**/Application*</exclude>
+						<exclude>**/comfact/**</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.jvnet.jaxb</groupId>
+				<artifactId>jaxb-maven-plugin</artifactId>
+				<version>4.0.3</version>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<bindingDirectory>
+						${project.basedir}/src/main/resources/integrations/comfact/xjb
+					</bindingDirectory>
+					<extension>true</extension>
+					<args>
+						<arg>-wsdl</arg>
+						<arg>-Xfluent-api</arg>
+					</args>
+					<plugins>
+						<plugin>
+							<groupId>org.jvnet.jaxb</groupId>
+							<artifactId>jaxb-plugins</artifactId>
+							<version>4.0.3</version>
+						</plugin>
+					</plugins>
+					<generatePackage>comfact</generatePackage>
+					<generateDirectory>
+						${generated-sources-path}/${generated-sources-java-path}
+					</generateDirectory>
+					<schemaDirectory>${project.basedir}/src/main/resources/integrations/comfact
+					</schemaDirectory>
+				</configuration>
+			</plugin>
+
+
 		</plugins>
 	</build>
 </project>

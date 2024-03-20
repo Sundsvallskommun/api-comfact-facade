@@ -11,11 +11,11 @@ import static org.hamcrest.Matchers.allOf;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 
-class NotificationMessageTest {
+class StatusTest {
 
 	@Test
 	void bean() {
-		MatcherAssert.assertThat(NotificationMessage.class, allOf(
+		MatcherAssert.assertThat(Status.class, allOf(
 			hasValidBeanConstructor(),
 			hasValidGettersAndSetters(),
 			hasValidBeanHashCode(),
@@ -25,30 +25,26 @@ class NotificationMessageTest {
 
 	@Test
 	void builder() {
-
 		// Arrange
-		final String subject = "someSubject";
-		final String body = "someBody";
-		final String language = "sv-SE";
+		final var code = "someCode";
+		final var message = "someMessage";
 
 		// Act
-		final NotificationMessage testObject = NotificationMessage.builder()
-			.withSubject(subject)
-			.withBody(body)
-			.withLanguage(language)
+		final var result = Status.builder()
+			.withCode(code)
+			.withMessage(message)
 			.build();
 
 		// Assert
-		assertThat(testObject.getSubject()).isEqualTo(subject);
-		assertThat(testObject.getBody()).isEqualTo(body);
-		assertThat(testObject.getLanguage()).isEqualTo(language);
-
+		assertThat(result).hasNoNullFieldsOrProperties();
+		assertThat(result.getCode()).isEqualTo(code);
+		assertThat(result.getMessage()).isEqualTo(message);
 	}
 
 	@Test
 	void noDirtOnCreatedBean() {
-		assertThat(NotificationMessage.builder().build()).hasAllNullFieldsOrProperties();
-		assertThat(new NotificationMessage()).hasAllNullFieldsOrProperties();
+		assertThat(Status.builder().build()).hasAllNullFieldsOrProperties();
+		assertThat(new Status()).hasAllNullFieldsOrProperties();
 	}
 
 }

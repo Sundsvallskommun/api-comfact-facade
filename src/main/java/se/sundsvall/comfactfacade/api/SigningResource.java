@@ -1,15 +1,21 @@
 package se.sundsvall.comfactfacade.api;
 
 
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.MediaType.ALL_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
+import static org.springframework.web.util.UriComponentsBuilder.fromPath;
+
+import java.util.List;
 
 import jakarta.validation.Valid;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.zalando.problem.Problem;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
-import se.sundsvall.comfactfacade.api.model.Document;
+import se.sundsvall.comfactfacade.api.model.Party;
+import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.service.SigningService;
 
@@ -40,16 +47,45 @@ public class SigningResource {
 
 	public SigningResource(final SigningService signingService) {this.signingService = signingService;}
 
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = {APPLICATION_PROBLEM_JSON_VALUE})
-	@Operation(summary = "Create Signing request.")
+	@GetMapping(produces = {APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE})
+	@Operation(summary = "Get all signing instances.")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
+	public ResponseEntity<List<SigningInstance>> getSigningRequests() {
+		return ResponseEntity.ok(signingService.getSigningRequests());
+	}
+
+	@GetMapping(path = "{signingId}", produces = {APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE})
+	@Operation(summary = "Get a signing request.")
+	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
+	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	public ResponseEntity<SigningInstance> getSigningRequest(@PathVariable final String signingId) {
+		return ResponseEntity.ok(signingService.getSigningRequest(signingId));
+	}
+
+	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_PROBLEM_JSON_VALUE})
+	@Operation(summary = "Create Signing instance.")
+	@ApiResponse(responseCode = "201", description = "Created", useReturnTypeSchema = true)
 	public ResponseEntity<Void> createSigningRequest(@Valid @RequestBody final SigningRequest signingRequest) {
-		signingService.createSigningRequest(signingRequest);
-		return ResponseEntity.ok().build();
+
+		return ResponseEntity.created(
+				fromPath("/signings/{signingId}")
+					.buildAndExpand(signingService.createSigningRequest(signingRequest))
+					.toUri())
+			.header(CONTENT_TYPE, ALL_VALUE)
+			.build();
+	}
+
+	@PatchMapping(path = "{signingId}", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_PROBLEM_JSON_VALUE})
+	@Operation(summary = "Update a signing instance.")
+	@ApiResponse(responseCode = "204", description = "Successful operation", useReturnTypeSchema = true)
+	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	public ResponseEntity<Void> updateSigningRequest(@PathVariable final String signingId, @Valid @RequestBody final SigningRequest signingRequest) {
+		signingService.updateSigningRequest(signingId, signingRequest);
+		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping(path = "{signingId}", produces = {APPLICATION_PROBLEM_JSON_VALUE})
-	@Operation(summary = "Annul a signing request.")
+	@Operation(summary = "Annul a signing instance.")
 	@ApiResponse(responseCode = "204", description = "Successful operation", useReturnTypeSchema = true)
 	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	public ResponseEntity<Void> cancelSigningRequest(@PathVariable final String signingId) {
@@ -57,21 +93,13 @@ public class SigningResource {
 		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping(path = "{signingId}", produces = {APPLICATION_PROBLEM_JSON_VALUE})
-	@Operation(summary = "Get status of a signing request.")
+	@GetMapping(path = "{signingId}/signatory/{partyId}", produces = {APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE})
+	@Operation(summary = "Get information about the current signatory")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
-	public ResponseEntity<String> getStatus(@PathVariable final String signingId) {
-		return ResponseEntity.ok(signingService.getStatus(signingId));
-	}
-
-
-	@GetMapping(path = "{signingId}/document", produces = {APPLICATION_PROBLEM_JSON_VALUE})
-	@Operation(summary = "Get signed document.")
-	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
-	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
-	public ResponseEntity<Document> getSignedDocument(@PathVariable final String signingId) {
-		return ResponseEntity.ok(signingService.getSignedDocument(signingId));
+	public ResponseEntity<Party> getSignatory(@PathVariable final String signingId, @PathVariable final String partyId) {
+		final var result = signingService.getSignatory(signingId, partyId);
+		return ResponseEntity.ok(result);
 	}
 
 
