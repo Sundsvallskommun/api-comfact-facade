@@ -7,6 +7,6 @@ logging:
 
 integration:
   comfact:
-    url: http://comfact.url
+    url: http://localhost:${wiremock.server.port:}/comfact
     username: comfact-username
     password: comfact-password

@@ -1,0 +1,15 @@
+{
+  "request": {
+    "url": "/comfact",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "contains": "WithdrawSigningInstance"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "test5_cancelSigningRequest/responses/WithdrawSigningInstance.xml"
+  }
+}

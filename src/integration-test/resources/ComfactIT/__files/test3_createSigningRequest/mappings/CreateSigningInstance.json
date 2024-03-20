@@ -1,0 +1,15 @@
+{
+  "request": {
+    "url": "/comfact",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "contains": "CreateSigningInstance"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "test3_createSigningRequest/responses/CreateSigningInstance.xml"
+  }
+}

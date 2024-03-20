@@ -58,13 +58,18 @@ class SigningServiceTest {
 	@Test
 	void createSigningRequest() {
 		// Arrange
-		when(comfactIntegration.createSigningInstance(any(CreateSigningInstanceRequest.class))).thenReturn(new comfact.CreateSigningInstanceResponse().withSigningInstanceId("123"));
+		when(comfactIntegration.createSigningInstance(any(CreateSigningInstanceRequest.class))).thenReturn(new comfact.CreateSigningInstanceResponse()
+			.withSigningInstanceId("123")
+			.withSignatoryUrls(new comfact.SignatoryUrl().withPartyId("partyId").withValue("someUrl")));
 
 		// Act
 		final var result = signingService.createSigningRequest(new SigningRequest());
 
 		// Assert
-		assertThat(result).isNotNull().isEqualTo("123");
+		assertThat(result).isNotNull();
+		assertThat(result.getSigningId()).isEqualTo("123");
+		assertThat(result.getSignatoryUrls()).hasSize(1);
+		assertThat(result.getSignatoryUrls()).containsEntry("partyId", "someUrl");
 		verify(comfactIntegration).createSigningInstance(createRequestCaptor.capture());
 		assertThat(createRequestCaptor.getValue()).isNotNull();
 	}

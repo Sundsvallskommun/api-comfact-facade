@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import se.sundsvall.comfactfacade.Application;
+import se.sundsvall.comfactfacade.api.model.CreateSigningResponse;
 import se.sundsvall.comfactfacade.api.model.Document;
 import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
@@ -72,20 +73,28 @@ class SigningResourceTest {
 			.build();
 
 		when(signingServiceMock.createSigningRequest(signingRequest))
-			.thenReturn("someSigningId");
+			.thenReturn(CreateSigningResponse.builder()
+				.withSigningId("someSigningId")
+				.withSignatoryUrls(Map.of("somePartyId", "someUrl"))
+				.build());
 
 		// Act
-		webTestClient.post()
+		final var result = webTestClient.post()
 			.uri("/signings")
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
 			.expectStatus()
-			.isCreated()
-			.expectHeader().contentType(ALL_VALUE)
-			.expectHeader().location("/signings/someSigningId");
+			.isOk()
+			.expectBody(CreateSigningResponse.class)
+			.returnResult()
+			.getResponseBody();
 
 		// Assert
+		assertThat(result).isNotNull();
+		assertThat(result.getSigningId()).isEqualTo("someSigningId");
+		assertThat(result.getSignatoryUrls()).hasSize(1);
+		assertThat(result.getSignatoryUrls()).containsEntry("somePartyId", "someUrl");
 		verify(signingServiceMock).createSigningRequest(signingRequest);
 	}
 

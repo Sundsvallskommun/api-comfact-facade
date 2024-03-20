@@ -8,14 +8,16 @@ import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetter
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.allOf;
 
+import java.util.Map;
+
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 
-class NotificationMessageTest {
+class CreateSigningResponseTest {
 
 	@Test
 	void bean() {
-		MatcherAssert.assertThat(NotificationMessage.class, allOf(
+		MatcherAssert.assertThat(CreateSigningResponse.class, allOf(
 			hasValidBeanConstructor(),
 			hasValidGettersAndSetters(),
 			hasValidBeanHashCode(),
@@ -25,31 +27,25 @@ class NotificationMessageTest {
 
 	@Test
 	void builder() {
-
 		// Arrange
-		final String subject = "someSubject";
-		final String body = "someBody";
-		final String language = "sv-SE";
-
+		final var signingId = "signingId";
+		final var signatoryUrls = Map.of("somePartyId", "someUrl");
 		// Act
-		final var result = NotificationMessage.builder()
-			.withSubject(subject)
-			.withBody(body)
-			.withLanguage(language)
+		final var result = CreateSigningResponse.builder()
+			.withSigningId(signingId)
+			.withSignatoryUrls(signatoryUrls)
 			.build();
-
 		// Assert
 		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
-		assertThat(result.getSubject()).isEqualTo(subject);
-		assertThat(result.getBody()).isEqualTo(body);
-		assertThat(result.getLanguage()).isEqualTo(language);
+		assertThat(result.getSigningId()).isEqualTo(signingId);
+		assertThat(result.getSignatoryUrls()).isEqualTo(signatoryUrls);
 
 	}
 
 	@Test
 	void noDirtOnCreatedBean() {
-		assertThat(NotificationMessage.builder().build()).hasAllNullFieldsOrProperties();
-		assertThat(new NotificationMessage()).hasAllNullFieldsOrProperties();
+		assertThat(CreateSigningResponse.builder().build()).hasAllNullFieldsOrProperties();
+		assertThat(new CreateSigningResponse()).hasAllNullFieldsOrProperties();
 	}
 
 }

@@ -1,11 +1,8 @@
 package se.sundsvall.comfactfacade.api;
 
 
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
-import static org.springframework.web.util.UriComponentsBuilder.fromPath;
 
 import java.util.List;
 
@@ -24,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.zalando.problem.Problem;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
+import se.sundsvall.comfactfacade.api.model.CreateSigningResponse;
 import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
@@ -62,17 +60,12 @@ public class SigningResource {
 		return ResponseEntity.ok(signingService.getSigningRequest(signingId));
 	}
 
-	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_PROBLEM_JSON_VALUE})
+	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE})
 	@Operation(summary = "Create Signing instance.")
-	@ApiResponse(responseCode = "201", description = "Created", useReturnTypeSchema = true)
-	public ResponseEntity<Void> createSigningRequest(@Valid @RequestBody final SigningRequest signingRequest) {
+	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
+	public ResponseEntity<CreateSigningResponse> createSigningRequest(@Valid @RequestBody final SigningRequest signingRequest) {
 
-		return ResponseEntity.created(
-				fromPath("/signings/{signingId}")
-					.buildAndExpand(signingService.createSigningRequest(signingRequest))
-					.toUri())
-			.header(CONTENT_TYPE, ALL_VALUE)
-			.build();
+		return ResponseEntity.ok(signingService.createSigningRequest(signingRequest));
 	}
 
 	@PatchMapping(path = "{signingId}", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_PROBLEM_JSON_VALUE})
