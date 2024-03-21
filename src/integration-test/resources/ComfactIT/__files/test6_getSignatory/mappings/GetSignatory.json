@@ -1,0 +1,15 @@
+{
+  "request": {
+    "url": "/comfact",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "contains": "GetSignatory"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "test6_getSignatory/responses/GetSignatory.xml"
+  }
+}

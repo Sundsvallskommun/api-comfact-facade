@@ -1,0 +1,13 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+>
+	<soap:Body>
+		<WithdrawSigningInstanceResponse responseId="?"
+										 xmlns="urn:comfact:prosale:signing:2.0:protocol">
+			<Result success="true">
+				<ResultCode>Success</ResultCode>
+				<ResultMessage>The requested service operation was successfully completed.
+				</ResultMessage>
+			</Result>
+		</WithdrawSigningInstanceResponse>
+	</soap:Body>
+</soap:Envelope>

@@ -1,0 +1,56 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+>
+	<soap:Body>
+		<GetSignatoryResponse xmlns="urn:comfact:prosale:signing:2.0:protocol">
+			<Result success="true">
+				<ResultCode>Success</ResultCode>
+				<ResultMessage>The requested service operation was successfully completed.
+				</ResultMessage>
+			</Result>
+			<Signatory partyId="23456" language="sv-SE">
+				<Name>Test Testorsson</Name>
+				<Title>Test</Title>
+				<Organization>Sundsvalls kommun</Organization>
+				<PersonalNumber>197001011234</PersonalNumber>
+				<EmailAddress>test.testorsson@sundsvall.se</EmailAddress>
+				<MobilePhoneNumber>+46701234567</MobilePhoneNumber>
+				<Custom>
+					<DistributionInfo distributionMethod="Attached"
+									  xmlns="urn:comfact:prosale:signing:documentdistribution:1.0:protocol"/>
+					<SignatoryUrl partyId="23456">
+						https://test.comfact.com/signingwebsite?id=NmVjM2MzYjQ3OTIxNDQ2MDgzZjU2OTk3N2Q0YThhNTcmMjM0NTY=o
+					</SignatoryUrl>
+					<TimeZone type="Microsoft"
+							  xmlns="urn:comfact:prosale:signing:timezone:2.0:protocol">W. Europe
+						Standard Time
+					</TimeZone>
+					<SignatureFieldId fieldRenderingType="Image"
+									  xmlns="urn:comfact:prosale:signing:ades:2.0:protocol">
+						47e540cfcb8b49aa96de35283c62133d
+					</SignatureFieldId>
+				</Custom>
+				<Identification>
+					<Alias>SvensktEId</Alias>
+				</Identification>
+				<IdentificationToken identificationTokenId="SigningAuthenticationResponse1"
+									 timestamp="2024-01-30T10:54:21.3548845+01:00">
+					<ExternalData xmlns="urn:comfact:prosale:signing:data:2.0:protocol"/>
+				</IdentificationToken>
+				<IdentificationToken identificationTokenId="SignatureRequest1"
+									 timestamp="2024-01-30T10:55:02.8417959+01:00">
+					<ExternalData xmlns="urn:comfact:prosale:signing:data:2.0:protocol"/>
+				</IdentificationToken>
+				<IdentificationToken identificationTokenId="SignatureResponse1"
+									 timestamp="2024-01-30T10:55:22.0773894+01:00">
+					<ExternalData xmlns="urn:comfact:prosale:signing:data:2.0:protocol"/>
+				</IdentificationToken>
+				<SignatoryAction action="Approved" timestamp="2024-01-30T10:55:22.0773894+01:00"
+								 identificationTokenIdRef="SignatureResponse1">
+					<Reason>Jag undertecknar härmed följande dokument:
+						TestDocument och 2 bilagor.
+					</Reason>
+				</SignatoryAction>
+			</Signatory>
+		</GetSignatoryResponse>
+	</soap:Body>
+</soap:Envelope>

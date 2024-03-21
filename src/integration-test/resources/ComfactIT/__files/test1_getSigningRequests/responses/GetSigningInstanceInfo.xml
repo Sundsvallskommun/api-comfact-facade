@@ -1,0 +1,421 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+			   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+	<soap:Body>
+		<GetSigningInstanceInfoResponse responseId="?"
+										xmlns="urn:comfact:prosale:signing:2.0:protocol">
+			<Result success="true">
+				<ResultCode>Success</ResultCode>
+				<ResultMessage>The requested service operation was successfully completed.
+				</ResultMessage>
+			</Result>
+			<SigningInstanceInfo signingInstanceId="1e4d6a9667eb4e7bba0cd6189f70317a"
+								 language="en-US">
+				<Status>
+					<StatusCode>Expired</StatusCode>
+					<StatusMessage>The signing instance is expired.</StatusMessage>
+				</Status>
+				<ReferenceNumber>36258T1</ReferenceNumber>
+				<Created>2024-01-29T11:49:54.683+01:00</Created>
+				<Changed>2024-02-28T12:03:30.187+01:00</Changed>
+				<Expires>2024-02-28T11:49:54.683+01:00</Expires>
+				<Custom>
+					<AccountId>Sundsvall360</AccountId>
+					<UserId>SundIntTest</UserId>
+					<DocumentInfo documentId="111"
+								  xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<DocumentName xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							TestDocument
+						</DocumentName>
+						<FileName xmlns="urn:comfact:prosale:signing:2.0:protocol">dummy.pdf
+						</FileName>
+						<Size xmlns="urn:comfact:prosale:signing:2.0:protocol">13264</Size>
+						<MimeType xmlns="urn:comfact:prosale:signing:2.0:protocol">application/pdf
+						</MimeType>
+					</DocumentInfo>
+					<InitiatorInfo partyId="111222" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+						<EmailAddress xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							test.testorsson@sundsvall.se
+						</EmailAddress>
+					</InitiatorInfo>
+					<InitiatorInfo xsi:type="SignatoryInfoType" partyId="23456" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+					</InitiatorInfo>
+				</Custom>
+			</SigningInstanceInfo>
+			<SigningInstanceInfo signingInstanceId="ab52bd8876d04c14a10b164bf13feb46"
+								 language="en-US">
+				<Status>
+					<StatusCode>Halted</StatusCode>
+					<StatusMessage>The signing instance is halted.</StatusMessage>
+				</Status>
+				<ReferenceNumber>36259T1</ReferenceNumber>
+				<Created>2024-01-29T11:59:24.653+01:00</Created>
+				<Changed>2024-01-29T14:00:39.79+01:00</Changed>
+				<Expires>2024-02-28T11:59:24.653+01:00</Expires>
+				<Custom>
+					<AccountId>Sundsvall360</AccountId>
+					<UserId>SundIntTest</UserId>
+					<DocumentInfo documentId="111"
+								  xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<DocumentName xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							TestDocument
+						</DocumentName>
+						<FileName xmlns="urn:comfact:prosale:signing:2.0:protocol">dummy.pdf
+						</FileName>
+						<Size xmlns="urn:comfact:prosale:signing:2.0:protocol">13264</Size>
+						<MimeType xmlns="urn:comfact:prosale:signing:2.0:protocol">application/pdf
+						</MimeType>
+					</DocumentInfo>
+					<InitiatorInfo partyId="111222" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+						<EmailAddress xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							test.testorsson@sundsvall.se
+						</EmailAddress>
+					</InitiatorInfo>
+					<InitiatorInfo xsi:type="SignatoryInfoType" partyId="23456" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+					</InitiatorInfo>
+				</Custom>
+			</SigningInstanceInfo>
+			<SigningInstanceInfo signingInstanceId="3b38fb22367147cda078eb86fc1e74a4"
+								 language="en-US">
+				<Status>
+					<StatusCode>Withdrawn</StatusCode>
+					<StatusMessage>The signing instance is withdrawn.</StatusMessage>
+				</Status>
+				<ReferenceNumber>36261T1</ReferenceNumber>
+				<Created>2024-01-29T14:08:23.37+01:00</Created>
+				<Changed>2024-01-29T16:05:14.62+01:00</Changed>
+				<Expires>2024-02-28T14:08:23.37+01:00</Expires>
+				<Custom>
+					<AccountId>Sundsvall360</AccountId>
+					<UserId>SundIntTest</UserId>
+					<DocumentInfo documentId="111"
+								  xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<DocumentName xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							TestDocument
+						</DocumentName>
+						<FileName xmlns="urn:comfact:prosale:signing:2.0:protocol">dummy.pdf
+						</FileName>
+						<Size xmlns="urn:comfact:prosale:signing:2.0:protocol">13264</Size>
+						<MimeType xmlns="urn:comfact:prosale:signing:2.0:protocol">application/pdf
+						</MimeType>
+					</DocumentInfo>
+					<InitiatorInfo partyId="111222" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+						<EmailAddress xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							test.testorsson@sundsvall.se
+						</EmailAddress>
+					</InitiatorInfo>
+					<InitiatorInfo xsi:type="SignatoryInfoType" partyId="23456" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+					</InitiatorInfo>
+				</Custom>
+			</SigningInstanceInfo>
+			<SigningInstanceInfo signingInstanceId="a73f7e6575bf44d6927f69441f67807f"
+								 language="en-US">
+				<Status>
+					<StatusCode>Expired</StatusCode>
+					<StatusMessage>The signing instance is expired.</StatusMessage>
+				</Status>
+				<ReferenceNumber>36262T1</ReferenceNumber>
+				<Created>2024-01-29T14:15:41.17+01:00</Created>
+				<Changed>2024-02-28T14:33:35.76+01:00</Changed>
+				<Expires>2024-02-28T14:15:41.17+01:00</Expires>
+				<Custom>
+					<AccountId>Sundsvall360</AccountId>
+					<UserId>SundIntTest</UserId>
+					<DocumentInfo documentId="111"
+								  xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<DocumentName xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							TestDocument
+						</DocumentName>
+						<FileName xmlns="urn:comfact:prosale:signing:2.0:protocol">dummy.pdf
+						</FileName>
+						<Size xmlns="urn:comfact:prosale:signing:2.0:protocol">13264</Size>
+						<MimeType xmlns="urn:comfact:prosale:signing:2.0:protocol">application/pdf
+						</MimeType>
+					</DocumentInfo>
+					<InitiatorInfo partyId="111222" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+						<EmailAddress xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							test.testorsson@sundsvall.se
+						</EmailAddress>
+					</InitiatorInfo>
+					<InitiatorInfo xsi:type="SignatoryInfoType" partyId="23456" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+					</InitiatorInfo>
+				</Custom>
+			</SigningInstanceInfo>
+			<SigningInstanceInfo signingInstanceId="6394658efc2341e9acf4156e90af0153"
+								 language="en-US">
+				<Status>
+					<StatusCode>Completed</StatusCode>
+					<StatusMessage>The signing instance is completed.</StatusMessage>
+				</Status>
+				<ReferenceNumber>36263T1</ReferenceNumber>
+				<Created>2024-01-29T15:17:03.38+01:00</Created>
+				<Changed>2024-01-29T15:28:40.89+01:00</Changed>
+				<Expires>2024-02-28T15:17:03.38+01:00</Expires>
+				<Custom>
+					<AccountId>Sundsvall360</AccountId>
+					<UserId>SundIntTest</UserId>
+					<DocumentInfo documentId="111"
+								  xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<DocumentName xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							TestDocument
+						</DocumentName>
+						<FileName xmlns="urn:comfact:prosale:signing:2.0:protocol">dummy.pdf
+						</FileName>
+						<Size xmlns="urn:comfact:prosale:signing:2.0:protocol">13264</Size>
+						<MimeType xmlns="urn:comfact:prosale:signing:2.0:protocol">application/pdf
+						</MimeType>
+					</DocumentInfo>
+					<InitiatorInfo partyId="111222" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+						<EmailAddress xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							test.testorsson@sundsvall.se
+						</EmailAddress>
+					</InitiatorInfo>
+					<InitiatorInfo xsi:type="SignatoryInfoType" partyId="23456" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+						<SignatoryAction action="Approved" timestamp="2024-01-29T15:27:43.673+01:00"
+										 identificationTokenIdRef=""
+										 xmlns="urn:comfact:prosale:signing:2.0:protocol"/>
+					</InitiatorInfo>
+				</Custom>
+			</SigningInstanceInfo>
+			<SigningInstanceInfo signingInstanceId="cbeb4d29aa314dd09c4344a76d1fdec2"
+								 language="en-US">
+				<Status>
+					<StatusCode>Completed</StatusCode>
+					<StatusMessage>The signing instance is completed.</StatusMessage>
+				</Status>
+				<ReferenceNumber>36269T1</ReferenceNumber>
+				<Created>2024-01-30T10:41:40.77+01:00</Created>
+				<Changed>2024-01-30T10:45:09.74+01:00</Changed>
+				<Expires>2024-02-29T10:41:40.77+01:00</Expires>
+				<Custom>
+					<AccountId>Sundsvall360</AccountId>
+					<UserId>SundIntTest</UserId>
+					<DocumentInfo documentId="111"
+								  xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<DocumentName xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							TestDocument
+						</DocumentName>
+						<FileName xmlns="urn:comfact:prosale:signing:2.0:protocol">dummy.pdf
+						</FileName>
+						<Size xmlns="urn:comfact:prosale:signing:2.0:protocol">13264</Size>
+						<MimeType xmlns="urn:comfact:prosale:signing:2.0:protocol">application/pdf
+						</MimeType>
+					</DocumentInfo>
+					<InitiatorInfo partyId="111222" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+						<EmailAddress xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							test.testorsson@sundsvall.se
+						</EmailAddress>
+					</InitiatorInfo>
+					<InitiatorInfo xsi:type="SignatoryInfoType" partyId="23456" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+						<SignatoryAction action="Approved" timestamp="2024-01-30T10:43:47.15+01:00"
+										 identificationTokenIdRef=""
+										 xmlns="urn:comfact:prosale:signing:2.0:protocol"/>
+					</InitiatorInfo>
+					<InitiatorInfo xsi:type="SignatoryInfoType" partyId="34567" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Kalle Anka</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+						<SignatoryAction action="Approved" timestamp="2024-01-30T10:45:07.63+01:00"
+										 identificationTokenIdRef=""
+										 xmlns="urn:comfact:prosale:signing:2.0:protocol"/>
+					</InitiatorInfo>
+				</Custom>
+			</SigningInstanceInfo>
+			<SigningInstanceInfo signingInstanceId="6ec3c3b47921446083f569977d4a8a57"
+								 language="en-US">
+				<Status>
+					<StatusCode>Completed</StatusCode>
+					<StatusMessage>The signing instance is completed.</StatusMessage>
+				</Status>
+				<ReferenceNumber>36270T1</ReferenceNumber>
+				<Created>2024-01-30T10:53:42.12+01:00</Created>
+				<Changed>2024-01-30T10:56:11.487+01:00</Changed>
+				<Expires>2024-02-29T10:53:42.12+01:00</Expires>
+				<Custom>
+					<AccountId>Sundsvall360</AccountId>
+					<UserId>SundIntTest</UserId>
+					<DocumentInfo documentId="111"
+								  xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<DocumentName xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							TestDocument
+						</DocumentName>
+						<FileName xmlns="urn:comfact:prosale:signing:2.0:protocol">dummy.pdf
+						</FileName>
+						<Size xmlns="urn:comfact:prosale:signing:2.0:protocol">13264</Size>
+						<MimeType xmlns="urn:comfact:prosale:signing:2.0:protocol">application/pdf
+						</MimeType>
+					</DocumentInfo>
+					<InitiatorInfo partyId="111222" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+						<EmailAddress xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							test.testorsson@sundsvall.se
+						</EmailAddress>
+					</InitiatorInfo>
+					<InitiatorInfo xsi:type="SignatoryInfoType" partyId="23456" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Test Testorsson
+						</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+						<SignatoryAction action="Approved" timestamp="2024-01-30T10:55:22.077+01:00"
+										 identificationTokenIdRef=""
+										 xmlns="urn:comfact:prosale:signing:2.0:protocol"/>
+					</InitiatorInfo>
+					<InitiatorInfo xsi:type="SignatoryInfoType" partyId="34567" language="sv-SE"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">Kalle Anka</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">Test</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvalls
+							kommun
+						</Organization>
+						<SignatoryAction action="Approved" timestamp="2024-01-30T10:56:09.55+01:00"
+										 identificationTokenIdRef=""
+										 xmlns="urn:comfact:prosale:signing:2.0:protocol"/>
+					</InitiatorInfo>
+				</Custom>
+			</SigningInstanceInfo>
+			<SigningInstanceInfo signingInstanceId="00ae68bd7c0f42a194e2de45b9c55514"
+								 language="en-US">
+				<Status>
+					<StatusCode>Withdrawn</StatusCode>
+					<StatusMessage>The signing instance is withdrawn.</StatusMessage>
+				</Status>
+				<ReferenceNumber>36750T1</ReferenceNumber>
+				<CustomerReferenceNumber>1234567890</CustomerReferenceNumber>
+				<Created>2024-03-14T15:12:13.85+01:00</Created>
+				<Changed>2024-03-14T15:14:04.79+01:00</Changed>
+				<Expires>2024-04-13T16:12:13.85+02:00</Expires>
+				<Custom>
+					<AccountId>Sundsvall360</AccountId>
+					<UserId>SundIntTest</UserId>
+					<DocumentInfo documentId="document1"
+								  xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<DocumentName xmlns="urn:comfact:prosale:signing:2.0:protocol">Business
+							Contract
+						</DocumentName>
+						<FileName xmlns="urn:comfact:prosale:signing:2.0:protocol">document.pdf
+						</FileName>
+						<Size xmlns="urn:comfact:prosale:signing:2.0:protocol">22479</Size>
+						<MimeType xmlns="urn:comfact:prosale:signing:2.0:protocol">application/pdf
+						</MimeType>
+					</DocumentInfo>
+					<InitiatorInfo partyId="550e8400-e29b-41d4-a716-446655440002" language="en-US"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">John Doe</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">CEO</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvall
+							Municipality
+						</Organization>
+						<EmailAddress xmlns="urn:comfact:prosale:signing:2.0:protocol">
+							john.doe@sundsvall.se
+						</EmailAddress>
+					</InitiatorInfo>
+					<InitiatorInfo xsi:type="SignatoryInfoType"
+								   partyId="550e8400-e29b-41d4-a716-446655440000" language="en-US"
+								   xmlns="urn:comfact:prosale:signing:client:2.0:protocol">
+						<Name xmlns="urn:comfact:prosale:signing:2.0:protocol">John Doe</Name>
+						<Title xmlns="urn:comfact:prosale:signing:2.0:protocol">CEO</Title>
+						<Organization xmlns="urn:comfact:prosale:signing:2.0:protocol">Sundsvall
+							Municipality
+						</Organization>
+					</InitiatorInfo>
+				</Custom>
+			</SigningInstanceInfo>
+		</GetSigningInstanceInfoResponse>
+	</soap:Body>
+</soap:Envelope>

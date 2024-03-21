@@ -66,6 +66,7 @@ class SigningInstanceTest {
 			.withSigningId(signingId)
 			.withSignedDocument(signedDocument)
 			.build();
+
 		// Assert
 		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(result.getExpires()).isEqualTo(expires);

@@ -13,6 +13,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.jose4j.base64url.Base64;
 import org.zalando.problem.Problem;
 
 import se.sundsvall.comfactfacade.api.model.Document;
@@ -239,8 +240,8 @@ public final class SigningMapper {
 			.withName(documentType.getDocumentName())
 			.withFileName(documentType.getFileName())
 			.withMimeType(documentType.getMimeType())
-			.withContent(new String(Optional.ofNullable(documentType.getContent())
-				.orElse(new byte[0]), StandardCharsets.UTF_8))
+			.withContent(Base64.encode(Optional.ofNullable(documentType.getContent())
+				.orElse(new byte[0])))
 			.build();
 	}
 

@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.within;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Base64;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -518,6 +519,8 @@ class SigningMapperTest {
 		assertThat(result.getName()).isEqualTo(documentName);
 		assertThat(result.getFileName()).isEqualTo(fileName);
 		assertThat(result.getMimeType()).isEqualTo(mimeType);
+		assertThat(result.getContent()).isNotNull();
+		assertThat(isValidBase64(result.getContent())).isTrue();
 	}
 
 	@Test
@@ -536,6 +539,15 @@ class SigningMapperTest {
 		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(result.getCode()).isEqualTo(statusCode);
 		assertThat(result.getMessage()).isEqualTo(statusMessage);
+	}
+
+	private boolean isValidBase64(final String s) {
+		try {
+			Base64.getDecoder().decode(s);
+			return true;
+		} catch (final IllegalArgumentException e) {
+			return false;
+		}
 	}
 
 }

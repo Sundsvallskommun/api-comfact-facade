@@ -6,10 +6,12 @@ import static se.sundsvall.comfactfacade.service.SigningMapper.toSigningResponse
 import static se.sundsvall.comfactfacade.service.SigningMapper.toUpdateSigningInstanceRequestType;
 import static se.sundsvall.comfactfacade.service.SigningMapper.toWithdrawSigningInstanceRequestType;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import se.sundsvall.comfactfacade.api.model.CreateSigningResponse;
 import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
@@ -36,10 +38,18 @@ public class SigningService {
 		return response.getSignatories().getFirst();
 	}
 
-	public String createSigningRequest(final SigningRequest signingRequest) {
+	public CreateSigningResponse createSigningRequest(final SigningRequest signingRequest) {
 		final var response = comfactIntegration.createSigningInstance(toCreateSigningInstanceRequestType(signingRequest));
-		return response.getSigningInstanceId();
+
+		final var urlMap = new HashMap<String, String>();
+		response.getSignatoryUrls().forEach(signatoryUrl -> urlMap.put(signatoryUrl.getPartyId(), signatoryUrl.getValue().trim()));
+
+		return CreateSigningResponse.builder()
+			.withSigningId(response.getSigningInstanceId())
+			.withSignatoryUrls(urlMap)
+			.build();
 	}
+
 
 	public void updateSigningRequest(final String signingId, final SigningRequest signingRequest) {
 		comfactIntegration.updateSigningInstance(toUpdateSigningInstanceRequestType(signingId, signingRequest));

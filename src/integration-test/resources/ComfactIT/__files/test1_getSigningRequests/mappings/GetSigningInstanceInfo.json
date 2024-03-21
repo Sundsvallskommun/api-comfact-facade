@@ -1,0 +1,15 @@
+{
+  "request": {
+    "url": "/comfact",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "contains": "GetSigningInstanceInfoRequest"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "test1_getSigningRequests/responses/GetSigningInstanceInfo.xml"
+  }
+}
