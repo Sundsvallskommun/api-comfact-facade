@@ -22,7 +22,7 @@ class ComfactIT extends AbstractAppTest {
 	void test1_getSigningRequests() {
 
 		setupCall()
-			.withServicePath("/signings?page=0&size=1&sort=Created,desc")
+			.withServicePath("/signings?page=0&size=8&sort=Created,desc")
 			.withHttpMethod(GET)
 			.withExpectedResponseStatus(OK)
 			.withExpectedResponse("response.json")
