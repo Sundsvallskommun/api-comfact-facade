@@ -2,6 +2,7 @@ package se.sundsvall.comfactfacade.api;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -23,7 +24,9 @@ import se.sundsvall.comfactfacade.api.model.Document;
 import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
+import se.sundsvall.comfactfacade.api.model.SigningsResponse;
 import se.sundsvall.comfactfacade.service.SigningService;
+import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
 
 
 @SpringBootTest(classes = Application.class, webEnvironment = RANDOM_PORT)
@@ -40,20 +43,25 @@ class SigningResourceTest {
 	void getSigningRequests() {
 
 		// Arrange
-		when(signingServiceMock.getSigningRequests()).thenReturn(List.of(new SigningInstance(), new SigningInstance()));
+		when(signingServiceMock.getSigningRequests(any()))
+			.thenReturn(SigningsResponse.builder()
+				.withSigningInstances(List.of(new SigningInstance(), new SigningInstance()))
+				.withPagingAndSortingMetaData(PagingAndSortingMetaData.create())
+				.build());
 
 		// Act
 		final var result = webTestClient.get()
 			.uri("/signings")
 			.exchange()
-			.expectStatus().isOk()
-			.expectBodyList(SigningInstance.class)
+			.expectStatus().isOk().expectBody(SigningsResponse.class)
 			.returnResult()
 			.getResponseBody();
 
 		// Assert
-		verify(signingServiceMock).getSigningRequests();
-		assertThat(result).hasSize(2);
+		verify(signingServiceMock).getSigningRequests(any());
+		assertThat(result).isNotNull();
+		assertThat(result.getSigningInstances()).hasSize(2);
+		assertThat(result.getPagingAndSortingMetaData()).isNotNull();
 
 	}
 

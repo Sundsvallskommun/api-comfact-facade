@@ -4,10 +4,9 @@ package se.sundsvall.comfactfacade.api;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 
-import java.util.List;
-
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +24,7 @@ import se.sundsvall.comfactfacade.api.model.CreateSigningResponse;
 import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
+import se.sundsvall.comfactfacade.api.model.SigningsResponse;
 import se.sundsvall.comfactfacade.service.SigningService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,8 +48,8 @@ public class SigningResource {
 	@GetMapping(produces = {APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE})
 	@Operation(summary = "Get all signing instances.")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
-	public ResponseEntity<List<SigningInstance>> getSigningRequests() {
-		return ResponseEntity.ok(signingService.getSigningRequests());
+	public ResponseEntity<SigningsResponse> getSigningRequests(final Pageable pageable) {
+		return ResponseEntity.ok(signingService.getSigningRequests(pageable));
 	}
 
 	@GetMapping(path = "{signingId}", produces = {APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE})

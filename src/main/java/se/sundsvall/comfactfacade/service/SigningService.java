@@ -3,23 +3,24 @@ package se.sundsvall.comfactfacade.service;
 import static se.sundsvall.comfactfacade.service.SigningMapper.toCreateSigningInstanceRequestType;
 import static se.sundsvall.comfactfacade.service.SigningMapper.toParty;
 import static se.sundsvall.comfactfacade.service.SigningMapper.toSigningResponse;
+import static se.sundsvall.comfactfacade.service.SigningMapper.toSigningsResponse;
 import static se.sundsvall.comfactfacade.service.SigningMapper.toUpdateSigningInstanceRequestType;
 import static se.sundsvall.comfactfacade.service.SigningMapper.toWithdrawSigningInstanceRequestType;
 
 import java.util.HashMap;
-import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import se.sundsvall.comfactfacade.api.model.CreateSigningResponse;
 import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
+import se.sundsvall.comfactfacade.api.model.SigningsResponse;
 import se.sundsvall.comfactfacade.integration.comfact.ComfactIntegration;
 
 import comfact.GetSignatoryRequest;
 import comfact.GetSignatoryResponse;
-import comfact.GetSigningInstanceInfoRequest;
 import comfact.GetSigningInstanceRequest;
 import comfact.Signatory;
 
@@ -64,9 +65,10 @@ public class SigningService {
 		return toSigningResponse(response);
 	}
 
-	public List<SigningInstance> getSigningRequests() {
-		final var response = comfactIntegration.getSigningInstanceInfo(new GetSigningInstanceInfoRequest());
-		return response.getSigningInstanceInfos().stream().map(SigningMapper::toSigningInstanceInfoType).toList();
+	public SigningsResponse getSigningRequests(final Pageable pageable) {
+
+		final var response = comfactIntegration.getSigningInstanceInfo(SigningMapper.toGetSigningInstanceInfoRequest(pageable));
+		return toSigningsResponse(response);
 	}
 
 	public Party getSignatory(final String signingId, final String partyId) {

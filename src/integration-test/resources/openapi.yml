@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "1.0"
 servers:
-  - url: http://localhost:59438
+  - url: http://localhost:58944
     description: Generated server url
 tags:
   - name: Signings
@@ -19,6 +19,12 @@ paths:
         - Signings
       summary: Get all signing instances.
       operationId: getSigningRequests
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
       responses:
         "500":
           description: Internal Server error
@@ -26,6 +32,15 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SigningsResponse'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/SigningsResponse'
         "400":
           description: Bad request
           content:
@@ -34,19 +49,6 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/SigningInstance'
-            application/problem+json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/SigningInstance'
     post:
       tags:
         - Signings
@@ -65,14 +67,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
         "200":
           description: Successful operation
           content:
@@ -82,6 +76,14 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/CreateSigningResponse'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
   /signings/{signingId}:
     get:
       tags:
@@ -95,14 +97,23 @@ paths:
           schema:
             type: string
       responses:
-        "404":
-          description: Not found
+        "500":
+          description: Internal Server error
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
-        "500":
-          description: Internal Server error
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SigningInstance'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/SigningInstance'
+        "404":
+          description: Not found
           content:
             application/problem+json:
               schema:
@@ -115,15 +126,6 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SigningInstance'
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/SigningInstance'
     delete:
       tags:
         - Signings
@@ -136,18 +138,20 @@ paths:
           schema:
             type: string
       responses:
-        "404":
-          description: Not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "500":
           description: Internal Server error
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "204":
+          description: Successful operation
         "400":
           description: Bad request
           content:
@@ -156,8 +160,6 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "204":
-          description: Successful operation
     patch:
       tags:
         - Signings
@@ -176,18 +178,20 @@ paths:
               $ref: '#/components/schemas/SigningRequest'
         required: true
       responses:
-        "404":
-          description: Not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "500":
           description: Internal Server error
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "204":
+          description: Successful operation
         "400":
           description: Bad request
           content:
@@ -196,8 +200,6 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "204":
-          description: Successful operation
   /signings/{signingId}/signatory/{partyId}:
     get:
       tags:
@@ -216,14 +218,23 @@ paths:
           schema:
             type: string
       responses:
-        "404":
-          description: Not found
+        "500":
+          description: Internal Server error
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
-        "500":
-          description: Internal Server error
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Party'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Party'
+        "404":
+          description: Not found
           content:
             application/problem+json:
               schema:
@@ -236,15 +247,6 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Party'
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Party'
   /api-docs:
     get:
       tags:
@@ -624,6 +626,73 @@ components:
           type: object
           additionalProperties:
             type: string
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+    Direction:
+      type: string
+      description: The sort order direction
+      example: ASC
+      enum:
+        - ASC
+        - DESC
+    PagingAndSortingMetaData:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: Current page
+          format: int32
+          readOnly: true
+          example: 5
+        limit:
+          type: integer
+          description: Displayed objects per page
+          format: int32
+          readOnly: true
+          example: 20
+        count:
+          type: integer
+          description: Displayed objects on current page
+          format: int32
+          readOnly: true
+          example: 13
+        totalRecords:
+          type: integer
+          description: Total amount of hits based on provided search parameters
+          format: int64
+          readOnly: true
+          example: 98
+        totalPages:
+          type: integer
+          description: Total amount of pages based on provided search parameters
+          format: int32
+          readOnly: true
+          example: 23
+        sortBy:
+          type: array
+          readOnly: true
+          items:
+            type: string
+            description: The properties to sort by
+            readOnly: true
+            example: property
+        sortDirection:
+          $ref: '#/components/schemas/Direction'
+      description: PagingAndSortingMetaData model
+      readOnly: true
     SigningInstance:
       type: object
       properties:
@@ -679,6 +748,17 @@ components:
           description: The signing instance id.
           example: "1234567890"
       description: The signing instance.
+    SigningsResponse:
+      type: object
+      properties:
+        signingInstances:
+          type: array
+          description: The signing instances.
+          items:
+            $ref: '#/components/schemas/SigningInstance'
+        _meta:
+          $ref: '#/components/schemas/PagingAndSortingMetaData'
+      description: Signing response.
     Status:
       type: object
       properties:

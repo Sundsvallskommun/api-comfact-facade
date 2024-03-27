@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ppp="urn:comfact:prosale:pagination:1.0:protocol"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   targetNamespace="urn:comfact:prosale:pagination:1.0:protocol" version="1.0">
+	<xs:annotation>
+		<xs:documentation>ProSale Pagination Protocol Copyright (c) Comfact AB, Sweden ALL RIGHTS
+			RESERVED
+		</xs:documentation>
+	</xs:annotation>
+	<xs:element name="Paginator" type="ppp:PaginatorType"/>
+	<xs:element name="Page" type="xs:int"/>
+	<xs:element name="PageSize" type="xs:int"/>
+	<xs:element name="TotalItems" type="xs:int"/>
+	<xs:element name="OrderByProperty" type="xs:string"/>
+	<xs:element name="OrderByDescending" type="xs:boolean"/>
+	<xs:complexType name="PaginatorType">
+		<xs:sequence>
+			<xs:element ref="ppp:Page" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="ppp:PageSize" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="ppp:TotalItems" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="ppp:OrderByProperty" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="ppp:OrderByDescending" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

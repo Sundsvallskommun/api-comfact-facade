@@ -9,6 +9,15 @@
 				<ResultMessage>The requested service operation was successfully completed.
 				</ResultMessage>
 			</Result>
+			<Custom>
+				<Paginator xmlns="urn:comfact:prosale:pagination:1.0:protocol">
+					<Page>0</Page>
+					<PageSize>8</PageSize>
+					<TotalItems>9</TotalItems>
+					<OrderByProperty>Created</OrderByProperty>
+					<OrderByDescending>true</OrderByDescending>
+				</Paginator>
+			</Custom>
 			<SigningInstanceInfo signingInstanceId="1e4d6a9667eb4e7bba0cd6189f70317a"
 								 language="en-US">
 				<Status>
