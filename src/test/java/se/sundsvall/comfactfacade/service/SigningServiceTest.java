@@ -14,6 +14,8 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.integration.comfact.ComfactIntegration;
@@ -29,6 +31,9 @@ import comfact.WithdrawSigningInstanceRequest;
 
 @ExtendWith(MockitoExtension.class)
 class SigningServiceTest {
+
+	@Mock
+	private Pageable pageable;
 
 	@Mock
 	private ComfactIntegration comfactIntegration;
@@ -53,7 +58,6 @@ class SigningServiceTest {
 
 	@Captor
 	private ArgumentCaptor<GetSignatoryRequest> getSignatoryRequestCaptor;
-
 
 	@Test
 	void createSigningRequest() {
@@ -137,17 +141,22 @@ class SigningServiceTest {
 				new comfact.SigningInstanceInfo().withSigningInstanceId("123").withStatus(new comfact.Status().withStatusCode("OK")),
 				new comfact.SigningInstanceInfo().withSigningInstanceId("456").withStatus(new comfact.Status().withStatusCode("OK")));
 
-		when(comfactIntegration.getSigningInstanceInfo(any(GetSigningInstanceInfoRequest.class))).thenReturn(response);
-
+		when(comfactIntegration.getSigningInstanceInfo(any())).thenReturn(response);
+		when(pageable.getPageNumber()).thenReturn(0);
+		when(pageable.getPageSize()).thenReturn(2);
+		when(pageable.getSort()).thenReturn(Sort.by(Sort.Order.asc("Created")));
 		// Act
-		final var result = signingService.getSigningRequests();
+		final var result = signingService.getSigningRequests(pageable);
 
 		// Assert
-		assertThat(result).isNotNull().hasSize(2);
-		assertThat(result.getFirst().getSigningId()).isEqualTo("123");
-		assertThat(result.getLast().getSigningId()).isEqualTo("456");
+		assertThat(result).isNotNull();
+		assertThat(result.getSigningInstances()).hasSize(2);
+		assertThat(result.getSigningInstances().getFirst().getSigningId()).isEqualTo("123");
+		assertThat(result.getSigningInstances().getLast().getSigningId()).isEqualTo("456");
+
 		verify(comfactIntegration).getSigningInstanceInfo(getSigningInstanceInfoRequestCaptor.capture());
 		assertThat(getSigningInstanceInfoRequestCaptor.getValue()).isNotNull();
+		assertThat(getSigningInstanceInfoRequestCaptor.getValue().getCustom().getAnies()).hasSize(1);
 	}
 
 	@Test

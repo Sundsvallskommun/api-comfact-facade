@@ -1,6 +1,7 @@
 package se.sundsvall.comfactfacade.service;
 
 import static java.util.Collections.emptyList;
+import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -12,8 +13,17 @@ import java.util.Optional;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
 
 import org.jose4j.base64url.Base64;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.w3c.dom.Element;
 import org.zalando.problem.Problem;
 
 import se.sundsvall.comfactfacade.api.model.Document;
@@ -23,12 +33,18 @@ import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.Reminder;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
+import se.sundsvall.comfactfacade.api.model.SigningsResponse;
 import se.sundsvall.comfactfacade.api.model.Status;
+import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
 
 import comfact.CreateSigningInstanceRequest;
+import comfact.Custom;
 import comfact.DocumentType;
+import comfact.GetSigningInstanceInfoRequest;
+import comfact.GetSigningInstanceInfoResponse;
 import comfact.GetSigningInstanceResponse;
 import comfact.MessageType;
+import comfact.Paginator;
 import comfact.PartyType;
 import comfact.SignatoryReminder;
 import comfact.SigningInstanceInfo;
@@ -221,7 +237,7 @@ public final class SigningMapper {
 		try {
 			return DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
 		} catch (final DatatypeConfigurationException e) {
-			throw Problem.valueOf(org.zalando.problem.Status.INTERNAL_SERVER_ERROR, "Failed to convert OffsetDateTime to XMLGregorianCalendar");
+			throw Problem.valueOf(INTERNAL_SERVER_ERROR, "Failed to convert OffsetDateTime to XMLGregorianCalendar");
 		}
 	}
 
@@ -252,5 +268,99 @@ public final class SigningMapper {
 			.build();
 	}
 
+	static GetSigningInstanceInfoRequest toGetSigningInstanceInfoRequest(final Pageable pageable) {
+
+		final var paginator = toPaginator(pageable);
+		final var document = toDocument(paginator);
+
+		return new GetSigningInstanceInfoRequest()
+			.withCustom(new Custom()
+				.withAnies(document));
+	}
+
+
+	static Element toDocument(final Paginator paginator) {
+		try {
+			final var document = DocumentBuilderFactory
+				.newInstance()
+				.newDocumentBuilder()
+				.newDocument();
+
+			JAXBContext.newInstance(Paginator.class.getPackage().getName())
+				.createMarshaller()
+				.marshal(paginator, document);
+			return document.getDocumentElement();
+		} catch (final ParserConfigurationException | JAXBException e) {
+			throw Problem.valueOf(INTERNAL_SERVER_ERROR, "Failed to create document element");
+		}
+	}
+
+	private static Paginator toPaginator(final Pageable pageable) {
+		// Parse the first sort order as the API only supports one sort order
+		final var firstSortOrder = pageable.getSort().stream()
+			.findFirst()
+			.orElseThrow(() -> Problem.valueOf(org.zalando.problem.Status.BAD_REQUEST, "Sort order is required"));
+
+		return new Paginator()
+			.withPage(pageable.getPageNumber())
+			.withPageSize(pageable.getPageSize())
+			.withOrderByDescending(firstSortOrder.isDescending())
+			.withOrderByProperty(firstSortOrder.getProperty());
+
+	}
+
+	static SigningsResponse toSigningsResponse(final GetSigningInstanceInfoResponse request) {
+		return SigningsResponse.builder()
+			.withSigningInstances(request.getSigningInstanceInfos().stream().map(SigningMapper::toSigningInstanceInfoType).toList())
+			.withPagingAndSortingMetaData(toPagingAndSortingMetaData(request.getCustom(), request.getSigningInstanceInfos().size()))
+			.build();
+	}
+
+	private static PagingAndSortingMetaData toPagingAndSortingMetaData(final Custom custom, final int size) {
+
+		return Optional.ofNullable(toPaginator(custom))
+			.map(paginator -> new PagingAndSortingMetaData()
+				.withPage(paginator.getPage())
+				.withCount(size)
+				.withLimit(paginator.getPageSize())
+				.withTotalRecords(Optional.ofNullable(paginator.getTotalItems()).orElse(0))
+				.withTotalPages(calculateTotalPages(paginator))
+				.withSortBy(List.of(paginator.getOrderByProperty()))
+				.withSortDirection(paginator.isOrderByDescending() ? Sort.Direction.DESC : Sort.Direction.ASC))
+			.orElse(null);
+
+	}
+
+	private static Paginator toPaginator(final Custom custom) {
+
+		if (custom == null) {
+			return null;
+		}
+
+		for (final var item : Optional.ofNullable(custom.getAnies()).orElse(emptyList())) {
+			final var jaxbElement = SigningMapper.getJaxbElement(item);
+			if (jaxbElement == null) {
+				continue;
+			}
+			return jaxbElement.getValue();
+		}
+		return null;
+	}
+
+	private static JAXBElement<Paginator> getJaxbElement(final Element element) {
+		try {
+			return JAXBContext.newInstance(Paginator.class.getPackage().getName())
+				.createUnmarshaller()
+				.unmarshal(element, Paginator.class);
+		} catch (final Exception e) {
+			return null;
+		}
+	}
+
+	private static int calculateTotalPages(final Paginator paginator) {
+		return Optional.ofNullable(paginator.getTotalItems())
+			.map(totalItems -> (int) Math.ceil((double) totalItems / paginator.getPageSize()))
+			.orElse(0);
+	}
 
 }

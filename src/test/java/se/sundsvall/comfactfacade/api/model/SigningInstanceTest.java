@@ -74,12 +74,12 @@ class SigningInstanceTest {
 		assertThat(result.getExpires()).isEqualTo(expires);
 		assertThat(result.getCustomerReference()).isEqualTo(customerReference);
 		assertThat(result.getStatus()).isEqualTo(status);
-		assertThat(result.getSignatories()).isEqualTo(signatories);
-		assertThat(result.getInitiator()).isEqualTo(initiator);
-		assertThat(result.getNotificationMessages()).isEqualTo(notificationMessage);
-		assertThat(result.getAdditionalParties()).isEqualTo(additionalParties);
-		assertThat(result.getDocument()).isEqualTo(document);
-		assertThat(result.getAdditionalDocuments()).isEqualTo(additionalDocuments);
+		assertThat(result.getSignatories()).isSameAs(signatories);
+		assertThat(result.getInitiator()).isSameAs(initiator);
+		assertThat(result.getNotificationMessages()).isSameAs(notificationMessage);
+		assertThat(result.getAdditionalParties()).isSameAs(additionalParties);
+		assertThat(result.getDocument()).isSameAs(document);
+		assertThat(result.getAdditionalDocuments()).isSameAs(additionalDocuments);
 		assertThat(result.getCreated()).isEqualTo(created);
 		assertThat(result.getChanged()).isEqualTo(changed);
 		assertThat(result.getSigningId()).isEqualTo(signingId);

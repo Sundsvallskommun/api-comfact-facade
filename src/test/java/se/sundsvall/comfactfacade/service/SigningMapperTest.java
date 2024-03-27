@@ -13,8 +13,12 @@ import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import se.sundsvall.comfactfacade.api.model.Document;
 import se.sundsvall.comfactfacade.api.model.Identification;
@@ -23,9 +27,11 @@ import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.Reminder;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 
+import comfact.Custom;
 import comfact.DocumentType;
 import comfact.GetSigningInstanceResponse;
 import comfact.MessageType;
+import comfact.Paginator;
 import comfact.PartyType;
 import comfact.Signatory;
 import comfact.SigningInstance;
@@ -539,6 +545,117 @@ class SigningMapperTest {
 		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(result.getCode()).isEqualTo(statusCode);
 		assertThat(result.getMessage()).isEqualTo(statusMessage);
+	}
+
+	@Test
+	void toGetSigningInstanceInfoRequest() {
+		// Arrange
+		final var pageable = PageRequest.of(0, 10).withSort(Sort.by(Sort.Order.desc("Created")));
+
+		// Act
+		final var result = SigningMapper.toGetSigningInstanceInfoRequest(pageable);
+
+		// Assert
+		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("credentials", "requestingSource", "requestId");
+		assertThat(result.getCustom()).isNotNull();
+		assertThat(result.getCustom().getAnies()).hasSize(1);
+
+	}
+
+	@Test
+	void toSigningsResponse() {
+		// Arrang
+		final var page = 0;
+		final var pageSize = 10;
+		final var totalItems = 20;
+		final var orderByProperty = "Created";
+		final var orderByDescending = true;
+
+		final var totalPages = totalItems / pageSize;
+		final var singingId = "123";
+
+		final var paginator = new Paginator()
+			.withPage(page)
+			.withPageSize(pageSize)
+			.withOrderByDescending(orderByDescending)
+			.withTotalItems(totalItems)
+			.withOrderByProperty(orderByProperty);
+
+		final var doc = SigningMapper.toDocument(paginator);
+		final var custom = new Custom().withAnies(doc);
+
+		final var signingInstanceInfo = new SigningInstanceInfo()
+			.withSigningInstanceId(singingId)
+			.withStatus(new comfact.Status().withStatusCode("OK"));
+
+		final var response = new comfact.GetSigningInstanceInfoResponse()
+			.withSigningInstanceInfos(signingInstanceInfo)
+			.withCustom(custom);
+
+		// Act
+		final var result = SigningMapper.toSigningsResponse(response);
+
+		// Assert
+		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(result.getSigningInstances()).hasSize(1);
+		assertThat(result.getSigningInstances().getFirst().getSigningId()).isEqualTo(singingId);
+
+		assertThat(result.getPagingAndSortingMetaData().getPage()).isEqualTo(page);
+		assertThat(result.getPagingAndSortingMetaData().getCount()).isEqualTo(1);
+		assertThat(result.getPagingAndSortingMetaData().getLimit()).isEqualTo(pageSize);
+		assertThat(result.getPagingAndSortingMetaData().getTotalRecords()).isEqualTo(totalItems);
+		assertThat(result.getPagingAndSortingMetaData().getTotalPages()).isEqualTo(totalPages);
+	}
+
+
+	@Test
+	void toSigningsResponse_noPaging() {
+		// Arrange
+		final var singingId = "123";
+		final var signingInstanceInfo = new SigningInstanceInfo()
+			.withSigningInstanceId(singingId)
+			.withStatus(new comfact.Status().withStatusCode("OK"));
+
+		final var response = new comfact.GetSigningInstanceInfoResponse()
+			.withSigningInstanceInfos(signingInstanceInfo);
+
+		// Act
+		final var result = SigningMapper.toSigningsResponse(response);
+
+		// Assert
+		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("pagingAndSortingMetaData");
+		assertThat(result.getSigningInstances()).hasSize(1);
+		assertThat(result.getSigningInstances().getFirst().getSigningId()).isEqualTo(singingId);
+		assertThat(result.getPagingAndSortingMetaData()).isNull();
+	}
+
+	@Test
+	void toSigningsResponse_missingCustom() throws ParserConfigurationException {
+		// Arrange
+		final var document = DocumentBuilderFactory
+			.newInstance()
+			.newDocumentBuilder()
+			.newDocument();
+
+		// Arrange
+		final var singingId = "123";
+		final var signingInstanceInfo = new SigningInstanceInfo()
+			.withSigningInstanceId(singingId)
+			.withStatus(new comfact.Status().withStatusCode("OK"));
+
+		final var response = new comfact.GetSigningInstanceInfoResponse()
+			.withSigningInstanceInfos(signingInstanceInfo)
+			.withCustom(new Custom().withAnies(document.getDocumentElement()));
+
+		// Act
+		final var result = SigningMapper.toSigningsResponse(response);
+
+		// Assert
+		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("pagingAndSortingMetaData");
+		assertThat(result.getSigningInstances()).hasSize(1);
+		assertThat(result.getSigningInstances().getFirst().getSigningId()).isEqualTo(singingId);
+		assertThat(result.getPagingAndSortingMetaData()).isNull();
+
 	}
 
 	private boolean isValidBase64(final String s) {
