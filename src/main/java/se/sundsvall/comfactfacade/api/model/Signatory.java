@@ -23,7 +23,7 @@ public class Signatory extends Party {
 
 
 	@NotEmpty
-	@ArraySchema(schema = @Schema(implementation = Identification.class, description = "The means of identification to use to identify the signatories."))
+	@ArraySchema(schema = @Schema(implementation = Identification.class))
 	private List<Identification> identifications;
 
 	@Override
