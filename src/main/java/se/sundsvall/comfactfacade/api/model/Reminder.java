@@ -3,6 +3,8 @@ package se.sundsvall.comfactfacade.api.model;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
+import jakarta.validation.constraints.NotNull;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,9 +23,11 @@ public class Reminder {
 	@Schema(description = "The message of the reminder")
 	private NotificationMessage message;
 
+	@NotNull
 	@Schema(description = "If the reminder is enabled", example = "true")
 	private boolean enabled;
 
+	@NotNull
 	@Schema(description = "The interval in hours between each reminder", example = "24")
 	private int intervalInHours;
 

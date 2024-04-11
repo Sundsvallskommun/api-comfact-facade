@@ -28,7 +28,7 @@ public interface ComfactClient {
 	 * Create a signing instance
 	 *
 	 * @param createSigningInstance the request to create a signing instance
-	 * return {@link CreateSigningInstanceResponse} containing the signing instance id and URL for each signatory to start their
+	 * return {@link CreateSigningInstanceResponse} containing the signing instance id and URL for each signatories to start their
 	 * signing flow
 	 */
 	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {"SOAPAction=CreateSigningInstance"})
@@ -73,10 +73,10 @@ public interface ComfactClient {
 
 
 	/**
-	 * Get information about a signatory
+	 * Get information about a signatories
 	 *
-	 * @param getSignatoryRequest the request to get signatory
-	 * @return {@link GetSignatoryResponse} containing the signatory information
+	 * @param getSignatoryRequest the request to get signatories
+	 * @return {@link GetSignatoryResponse} containing the signatories information
 	 */
 	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {"SOAPAction=GetSignatory"})
 	GetSignatoryResponse getSignatory(GetSignatoryRequest getSignatoryRequest);

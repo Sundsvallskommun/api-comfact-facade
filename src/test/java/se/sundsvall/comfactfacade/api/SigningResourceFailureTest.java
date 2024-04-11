@@ -8,6 +8,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +22,9 @@ import org.zalando.problem.violations.ConstraintViolationProblem;
 
 import se.sundsvall.comfactfacade.Application;
 import se.sundsvall.comfactfacade.api.model.Document;
+import se.sundsvall.comfactfacade.api.model.Identification;
 import se.sundsvall.comfactfacade.api.model.Party;
+import se.sundsvall.comfactfacade.api.model.Signatory;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.service.SigningService;
 
@@ -63,11 +67,13 @@ class SigningResourceFailureTest {
 
 		// Arrange
 		final var signingRequest = SigningRequest.builder()
-			.withSignatory(Party.builder()
-				.build())
+			.withSignatories(List.of(Signatory.builder()
+				.withEmail("someEmail")
+				.withIdentifications(List.of(Identification.builder().withAlias("SvensktEId").build()))
+				.build()))
 			.withDocument(Document.builder()
 				.withFileName("someFileName")
-				.withMimeType("someMimeType")
+				.withMimeType("application/pdf")
 				.withContent("someContent")
 				.build())
 			.build();
@@ -101,11 +107,12 @@ class SigningResourceFailureTest {
 
 		// Arrange
 		final var signingRequest = SigningRequest.builder()
-			.withInitiator(Party.builder()
+			.withInitiator(Signatory.builder()
+				.withEmail("someEmail")
 				.build())
 			.withDocument(Document.builder()
 				.withFileName("someFileName")
-				.withMimeType("someMimeType")
+				.withMimeType("application/pdf")
 				.withContent("someContent")
 				.build())
 			.build();
@@ -126,8 +133,8 @@ class SigningResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getViolations()).satisfies(violations -> {
 			assertThat(violations).hasSize(1);
-			assertThat(violations.getFirst().getField()).isEqualTo("signatory");
-			assertThat(violations.getFirst().getMessage()).isEqualTo("must not be null");
+			assertThat(violations.getFirst().getField()).isEqualTo("signatories");
+			assertThat(violations.getFirst().getMessage()).isEqualTo("must not be empty");
 		});
 
 		verifyNoInteractions(signingServiceMock);
@@ -138,9 +145,12 @@ class SigningResourceFailureTest {
 
 		// Arrange
 		final var signingRequest = SigningRequest.builder()
-			.withSignatory(Party.builder()
-				.build())
+			.withSignatories(List.of(Signatory.builder()
+				.withEmail("someEmail")
+				.withIdentifications(List.of(Identification.builder().withAlias("SvensktEId").build()))
+				.build()))
 			.withInitiator(Party.builder()
+				.withEmail("someEmail")
 				.build())
 			.build();
 
@@ -169,60 +179,22 @@ class SigningResourceFailureTest {
 
 
 	@Test
-	void createSigningRequest_withFaultyPersonalNumber() {
-
-		// Arrange
-		// Arrange
-		final var signingRequest = SigningRequest.builder()
-			.withSignatory(Party.builder()
-				.withPersonalNumber("not a valid personal number")
-				.build())
-			.withInitiator(Party.builder()
-				.withPersonalNumber("not a valid personal number")
-				.build())
-			.withDocument(Document.builder()
-				.withFileName("someFileName")
-				.withMimeType("someMimeType")
-				.withContent("someContent")
-				.build())
-			.build();
-		// Act
-		final var response = webTestClient.post()
-			.uri("/signings")
-			.contentType(APPLICATION_JSON)
-			.bodyValue(signingRequest)
-			.exchange()
-			.expectStatus().isBadRequest()
-			.expectHeader().contentType(APPLICATION_PROBLEM_JSON)
-			.expectBody(ConstraintViolationProblem.class)
-			.returnResult()
-			.getResponseBody();
-
-		// Assert
-		assertThat(response).isNotNull();
-		assertThat(response.getViolations()).satisfies(violations -> {
-			assertThat(violations).hasSize(2);
-			assertThat(violations).extracting("field").containsExactlyInAnyOrder("signatory.personalNumber", "initiator.personalNumber");
-			assertThat(violations).extracting("message").allMatch(message -> message.equals("must match the regular expression ^(19|20)[0-9]{10}$"));
-		});
-
-		verifyNoInteractions(signingServiceMock);
-	}
-
-	@Test
 	void createSigningRequest_withFaultyPartyId() {
 
 		// Arrange
 		final var signingRequest = SigningRequest.builder()
-			.withSignatory(Party.builder()
+			.withSignatories(List.of(Signatory.builder()
+				.withEmail("someEmail")
+				.withIdentifications(List.of(Identification.builder().withAlias("SvensktEId").build()))
 				.withPartyId("not a valid UUID")
-				.build())
+				.build()))
 			.withInitiator(Party.builder()
+				.withEmail("someEmail")
 				.withPartyId("not a valid UUID")
 				.build())
 			.withDocument(Document.builder()
 				.withFileName("someFileName")
-				.withMimeType("someMimeType")
+				.withMimeType("application/pdf")
 				.withContent("someContent")
 				.build())
 			.build();
@@ -243,7 +215,7 @@ class SigningResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getViolations()).satisfies(violations -> {
 			assertThat(violations).hasSize(2);
-			assertThat(violations).extracting("field").containsExactlyInAnyOrder("signatory.partyId", "initiator.partyId");
+			assertThat(violations).extracting("field").containsExactlyInAnyOrder("signatories[0].partyId", "initiator.partyId");
 			assertThat(violations).extracting("message").allMatch(message -> message.equals("not a valid UUID"));
 		});
 
@@ -255,15 +227,18 @@ class SigningResourceFailureTest {
 
 		// Arrange
 		final var signingRequest = SigningRequest.builder()
-			.withSignatory(Party.builder()
+			.withSignatories(List.of(Signatory.builder()
+				.withEmail("someEmail")
+				.withIdentifications(List.of(Identification.builder().withAlias("SvensktEId").build()))
 				.withPhoneNumber("not a valid phone number")
-				.build())
+				.build()))
 			.withInitiator(Party.builder()
+				.withEmail("someEmail")
 				.withPhoneNumber("not a valid phone number")
 				.build())
 			.withDocument(Document.builder()
 				.withFileName("someFileName")
-				.withMimeType("someMimeType")
+				.withMimeType("application/pdf")
 				.withContent("someContent")
 				.build())
 			.build();
@@ -284,7 +259,7 @@ class SigningResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getViolations()).satisfies(violations -> {
 			assertThat(violations).hasSize(2);
-			assertThat(violations).extracting("field").containsExactlyInAnyOrder("signatory.phoneNumber", "initiator.phoneNumber");
+			assertThat(violations).extracting("field").containsExactlyInAnyOrder("signatories[0].phoneNumber", "initiator.phoneNumber");
 			assertThat(violations).extracting("message").allMatch(message -> message.equals("must match the regular expression ^07[02369]\\d{7}$"));
 		});
 
@@ -296,9 +271,12 @@ class SigningResourceFailureTest {
 
 		// Arrange
 		final var signingRequest = SigningRequest.builder()
-			.withSignatory(Party.builder()
-				.build())
+			.withSignatories(List.of(Signatory.builder()
+				.withEmail("someEmail")
+				.withIdentifications(List.of(Identification.builder().withAlias("SvensktEId").build()))
+				.build()))
 			.withInitiator(Party.builder()
+				.withEmail("someEmail")
 				.build())
 			.withDocument(Document.builder()
 				.build())
@@ -321,7 +299,7 @@ class SigningResourceFailureTest {
 		assertThat(response.getViolations()).satisfies(violations -> {
 			assertThat(violations).hasSize(3);
 			assertThat(violations).extracting("field").containsExactlyInAnyOrder("document.fileName", "document.content", "document.mimeType");
-			assertThat(violations).extracting("message").allMatch(message -> message.equals("must not be blank"));
+			assertThat(violations).extracting("message").containsExactlyInAnyOrder("not a valid BASE64-encoded string", "must not be blank", "must be one of: [application/pdf]");
 		});
 
 		verifyNoInteractions(signingServiceMock);

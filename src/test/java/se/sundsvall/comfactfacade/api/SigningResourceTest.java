@@ -21,7 +21,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import se.sundsvall.comfactfacade.Application;
 import se.sundsvall.comfactfacade.api.model.CreateSigningResponse;
 import se.sundsvall.comfactfacade.api.model.Document;
+import se.sundsvall.comfactfacade.api.model.Identification;
 import se.sundsvall.comfactfacade.api.model.Party;
+import se.sundsvall.comfactfacade.api.model.Signatory;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.SigningsResponse;
@@ -71,11 +73,13 @@ class SigningResourceTest {
 
 		// Arrange
 		final var signingRequest = SigningRequest.builder()
-			.withSignatory(Party.builder().build())
-			.withInitiator(Party.builder().build())
+			.withSignatories(List.of(Signatory.builder()
+				.withIdentifications(List.of(Identification.builder().withAlias("SmsCode").build()))
+				.withEmail("someEmail").build()))
+			.withInitiator(Party.builder().withEmail("someEmail").build())
 			.withDocument(Document.builder()
 				.withFileName("someFileName")
-				.withMimeType("someMimeType")
+				.withMimeType("application/pdf")
 				.withContent("someContent")
 				.build())
 			.build();
@@ -111,11 +115,11 @@ class SigningResourceTest {
 		// Arrange
 		final var signingId = "someSigningId";
 		final var signingRequest = SigningRequest.builder()
-			.withSignatory(Party.builder().build())
-			.withInitiator(Party.builder().build())
+			.withSignatories(List.of(Signatory.builder().withIdentifications(List.of(Identification.builder().withAlias("EmailCode").build())).withEmail("someEmail").build()))
+			.withInitiator(Party.builder().withEmail("someEmail").build())
 			.withDocument(Document.builder()
 				.withFileName("someFileName")
-				.withMimeType("someMimeType")
+				.withMimeType("application/pdf")
 				.withContent("someContent")
 				.build())
 			.build();
@@ -176,7 +180,7 @@ class SigningResourceTest {
 		// Arrange
 		final var signingId = "someSigningId";
 		final var partyId = "somePartyId";
-		when(signingServiceMock.getSignatory(signingId, partyId)).thenReturn(new Party());
+		when(signingServiceMock.getSignatory(signingId, partyId)).thenReturn(new Signatory());
 
 		// Act & Assert
 		final var result = webTestClient.get()

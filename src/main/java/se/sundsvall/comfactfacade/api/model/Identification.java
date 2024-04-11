@@ -2,7 +2,7 @@ package se.sundsvall.comfactfacade.api.model;
 
 import java.util.Objects;
 
-import jakarta.validation.constraints.NotBlank;
+import se.sundsvall.dept44.common.validators.annotation.OneOf;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -16,10 +16,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
-@Schema(description = "The means of identification to use to identify the signatory.")
+@Schema(description = "The means of identification to use to identify the signatories.")
 public class Identification {
 
-	@NotBlank
+	@OneOf({"SmsCode", "EmailCode", "SvensktEId"})
 	@Schema(description = """ 
 		Possible values for Alias type:
 		• SmsCode – One Time Password via SMS

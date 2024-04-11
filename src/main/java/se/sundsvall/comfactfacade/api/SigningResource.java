@@ -21,7 +21,7 @@ import org.zalando.problem.Problem;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
 import se.sundsvall.comfactfacade.api.model.CreateSigningResponse;
-import se.sundsvall.comfactfacade.api.model.Party;
+import se.sundsvall.comfactfacade.api.model.Signatory;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.SigningsResponse;
@@ -90,7 +90,7 @@ public class SigningResource {
 	@Operation(summary = "Get information about the current signatory")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
-	public ResponseEntity<Party> getSignatory(@PathVariable final String signingId, @PathVariable final String partyId) {
+	public ResponseEntity<Signatory> getSignatory(@PathVariable final String signingId, @PathVariable final String partyId) {
 		final var result = signingService.getSignatory(signingId, partyId);
 		return ResponseEntity.ok(result);
 	}
