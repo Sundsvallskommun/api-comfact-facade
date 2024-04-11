@@ -1,13 +1,12 @@
 package se.sundsvall.comfactfacade.api.model;
 
-import java.util.List;
 import java.util.Objects;
 
+import jakarta.validation.constraints.NotNull;
+
 import se.sundsvall.dept44.common.validators.annotation.ValidMobileNumber;
-import se.sundsvall.dept44.common.validators.annotation.ValidPersonalNumber;
 import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,10 +36,7 @@ public class Party {
 	@Schema(description = "The party title", example = "CEO")
 	private String title;
 
-	@ValidPersonalNumber(nullable = true)
-	@Schema(description = "The party personal number", example = "197001011234")
-	private String personalNumber;
-
+	@NotNull
 	@Schema(description = "The party email", example = "john.doe@sundsvall.se")
 	private String email;
 
@@ -54,20 +50,17 @@ public class Party {
 	@Schema(description = "Language parameter that overwrites the language of the Signing Instance for the current party.", example = "sv")
 	private String language;
 
-	@ArraySchema(schema = @Schema(implementation = Identification.class, description = "The means of identification to use to identify the signatory."))
-	private List<Identification> identifications;
-
 	@Override
 	public boolean equals(final Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		final Party party = (Party) o;
-		return Objects.equals(name, party.name) && Objects.equals(partyId, party.partyId) && Objects.equals(notificationMessage, party.notificationMessage) && Objects.equals(title, party.title) && Objects.equals(personalNumber, party.personalNumber) && Objects.equals(email, party.email) && Objects.equals(phoneNumber, party.phoneNumber) && Objects.equals(organization, party.organization) && Objects.equals(language, party.language) && Objects.equals(identifications, party.identifications);
+		return Objects.equals(name, party.name) && Objects.equals(partyId, party.partyId) && Objects.equals(notificationMessage, party.notificationMessage) && Objects.equals(title, party.title) && Objects.equals(email, party.email) && Objects.equals(phoneNumber, party.phoneNumber) && Objects.equals(organization, party.organization) && Objects.equals(language, party.language);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(name, partyId, notificationMessage, title, personalNumber, email, phoneNumber, organization, language, identifications);
+		return Objects.hash(name, partyId, notificationMessage, title, email, phoneNumber, organization, language);
 	}
 
 	@Override
@@ -77,12 +70,10 @@ public class Party {
 			", partyId='" + partyId + '\'' +
 			", notificationMessage=" + notificationMessage +
 			", title='" + title + '\'' +
-			", personalNumber='" + personalNumber + '\'' +
 			", email='" + email + '\'' +
 			", phoneNumber='" + phoneNumber + '\'' +
 			", organization='" + organization + '\'' +
 			", language='" + language + '\'' +
-			", identifications=" + identifications +
 			'}';
 	}
 

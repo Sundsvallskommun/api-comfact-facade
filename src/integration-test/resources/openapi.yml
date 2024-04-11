@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "1.0"
 servers:
-  - url: http://localhost:58944
+  - url: http://localhost:55300
     description: Generated server url
 tags:
   - name: Signings
@@ -26,6 +26,14 @@ paths:
           schema:
             $ref: '#/components/schemas/Pageable'
       responses:
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
         "500":
           description: Internal Server error
           content:
@@ -41,14 +49,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/SigningsResponse'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
     post:
       tags:
         - Signings
@@ -61,6 +61,14 @@ paths:
               $ref: '#/components/schemas/SigningRequest'
         required: true
       responses:
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
         "500":
           description: Internal Server error
           content:
@@ -76,14 +84,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/CreateSigningResponse'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
   /signings/{signingId}:
     get:
       tags:
@@ -97,6 +97,20 @@ paths:
           schema:
             type: string
       responses:
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "404":
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "500":
           description: Internal Server error
           content:
@@ -112,20 +126,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/SigningInstance'
-        "404":
-          description: Not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
     delete:
       tags:
         - Signings
@@ -138,20 +138,6 @@ paths:
           schema:
             type: string
       responses:
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "404":
-          description: Not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "204":
-          description: Successful operation
         "400":
           description: Bad request
           content:
@@ -160,6 +146,20 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "404":
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "204":
+          description: Successful operation
     patch:
       tags:
         - Signings
@@ -178,20 +178,6 @@ paths:
               $ref: '#/components/schemas/SigningRequest'
         required: true
       responses:
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "404":
-          description: Not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "204":
-          description: Successful operation
         "400":
           description: Bad request
           content:
@@ -200,6 +186,20 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "404":
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "204":
+          description: Successful operation
   /signings/{signingId}/signatory/{partyId}:
     get:
       tags:
@@ -218,6 +218,20 @@ paths:
           schema:
             type: string
       responses:
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "404":
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "500":
           description: Internal Server error
           content:
@@ -229,24 +243,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Party'
+                $ref: '#/components/schemas/Signatory'
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/Party'
-        "404":
-          description: Not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+                $ref: '#/components/schemas/Signatory'
   /api-docs:
     get:
       tags:
@@ -267,9 +267,7 @@ components:
   schemas:
     Document:
       required:
-        - content
         - fileName
-        - mimeType
       type: object
       properties:
         name:
@@ -292,8 +290,6 @@ components:
           example: ZEdWemRBPT0=
       description: Information about the main document to sign.
     Identification:
-      required:
-        - alias
       type: object
       properties:
         alias:
@@ -304,7 +300,7 @@ components:
             • EmailCode – One Time Password via Email
             • SvensktEId – Swedish e-identification (Swedish BankID)
           example: SmsCode
-      description: The means of identification to use to identify the signatory.
+      description: The means of identification to use to identify the signatories.
     NotificationMessage:
       required:
         - language
@@ -321,9 +317,11 @@ components:
         language:
           type: string
           description: The language of the notification message.
-          example: sv
+          example: sv-SE
       description: Custom message for the signature request emails.
     Party:
+      required:
+        - email
       type: object
       properties:
         name:
@@ -340,10 +338,67 @@ components:
           type: string
           description: The party title
           example: CEO
-        personalNumber:
+        email:
           type: string
-          description: The party personal number
-          example: "197001011234"
+          description: The party email
+          example: john.doe@sundsvall.se
+        phoneNumber:
+          type: string
+          description: The party phone number
+          example: "0701234567"
+        organization:
+          type: string
+          description: The organization of the party.
+          example: Sundsvall Municipality
+        language:
+          type: string
+          description: Language parameter that overwrites the language of the Signing
+            Instance for the current party.
+          example: sv
+      description: A party related to the signing process.
+    Reminder:
+      required:
+        - enabled
+        - intervalInHours
+      type: object
+      properties:
+        message:
+          $ref: '#/components/schemas/NotificationMessage'
+        enabled:
+          type: boolean
+          description: If the reminder is enabled
+          example: true
+        intervalInHours:
+          type: integer
+          description: The interval in hours between each reminder
+          format: int32
+          example: 24
+        startDateTime:
+          type: string
+          description: The date and time when the first reminder should be sent.
+          format: date-time
+          example: 2021-12-31T23:59:59Z
+      description: A reminder for a signature request.
+    Signatory:
+      required:
+        - email
+        - identifications
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the party
+          example: John Doe
+        partyId:
+          type: string
+          description: The party id
+          example: 550e8400-e29b-41d4-a716-446655440000
+        notificationMessage:
+          $ref: '#/components/schemas/NotificationMessage'
+        title:
+          type: string
+          description: The party title
+          example: CEO
         email:
           type: string
           description: The party email
@@ -365,32 +420,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Identification'
-      description: A party related to the signing process.
-    Reminder:
-      type: object
-      properties:
-        message:
-          $ref: '#/components/schemas/NotificationMessage'
-        enabled:
-          type: boolean
-          description: If the reminder is enabled
-          example: true
-        intervalInHours:
-          type: integer
-          description: The interval in hours between each reminder
-          format: int32
-          example: 24
-        startDateTime:
-          type: string
-          description: The date and time when the first reminder should be sent.
-          format: date-time
-          example: 2021-12-31T23:59:59Z
-      description: A reminder for a signature request.
+      description: A Signatory related to the signing process.
     SigningRequest:
       required:
         - document
         - initiator
-        - signatory
+        - signatories
       type: object
       properties:
         additionalDocuments:
@@ -400,7 +435,7 @@ components:
         language:
           type: string
           description: The language of the signing process.
-          example: sv
+          example: sv-SE
         customerReference:
           type: string
           description: The customer reference
@@ -418,8 +453,11 @@ components:
           $ref: '#/components/schemas/Party'
         additionalParty:
           $ref: '#/components/schemas/Party'
-        signatory:
-          $ref: '#/components/schemas/Party'
+        signatories:
+          type: array
+          description: The parties that will sign the documents.
+          items:
+            $ref: '#/components/schemas/Signatory'
         document:
           $ref: '#/components/schemas/Document'
       description: The signing request.
@@ -445,11 +483,11 @@ components:
     StatusType:
       type: object
       properties:
+        reasonPhrase:
+          type: string
         statusCode:
           type: integer
           format: int32
-        reasonPhrase:
-          type: string
     ConstraintViolationProblem:
       type: object
       properties:
@@ -694,6 +732,9 @@ components:
       description: PagingAndSortingMetaData model
       readOnly: true
     SigningInstance:
+      required:
+        - initiator
+        - signatories
       type: object
       properties:
         notificationMessages:
@@ -711,9 +752,9 @@ components:
             $ref: '#/components/schemas/Party'
         signatories:
           type: array
-          description: The party that will sign the documents.
+          description: The parties that will sign the documents.
           items:
-            $ref: '#/components/schemas/Party'
+            $ref: '#/components/schemas/Signatory'
         status:
           $ref: '#/components/schemas/Status'
         customerReference:

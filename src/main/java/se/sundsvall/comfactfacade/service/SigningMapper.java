@@ -31,6 +31,7 @@ import se.sundsvall.comfactfacade.api.model.Identification;
 import se.sundsvall.comfactfacade.api.model.NotificationMessage;
 import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.Reminder;
+import se.sundsvall.comfactfacade.api.model.Signatory;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.SigningsResponse;
@@ -67,7 +68,7 @@ public final class SigningMapper {
 			.withChanged(toOffsetDateTime(response.getSigningInstance().getChanged()))
 			.withDocument(toDocument(response.getSigningInstance().getDocument()))
 			.withInitiator(toParty(response.getSigningInstance().getInitiator()))
-			.withSignatories(response.getSigningInstance().getSignatories().stream().map(SigningMapper::toParty).toList())
+			.withSignatories(response.getSigningInstance().getSignatories().stream().map(SigningMapper::toSignatory).toList())
 			.withAdditionalParties(response.getSigningInstance().getAdditionalParties().stream().map(SigningMapper::toParty).toList())
 			.withAdditionalDocuments(response.getSigningInstance().getDocumentAttachments().stream().map(SigningMapper::toDocument).toList())
 			.withSigningId(response.getSigningInstance().getSigningInstanceId())
@@ -93,23 +94,33 @@ public final class SigningMapper {
 			return null;
 		}
 
-		final var party = Party.builder()
+		return Party.builder()
 			.withEmail(partyType.getEmailAddress())
 			.withName(partyType.getName())
 			.withOrganization(partyType.getOrganization())
 			.withPartyId(partyType.getPartyId())
-			.withPersonalNumber(partyType.getPersonalNumber())
 			.withPhoneNumber(partyType.getMobilePhoneNumber())
 			.withTitle(partyType.getTitle())
-			.withLanguage(partyType.getLanguage());
-		if (partyType instanceof final comfact.Signatory signatory) {
-			party.withIdentifications(signatory.getIdentifications().stream().map(identification ->
-				new Identification(identification.getAlias())).toList());
-			party.withNotificationMessage(toNotificationMessage(signatory.getNotificationMessage()));
+			.withLanguage(partyType.getLanguage())
+			.build();
+	}
+
+	static Signatory toSignatory(final comfact.Signatory signatory) {
+		if (signatory == null) {
+			return null;
 		}
-
-		return party.build();
-
+		return Signatory.builder()
+			.withEmail(signatory.getEmailAddress())
+			.withName(signatory.getName())
+			.withOrganization(signatory.getOrganization())
+			.withPartyId(signatory.getPartyId())
+			.withPhoneNumber(signatory.getMobilePhoneNumber())
+			.withTitle(signatory.getTitle())
+			.withLanguage(signatory.getLanguage())
+			.withIdentifications(signatory.getIdentifications().stream().map(identification ->
+				new Identification(identification.getAlias())).toList())
+			.withNotificationMessage(toNotificationMessage(signatory.getNotificationMessage()))
+			.build();
 	}
 
 	static SigningInstance toSigningInstanceInfoType(final SigningInstanceInfo response) {
@@ -143,7 +154,7 @@ public final class SigningMapper {
 			.withSignatoryReminder(toSignatoryReminderType(signingRequest.getReminder()))
 			.withInitiator(toPartyType(signingRequest.getInitiator()))
 			.withAdditionalParties(toPartyType(signingRequest.getAdditionalParty()))
-			.withSignatories(toSignatoryType(signingRequest.getSignatory()))
+			.withSignatories(Optional.ofNullable(signingRequest.getSignatories()).stream().flatMap(List::stream).map(SigningMapper::toSignatoryType).toList())
 			.withLanguage(signingRequest.getLanguage())
 			.withDocument(toDocumentType(signingRequest.getDocument()))
 			.withDocumentAttachments(toDocumentTypeList(signingRequest.getAdditionalDocuments()));
@@ -153,22 +164,21 @@ public final class SigningMapper {
 		return new CreateSigningInstanceRequest().withSigningInstanceInput(toSigningInstanceInputType(signingRequest));
 	}
 
-	static comfact.Signatory toSignatoryType(final Party party) {
-		if (party == null) {
+	static comfact.Signatory toSignatoryType(final Signatory signatory) {
+		if (signatory == null) {
 			return null;
 		}
 		return new comfact.Signatory()
-			.withName(party.getName())
-			.withTitle(party.getTitle())
-			.withOrganization(party.getOrganization())
-			.withPersonalNumber(party.getPersonalNumber())
-			.withEmailAddress(party.getEmail())
-			.withMobilePhoneNumber(party.getPhoneNumber())
-			.withPartyId(party.getPartyId())
-			.withNotificationMessage(toMessageType(party.getNotificationMessage()))
+			.withName(signatory.getName())
+			.withTitle(signatory.getTitle())
+			.withOrganization(signatory.getOrganization())
+			.withEmailAddress(signatory.getEmail())
+			.withMobilePhoneNumber(signatory.getPhoneNumber())
+			.withPartyId(signatory.getPartyId())
+			.withNotificationMessage(toMessageType(signatory.getNotificationMessage()))
 			.withIdentifications(
-				Optional.ofNullable(party.getIdentifications()).stream().flatMap(List::stream).map(identification -> new comfact.Identification().withAlias(identification.getAlias())).toList())
-			.withLanguage(party.getLanguage());
+				Optional.ofNullable(signatory.getIdentifications()).stream().flatMap(List::stream).map(identification -> new comfact.Identification().withAlias(identification.getAlias())).toList())
+			.withLanguage(signatory.getLanguage());
 	}
 
 	static MessageType toMessageType(final NotificationMessage notificationMessage) {
@@ -200,7 +210,6 @@ public final class SigningMapper {
 			.withName(party.getName())
 			.withTitle(party.getTitle())
 			.withOrganization(party.getOrganization())
-			.withPersonalNumber(party.getPersonalNumber())
 			.withEmailAddress(party.getEmail())
 			.withMobilePhoneNumber(party.getPhoneNumber())
 			.withPartyId(party.getPartyId())

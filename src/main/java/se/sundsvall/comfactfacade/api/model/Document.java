@@ -4,6 +4,9 @@ import java.util.Objects;
 
 import jakarta.validation.constraints.NotBlank;
 
+import se.sundsvall.dept44.common.validators.annotation.OneOf;
+import se.sundsvall.dept44.common.validators.annotation.ValidBase64;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,12 +27,12 @@ public class Document {
 	@NotBlank
 	@Schema(description = "The document file name including extension,", example = "document.pdf")
 	private String fileName;
-
-	@NotBlank
+	
+	@OneOf({"application/pdf"})
 	@Schema(description = "The documents mimetype. Must be application/pdf", example = "application/pdf")
 	private String mimeType;
 
-	@NotBlank
+	@ValidBase64
 	@Schema(type = "string", format = "byte", description = "Base64-encoded file (plain text)", example = "dGVzdA==")
 	private String content;
 

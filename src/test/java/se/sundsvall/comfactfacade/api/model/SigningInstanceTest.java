@@ -41,7 +41,7 @@ class SigningInstanceTest {
 		final var notificationMessage = List.of(new NotificationMessage());
 		final var initiator = new Party();
 		final var additionalParties = List.of(new Party());
-		final var signatories = List.of(new Party());
+		final var signatories = List.of(new Signatory());
 		final var status = new Status();
 		final var customerReference = "customerReference";
 		final var created = OffsetDateTime.now();

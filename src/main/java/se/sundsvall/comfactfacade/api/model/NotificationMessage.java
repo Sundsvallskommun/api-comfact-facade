@@ -27,7 +27,7 @@ public class NotificationMessage {
 	private String body;
 
 	@NotBlank
-	@Schema(description = "The language of the notification message.", example = "sv")
+	@Schema(description = "The language of the notification message.", example = "sv-SE")
 	private String language;
 
 	@Override

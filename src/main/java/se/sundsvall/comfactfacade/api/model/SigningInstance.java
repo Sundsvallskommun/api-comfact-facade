@@ -4,6 +4,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -23,14 +26,16 @@ public class SigningInstance {
 	@Schema(description = "Custom message for the signature request emails.")
 	private List<NotificationMessage> notificationMessages;
 
+	@NotNull
 	@Schema(description = "The initiator of the signing request.")
 	private Party initiator;
 
 	@Schema(description = "A party that is not part of the signing process but will get a copy of the signed document when the signing instance is completed.")
 	private List<Party> additionalParties;
 
-	@Schema(description = "The party that will sign the documents.")
-	private List<Party> signatories;
+	@NotEmpty
+	@Schema(description = "The parties that will sign the documents.")
+	private List<Signatory> signatories;
 
 	@Schema(description = "Status of the signing request.")
 	private Status status;

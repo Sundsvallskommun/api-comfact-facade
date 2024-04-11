@@ -41,8 +41,31 @@ class SigningRequestTest {
 		final var customerReference = "someCustomerReference";
 		final var expires = now();
 		final var notificationMessage = new NotificationMessage("someSubject", "someBody", "sv-SE");
-		final var party = new Party("someName", "somePartyId", notificationMessage, "someTitle", "somePersonNumber", "someEmail", "somePhone",
-			"some", "someLanguage", List.of(new Identification("someAlias")));
+		final var party =
+			Party.builder()
+				.withName("someName")
+				.withPartyId("somePartyId")
+				.withNotificationMessage(notificationMessage)
+				.withTitle("someTitle")
+				.withEmail("someEmail")
+				.withPhoneNumber("somePhone")
+				.withOrganization("some")
+				.withLanguage("someLanguage")
+				.build();
+
+		final var signatory =
+			Signatory.builder()
+				.withName("someName")
+				.withPartyId("somePartyId")
+				.withNotificationMessage(notificationMessage)
+				.withTitle("someTitle")
+				.withEmail("someEmail")
+				.withPhoneNumber("somePhone")
+				.withOrganization("some")
+				.withLanguage("someLanguage")
+				.withIdentifications(List.of(new Identification("someAlias")))
+				.build();
+		final var signatories = List.of(signatory);
 		final var document = new Document("someName", "someFileName", "someContentType", "someContent");
 		final var additionalDocuments = List.of(document, new Document("someName", "someFileName", "someContentType", "someContent"));
 		final var language = "someLanguage";
@@ -59,21 +82,21 @@ class SigningRequestTest {
 			.withLanguage(language)
 			.withNotificationMessage(notificationMessage)
 			.withReminder(reminder)
-			.withSignatory(party)
+			.withSignatories(signatories)
 			.build();
 
 		// Assert
 		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(result.getCustomerReference()).isEqualTo(customerReference);
 		assertThat(result.getExpires()).isEqualTo(expires);
-		assertThat(result.getNotificationMessage()).isEqualTo(notificationMessage);
-		assertThat(result.getSignatory()).isEqualTo(party);
-		assertThat(result.getAdditionalParty()).isEqualTo(party);
+		assertThat(result.getNotificationMessage()).isSameAs(notificationMessage);
+		assertThat(result.getSignatories()).isSameAs(signatories);
+		assertThat(result.getAdditionalParty()).isSameAs(party);
 		assertThat(result.getInitiator()).isEqualTo(party);
-		assertThat(result.getDocument()).isEqualTo(document);
+		assertThat(result.getDocument()).isSameAs(document);
 		assertThat(result.getAdditionalDocuments()).isEqualTo(additionalDocuments);
 		assertThat(result.getLanguage()).isEqualTo(language);
-		assertThat(result.getReminder()).isEqualTo(reminder);
+		assertThat(result.getReminder()).isSameAs(reminder);
 
 	}
 

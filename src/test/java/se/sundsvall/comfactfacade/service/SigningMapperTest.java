@@ -149,7 +149,6 @@ class SigningMapperTest {
 		assertThat(result.getName()).isEqualTo(name);
 		assertThat(result.getTitle()).isEqualTo(title);
 		assertThat(result.getOrganization()).isEqualTo(organization);
-		assertThat(result.getPersonalNumber()).isEqualTo(personalNumber);
 		assertThat(result.getEmail()).isEqualTo(emailAddress);
 		assertThat(result.getPhoneNumber()).isEqualTo(mobilePhoneNumber);
 		assertThat(result.getPartyId()).isEqualTo(partyId);
@@ -230,14 +229,15 @@ class SigningMapperTest {
 		final var reminder = Reminder.builder().build();
 		final var initiator = Party.builder().build();
 		final var additionalParty = Party.builder().build();
-		final var signatory = Party.builder().build();
+		final var signatory = se.sundsvall.comfactfacade.api.model.Signatory.builder().build();
+		final var signatories = List.of(signatory);
 		final var document = Document.builder().build();
 		final var language = "language";
 		final var additionalDocuments = List.of(Document.builder().build());
 		final var signingRequest = SigningRequest.builder()
 			.withInitiator(initiator)
 			.withAdditionalParty(additionalParty)
-			.withSignatory(signatory)
+			.withSignatories(signatories)
 			.withDocument(document)
 			.withLanguage(language)
 			.withCustomerReference(customerReference)
@@ -284,7 +284,6 @@ class SigningMapperTest {
 		final var name = "name";
 		final var title = "title";
 		final var organization = "organization";
-		final var personalNumber = "personalNumber";
 		final var emailAddress = "emailAddress";
 		final var mobilePhoneNumber = "mobilePhoneNumber";
 		final var partyId = "partyId";
@@ -295,11 +294,10 @@ class SigningMapperTest {
 			.withBody(body)
 			.withLanguage(language)
 			.build();
-		final var party = Party.builder()
+		final var party = se.sundsvall.comfactfacade.api.model.Signatory.builder()
 			.withName(name)
 			.withTitle(title)
 			.withOrganization(organization)
-			.withPersonalNumber(personalNumber)
 			.withEmail(emailAddress)
 			.withPhoneNumber(mobilePhoneNumber)
 			.withPartyId(partyId)
@@ -312,11 +310,10 @@ class SigningMapperTest {
 		final var result = SigningMapper.toSignatoryType(party);
 
 		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("signatoryAction", "accountId", "custom");
+		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("signatoryAction", "accountId", "custom", "personalNumber");
 		assertThat(result.getName()).isEqualTo(name);
 		assertThat(result.getTitle()).isEqualTo(title);
 		assertThat(result.getOrganization()).isEqualTo(organization);
-		assertThat(result.getPersonalNumber()).isEqualTo(personalNumber);
 		assertThat(result.getEmailAddress()).isEqualTo(emailAddress);
 		assertThat(result.getMobilePhoneNumber()).isEqualTo(mobilePhoneNumber);
 		assertThat(result.getPartyId()).isEqualTo(partyId);
@@ -392,7 +389,6 @@ class SigningMapperTest {
 		final var name = "name";
 		final var title = "title";
 		final var organization = "organization";
-		final var personalNumber = "personalNumber";
 		final var emailAddress = "emailAddress";
 		final var mobilePhoneNumber = "mobilePhoneNumber";
 		final var partyId = "partyId";
@@ -402,7 +398,6 @@ class SigningMapperTest {
 			.withName(name)
 			.withTitle(title)
 			.withOrganization(organization)
-			.withPersonalNumber(personalNumber)
 			.withEmail(emailAddress)
 			.withPhoneNumber(mobilePhoneNumber)
 			.withPartyId(partyId)
@@ -413,11 +408,10 @@ class SigningMapperTest {
 		final var result = SigningMapper.toPartyType(party);
 
 		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("accountId", "custom");
+		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("accountId", "custom", "personalNumber");
 		assertThat(result.getName()).isEqualTo(name);
 		assertThat(result.getTitle()).isEqualTo(title);
 		assertThat(result.getOrganization()).isEqualTo(organization);
-		assertThat(result.getPersonalNumber()).isEqualTo(personalNumber);
 		assertThat(result.getEmailAddress()).isEqualTo(emailAddress);
 		assertThat(result.getMobilePhoneNumber()).isEqualTo(mobilePhoneNumber);
 		assertThat(result.getPartyId()).isEqualTo(partyId);

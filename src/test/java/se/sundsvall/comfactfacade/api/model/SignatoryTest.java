@@ -8,14 +8,16 @@ import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetter
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.allOf;
 
+import java.util.List;
+
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 
-class PartyTest {
+class SignatoryTest {
 
 	@Test
-	void bean() {
-		MatcherAssert.assertThat(Party.class, allOf(
+	void testBean() {
+		MatcherAssert.assertThat(Signatory.class, allOf(
 			hasValidBeanConstructor(),
 			hasValidGettersAndSetters(),
 			hasValidBeanHashCode(),
@@ -34,9 +36,10 @@ class PartyTest {
 		final var organization = "someOrganization";
 		final var language = "someLanguage";
 		final var notificationMessage = new NotificationMessage("defaultSubject", "defaultBody", "sv-SE");
+		final var identifications = List.of(Identification.builder().withAlias("SvensktEId").build());
 
 		// Act
-		final var result = Party.builder()
+		final var result = Signatory.builder()
 			.withName(name)
 			.withEmail(email)
 			.withPhoneNumber(phone)
@@ -45,6 +48,7 @@ class PartyTest {
 			.withOrganization(organization)
 			.withLanguage(language)
 			.withNotificationMessage(notificationMessage)
+			.withIdentifications(identifications)
 			.build();
 
 		// Assert
@@ -57,13 +61,13 @@ class PartyTest {
 		assertThat(result.getOrganization()).isEqualTo(organization);
 		assertThat(result.getLanguage()).isEqualTo(language);
 		assertThat(result.getNotificationMessage()).isSameAs(notificationMessage);
+		assertThat(result.getIdentifications()).isSameAs(identifications);
 	}
-
 
 	@Test
 	void noDirtOnCreatedBean() {
-		assertThat(Party.builder().build()).hasAllNullFieldsOrProperties();
-		assertThat(new Party()).hasAllNullFieldsOrProperties();
+		assertThat(Signatory.builder().build()).hasAllNullFieldsOrProperties();
+		assertThat(new Signatory()).hasAllNullFieldsOrProperties();
 	}
 
 }
