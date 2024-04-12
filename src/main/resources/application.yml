@@ -11,9 +11,19 @@ openapi:
 spring:
   application:
     name: api-comfact-facade
+  security:
+    oauth2:
+      client:
+        registration:
+          party:
+            authorization-grant-type: client_credentials
+            provider: party
 
 integration:
   comfact:
+    connectTimeout: 5
+    readTimeout: 30
+  party:
     connectTimeout: 5
     readTimeout: 30
 

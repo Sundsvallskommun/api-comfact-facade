@@ -18,6 +18,8 @@ import feign.soap.SOAPErrorDecoder;
 @Import(FeignConfiguration.class)
 public class ComfactConfiguration {
 
+	public static final String CLIENT_ID = "comfact";
+
 	private static final JAXBContextFactory JAXB_FACTORY = new JAXBContextFactory.Builder().build();
 
 	private static final SOAPEncoder.Builder SOAP_ENCODER_BUILDER = new SOAPEncoder.Builder()

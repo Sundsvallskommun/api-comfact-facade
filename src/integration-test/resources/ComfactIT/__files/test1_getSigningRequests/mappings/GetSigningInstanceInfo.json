@@ -4,7 +4,7 @@
     "method": "POST",
     "bodyPatterns": [
       {
-        "contains": "GetSigningInstanceInfoRequest"
+        "equalToXml": "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Header/><SOAP-ENV:Body><GetSigningInstanceInfoRequest xmlns=\"urn:comfact:prosale:signing:2.0:protocol\" xmlns:ns2=\"urn:comfact:prosale:pagination:1.0:protocol\"><Credentials><UserId>comfact-username</UserId><Password>comfact-password</Password></Credentials><Custom><ns2:Paginator><ns2:Page>0</ns2:Page><ns2:PageSize>8</ns2:PageSize><ns2:OrderByProperty>Created</ns2:OrderByProperty><ns2:OrderByDescending>true</ns2:OrderByDescending></ns2:Paginator></Custom></GetSigningInstanceInfoRequest></SOAP-ENV:Body></SOAP-ENV:Envelope>"
       }
     ]
   },

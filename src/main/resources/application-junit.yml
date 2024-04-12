@@ -3,7 +3,7 @@
 #========================================
 logging:
   level:
-    root: DEBUG
+    root: INFO
 
 #========================================
 integration:
@@ -11,3 +11,17 @@ integration:
     url: http://comfact.url
     username: comfact-username
     password: comfact-password
+  party:
+    url: http://party.url
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          party:
+            token-uri: http://token.url
+        registration:
+          party:
+            client-id: the-client-id
+            client-secret: the-client-secret
