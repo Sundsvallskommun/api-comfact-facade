@@ -78,7 +78,7 @@
 				<artifactId>openapi-generator-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>parking-permit</id>
+						<id>party</id>
 						<goals>
 							<goal>generate</goal>
 						</goals>
