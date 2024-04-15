@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +28,6 @@ import generated.se.sundsvall.party.PartyType;
 
 @Service
 public class SigningService {
-
-	private static final Logger LOG = LoggerFactory.getLogger(SigningService.class);
 
 	private final ComfactIntegration comfactIntegration;
 
