@@ -1,6 +1,8 @@
 package se.sundsvall.comfactfacade.integration.comfact;
 
 
+import static se.sundsvall.comfactfacade.integration.comfact.configuration.ComfactConfiguration.CLIENT_ID;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -19,7 +21,7 @@ import comfact.UpdateSigningInstanceResponse;
 import comfact.WithdrawSigningInstanceRequest;
 import comfact.WithdrawSigningInstanceResponse;
 
-@FeignClient(name = "comfact", url = "${integration.comfact.url}", configuration = ComfactConfiguration.class)
+@FeignClient(name = CLIENT_ID, url = "${integration.comfact.url}", configuration = ComfactConfiguration.class)
 public interface ComfactClient {
 
 	String TEXT_XML_UTF8 = "text/xml;charset=UTF-8";

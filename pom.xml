@@ -22,6 +22,7 @@
 		<!--- Service properties -->
 		<generated-sources-path>${project.build.directory}/generated-sources
 		</generated-sources-path>
+
 		<generated-sources-java-path>src/main/java</generated-sources-java-path>
 		<jaxb2-maven-plugin.version>3.1.0</jaxb2-maven-plugin.version>
 		<jaxb2-fluent-api.version>3.0</jaxb2-fluent-api.version>
@@ -67,8 +68,44 @@
 					<excludes>
 						<exclude>**/Application*</exclude>
 						<exclude>**/comfact/**</exclude>
+						<exclude>**/generated/**</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>party</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>
+								${project.basedir}/src/main/resources/integrations/party/party.yml
+							</inputSpec>
+							<generateSupportingFiles>false</generateSupportingFiles>
+							<output>${generated-sources-path}</output>
+							<generatorName>spring</generatorName>
+							<generateApis>false</generateApis>
+							<output>${generated-sources-path}</output>
+							<generateSupportingFiles>false</generateSupportingFiles>
+							<configOptions>
+								<useSpringBoot3>true</useSpringBoot3>
+								<sourceFolder>${generated-sources-java-path}</sourceFolder>
+								<dateLibrary>java8</dateLibrary>
+								<modelPackage>generated.se.sundsvall.party</modelPackage>
+								<openApiNullable>false</openApiNullable>
+								<generatePom>false</generatePom>
+								<useBeanValidation>false</useBeanValidation>
+								<useSwaggerAnnotations>false</useSwaggerAnnotations>
+								<interfaceOnly>true</interfaceOnly>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.jvnet.jaxb</groupId>
@@ -100,14 +137,34 @@
 					</plugins>
 					<generatePackage>comfact</generatePackage>
 					<generateDirectory>
-						${generated-sources-path}/${generated-sources-java-path}
+						${generated-sources-path}/${generated-sources-java-path}/generated/se/comfact
 					</generateDirectory>
 					<schemaDirectory>${project.basedir}/src/main/resources/integrations/comfact
 					</schemaDirectory>
 				</configuration>
 			</plugin>
-
-
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${build-helper-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>add-generated-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${generated-sources-path}/models
+								</source> <!-- API model classes -->
+								<source>${generated-sources-path}/annotations
+								</source> <!-- JPAModelGen classes -->
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
