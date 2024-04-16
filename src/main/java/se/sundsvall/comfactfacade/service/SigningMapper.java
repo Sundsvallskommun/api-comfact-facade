@@ -153,7 +153,7 @@ public final class SigningMapper {
 			.withNotificationMessages(toMessageType(signingRequest.getNotificationMessage()))
 			.withSignatoryReminder(toSignatoryReminderType(signingRequest.getReminder()))
 			.withInitiator(toPartyType(signingRequest.getInitiator()))
-			.withAdditionalParties(toPartyType(signingRequest.getAdditionalParty()))
+			.withAdditionalParties(Optional.ofNullable(signingRequest.getAdditionalParties()).stream().flatMap(List::stream).map(SigningMapper::toPartyType).toList())
 			.withSignatories(Optional.ofNullable(signingRequest.getSignatories()).stream().flatMap(List::stream).map(SigningMapper::toSignatoryType).toList())
 			.withLanguage(signingRequest.getLanguage())
 			.withDocument(toDocumentType(signingRequest.getDocument()))

@@ -65,6 +65,7 @@ class SigningRequestTest {
 				.withLanguage("someLanguage")
 				.withIdentifications(List.of(new Identification("someAlias")))
 				.build();
+		final var additionalParties = List.of(party);
 		final var signatories = List.of(signatory);
 		final var document = new Document("someName", "someFileName", "someContentType", "someContent");
 		final var additionalDocuments = List.of(document, new Document("someName", "someFileName", "someContentType", "someContent"));
@@ -74,7 +75,7 @@ class SigningRequestTest {
 		// Act
 		final var result = SigningRequest.builder()
 			.withAdditionalDocuments(additionalDocuments)
-			.withAdditionalParty(party)
+			.withAdditionalParties(additionalParties)
 			.withCustomerReference(customerReference)
 			.withDocument(document)
 			.withExpires(expires)
@@ -91,8 +92,8 @@ class SigningRequestTest {
 		assertThat(result.getExpires()).isEqualTo(expires);
 		assertThat(result.getNotificationMessage()).isSameAs(notificationMessage);
 		assertThat(result.getSignatories()).isSameAs(signatories);
-		assertThat(result.getAdditionalParty()).isSameAs(party);
-		assertThat(result.getInitiator()).isEqualTo(party);
+		assertThat(result.getAdditionalParties()).isSameAs(additionalParties);
+		assertThat(result.getInitiator()).isSameAs(party);
 		assertThat(result.getDocument()).isSameAs(document);
 		assertThat(result.getAdditionalDocuments()).isEqualTo(additionalDocuments);
 		assertThat(result.getLanguage()).isEqualTo(language);

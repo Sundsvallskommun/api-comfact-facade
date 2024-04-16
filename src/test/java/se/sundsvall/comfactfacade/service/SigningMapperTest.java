@@ -229,6 +229,7 @@ class SigningMapperTest {
 		final var reminder = Reminder.builder().build();
 		final var initiator = Party.builder().build();
 		final var additionalParty = Party.builder().build();
+		final var additionalParties = List.of(additionalParty);
 		final var signatory = se.sundsvall.comfactfacade.api.model.Signatory.builder().build();
 		final var signatories = List.of(signatory);
 		final var document = Document.builder().build();
@@ -236,7 +237,7 @@ class SigningMapperTest {
 		final var additionalDocuments = List.of(Document.builder().build());
 		final var signingRequest = SigningRequest.builder()
 			.withInitiator(initiator)
-			.withAdditionalParty(additionalParty)
+			.withAdditionalParties(additionalParties)
 			.withSignatories(signatories)
 			.withDocument(document)
 			.withLanguage(language)

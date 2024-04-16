@@ -18,7 +18,6 @@ import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 
 import feign.soap.SOAPDecoder;
 import feign.soap.SOAPEncoder;
-import feign.soap.SOAPErrorDecoder;
 
 @ExtendWith(MockitoExtension.class)
 class ComfactConfigurationTest {
@@ -45,7 +44,7 @@ class ComfactConfigurationTest {
 
 			final var customizer = configuration.feignBuilderCustomizer(propertiesMock);
 
-			final ArgumentCaptor<SOAPErrorDecoder> errorDecoderCaptor = ArgumentCaptor.forClass(SOAPErrorDecoder.class);
+			final ArgumentCaptor<ComfactErrorDecoder> errorDecoderCaptor = ArgumentCaptor.forClass(ComfactErrorDecoder.class);
 			final ArgumentCaptor<SOAPEncoder> soapEncoderCaptor = ArgumentCaptor.forClass(SOAPEncoder.class);
 			final ArgumentCaptor<SOAPDecoder> soapDecoderCaptor = ArgumentCaptor.forClass(SOAPDecoder.class);
 

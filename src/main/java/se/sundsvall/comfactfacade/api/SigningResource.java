@@ -39,6 +39,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Signings", description = "Signing operations")
 @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {Problem.class, ConstraintViolationProblem.class})))
 @ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+@ApiResponse(responseCode = "502", description = "Bad Gateway", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 public class SigningResource {
 
 	private final SigningService signingService;
@@ -46,7 +47,8 @@ public class SigningResource {
 	public SigningResource(final SigningService signingService) {this.signingService = signingService;}
 
 	@GetMapping(produces = {APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE})
-	@Operation(summary = "Get all signing instances.")
+	@Operation(summary = "Get all signing instances.", description = "The 'sort' parameter in the Pageable object can take the values 'SigningInstanceId', 'ReferenceNumber', 'CustomerReferenceNumber', 'Created', 'Changed', 'Expires', 'StatusCode', 'StatusMessage', 'UserId', 'Language', 'SignatoryReminderStartDate', 'InitiatorEmailAddress', 'QueueCreated', 'QueueChanged'.")
+	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	public ResponseEntity<SigningsResponse> getSigningRequests(final Pageable pageable) {
 		return ResponseEntity.ok(signingService.getSigningRequests(pageable));
