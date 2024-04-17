@@ -12,6 +12,16 @@ import feign.codec.ErrorDecoder;
 
 public class ComfactErrorDecoder implements ErrorDecoder {
 
+	private static final JAXBContext jaxbContext;
+
+	static {
+		try {
+			jaxbContext = JAXBContext.newInstance(GetSigningInstanceInfoResponse.class);
+		} catch (final Exception e) {
+			throw Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Failed to create JAXBContext");
+		}
+	}
+
 	private final ErrorDecoder defaultDecoder = new Default();
 
 	@Override
@@ -20,11 +30,9 @@ public class ComfactErrorDecoder implements ErrorDecoder {
 			final var responseStream = response.body().asInputStream();
 			final var soapMessage = MessageFactory.newInstance().createMessage(null, responseStream);
 
-			final var jaxbContext = JAXBContext.newInstance(GetSigningInstanceInfoResponse.class);
 			final var jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
 			final var getSigningInstanceInfoResponse = (GetSigningInstanceInfoResponse) jaxbUnmarshaller.unmarshal(soapMessage.getSOAPBody().extractContentAsDocument());
-
 			if (!getSigningInstanceInfoResponse.getResult().isSuccess()) {
 
 				final var resultCode = getSigningInstanceInfoResponse.getResult().getResultCode();

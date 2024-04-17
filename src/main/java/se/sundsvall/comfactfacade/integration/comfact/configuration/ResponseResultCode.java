@@ -62,7 +62,8 @@ public enum ResponseResultCode {
 	TRAFFIC_MESSAGE_FAILED("TrafficMessageFailed", 500),
 	CLIENT_SERVICE_UPDATE_FAILED("ClientServiceUpdateFailed", 500),
 	EMAIL_UPDATE_FAILED("EmailUpdateFailed", 500),
-	DOWN_FOR_MAINTENANCE("DownForMaintenance", 502);
+	DOWN_FOR_MAINTENANCE("DownForMaintenance", 502),
+	UNKNOWN_COMFACT_ERROR("UnknownComfactError", 500);
 
 	private final String message;
 
@@ -76,7 +77,7 @@ public enum ResponseResultCode {
 	public static ResponseResultCode fromMessage(final String message) {
 		return Arrays.stream(values())
 			.filter(code -> code.message.equals(message)).findFirst()
-			.orElse(null);
+			.orElse(UNKNOWN_COMFACT_ERROR);
 	}
 
 }
