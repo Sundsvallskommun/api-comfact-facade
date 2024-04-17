@@ -44,25 +44,27 @@
       }
     ]
   },
-  "additionalParty": {
-    "name": "John Doe",
-    "partyId": "550e8400-e29b-41d4-a716-446655440000",
-    "notificationMessage": {
-      "subject": "Please sign the document",
-      "body": "Dear John Doe, please sign the document.",
-      "language": "sv"
-    },
-    "title": "CEO",
-    "email": "john.doe@sundsvall.se",
-    "phoneNumber": "0701234567",
-    "organization": "Sundsvall Municipality",
-    "language": "sv",
-    "identifications": [
-      {
-        "alias": "SmsCode"
-      }
-    ]
-  },
+  "additionalParties": [
+    {
+      "name": "John Doe",
+      "partyId": "550e8400-e29b-41d4-a716-446655440000",
+      "notificationMessage": {
+        "subject": "Please sign the document",
+        "body": "Dear John Doe, please sign the document.",
+        "language": "sv"
+      },
+      "title": "CEO",
+      "email": "john.doe@sundsvall.se",
+      "phoneNumber": "0701234567",
+      "organization": "Sundsvall Municipality",
+      "language": "sv",
+      "identifications": [
+        {
+          "alias": "SmsCode"
+        }
+      ]
+    }
+  ],
   "signatories": [
     {
       "name": "John Doe",

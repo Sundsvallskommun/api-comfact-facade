@@ -13,7 +13,6 @@ import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 import feign.jaxb.JAXBContextFactory;
 import feign.soap.SOAPDecoder;
 import feign.soap.SOAPEncoder;
-import feign.soap.SOAPErrorDecoder;
 
 @Import(FeignConfiguration.class)
 public class ComfactConfiguration {
@@ -33,7 +32,7 @@ public class ComfactConfiguration {
 		return FeignMultiCustomizer.create()
 			.withDecoder(new SOAPDecoder(JAXB_FACTORY))
 			.withEncoder(SOAP_ENCODER_BUILDER.build())
-			.withErrorDecoder(new SOAPErrorDecoder())
+			.withErrorDecoder(new ComfactErrorDecoder())
 			.withRequestTimeoutsInSeconds(properties.connectTimeout(), properties.readTimeout())
 			.composeCustomizersToOne();
 	}

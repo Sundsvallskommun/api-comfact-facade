@@ -2,8 +2,6 @@ package se.sundsvall.comfactfacade.integration.comfact;
 
 
 import org.springframework.stereotype.Service;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 
 import se.sundsvall.comfactfacade.integration.comfact.configuration.ComfactProperties;
 
@@ -16,7 +14,6 @@ import comfact.GetSigningInstanceInfoRequest;
 import comfact.GetSigningInstanceInfoResponse;
 import comfact.GetSigningInstanceRequest;
 import comfact.GetSigningInstanceResponse;
-import comfact.ResponseType;
 import comfact.UpdateSigningInstanceRequest;
 import comfact.WithdrawSigningInstanceRequest;
 
@@ -33,46 +30,32 @@ public class ComfactIntegration {
 		this.comfactProperties = comfactProperties;
 	}
 
-	private void handleResponse(final ResponseType response) {
-		if (!response.getResult().isSuccess()) {
-			throw Problem.valueOf(Status.INTERNAL_SERVER_ERROR, response.getResult().getResultMessage());
-		}
-	}
-
 	private Credentials toCredentials() {
 		return new comfact.Credentials().withPassword(comfactProperties.password()).withUserId(comfactProperties.username());
 	}
 
 	public CreateSigningInstanceResponse createSigningInstance(final CreateSigningInstanceRequest request) {
-		final var response = comfactClient.createSigningInstance(request.withCredentials(toCredentials()));
-		handleResponse(response);
-		return response;
+		return comfactClient.createSigningInstance(request.withCredentials(toCredentials()));
 	}
 
 	public void updateSigningInstance(final UpdateSigningInstanceRequest request) {
-		handleResponse(comfactClient.updateSigningInstance(request.withCredentials(toCredentials())));
+		comfactClient.updateSigningInstance(request.withCredentials(toCredentials()));
 	}
 
 	public void withdrawSigningInstance(final WithdrawSigningInstanceRequest request) {
-		handleResponse(comfactClient.withdrawSigningInstance(request.withCredentials(toCredentials())));
+		comfactClient.withdrawSigningInstance(request.withCredentials(toCredentials()));
 	}
 
 	public GetSigningInstanceResponse getSigningInstance(final GetSigningInstanceRequest request) {
-		final var response = comfactClient.getSigningInstance(request.withCredentials(toCredentials()));
-		handleResponse(response);
-		return response;
+		return comfactClient.getSigningInstance(request.withCredentials(toCredentials()));
 	}
 
 	public GetSigningInstanceInfoResponse getSigningInstanceInfo(final GetSigningInstanceInfoRequest request) {
-		final var response = comfactClient.getSigningInstanceInfo(request.withCredentials(toCredentials()));
-		handleResponse(response);
-		return response;
+		return comfactClient.getSigningInstanceInfo(request.withCredentials(toCredentials()));
 	}
 
 	public GetSignatoryResponse getSignatory(final GetSignatoryRequest request) {
-		final var response = comfactClient.getSignatory(request.withCredentials(toCredentials()));
-		handleResponse(response);
-		return response;
+		return comfactClient.getSignatory(request.withCredentials(toCredentials()));
 	}
 
 }

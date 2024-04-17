@@ -53,7 +53,7 @@ public class SigningRequest {
 
 	@Valid
 	@Schema(description = "A party that is not part of the signing process but will get a copy of the signed document when the signing instance is completed.")
-	private Party additionalParty;
+	private List<Party> additionalParties;
 
 	@Valid
 	@NotEmpty
@@ -70,12 +70,12 @@ public class SigningRequest {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		final SigningRequest that = (SigningRequest) o;
-		return Objects.equals(additionalDocuments, that.additionalDocuments) && Objects.equals(language, that.language) && Objects.equals(customerReference, that.customerReference) && Objects.equals(expires, that.expires) && Objects.equals(notificationMessage, that.notificationMessage) && Objects.equals(reminder, that.reminder) && Objects.equals(initiator, that.initiator) && Objects.equals(additionalParty, that.additionalParty) && Objects.equals(signatories, that.signatories) && Objects.equals(document, that.document);
+		return Objects.equals(additionalDocuments, that.additionalDocuments) && Objects.equals(language, that.language) && Objects.equals(customerReference, that.customerReference) && Objects.equals(expires, that.expires) && Objects.equals(notificationMessage, that.notificationMessage) && Objects.equals(reminder, that.reminder) && Objects.equals(initiator, that.initiator) && Objects.equals(additionalParties, that.additionalParties) && Objects.equals(signatories, that.signatories) && Objects.equals(document, that.document);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(additionalDocuments, language, customerReference, expires, notificationMessage, reminder, initiator, additionalParty, signatories, document);
+		return Objects.hash(additionalDocuments, language, customerReference, expires, notificationMessage, reminder, initiator, additionalParties, signatories, document);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class SigningRequest {
 			", notificationMessage=" + notificationMessage +
 			", reminder=" + reminder +
 			", initiator=" + initiator +
-			", additionalParty=" + additionalParty +
+			", additionalParties=" + additionalParties +
 			", signatories=" + signatories +
 			", document=" + document +
 			'}';

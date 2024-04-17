@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "1.0"
 servers:
-  - url: http://localhost:55300
+  - url: http://localhost:58723
     description: Generated server url
 tags:
   - name: Signings
@@ -18,6 +18,12 @@ paths:
       tags:
         - Signings
       summary: Get all signing instances.
+      description: "The 'sort' parameter in the Pageable object can take the values\
+        \ 'SigningInstanceId', 'ReferenceNumber', 'CustomerReferenceNumber', 'Created',\
+        \ 'Changed', 'Expires', 'StatusCode', 'StatusMessage', 'UserId', 'Language',\
+        \ 'SignatoryReminderStartDate', 'InitiatorEmailAddress', 'QueueCreated', 'QueueChanged'.\
+        \ Will default to 'SigningInstanceId' if not set. Will default to page 0 with\
+        \ a size of 10 if not set."
       operationId: getSigningRequests
       parameters:
         - name: pageable
@@ -34,8 +40,8 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "500":
-          description: Internal Server error
+        "502":
+          description: Bad Gateway
           content:
             application/problem+json:
               schema:
@@ -49,6 +55,18 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/SigningsResponse'
+        "404":
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
     post:
       tags:
         - Signings
@@ -69,8 +87,8 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "500":
-          description: Internal Server error
+        "502":
+          description: Bad Gateway
           content:
             application/problem+json:
               schema:
@@ -84,6 +102,12 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/CreateSigningResponse'
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
   /signings/{signingId}:
     get:
       tags:
@@ -105,14 +129,8 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "404":
-          description: Not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "500":
-          description: Internal Server error
+        "502":
+          description: Bad Gateway
           content:
             application/problem+json:
               schema:
@@ -126,6 +144,18 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/SigningInstance'
+        "404":
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
     delete:
       tags:
         - Signings
@@ -146,6 +176,12 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "502":
+          description: Bad Gateway
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "404":
           description: Not found
           content:
@@ -186,6 +222,12 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "502":
+          description: Bad Gateway
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "404":
           description: Not found
           content:
@@ -226,14 +268,8 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "404":
-          description: Not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "500":
-          description: Internal Server error
+        "502":
+          description: Bad Gateway
           content:
             application/problem+json:
               schema:
@@ -247,6 +283,18 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Signatory'
+        "404":
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
   /api-docs:
     get:
       tags:
@@ -451,8 +499,12 @@ components:
           $ref: '#/components/schemas/Reminder'
         initiator:
           $ref: '#/components/schemas/Party'
-        additionalParty:
-          $ref: '#/components/schemas/Party'
+        additionalParties:
+          type: array
+          description: A party that is not part of the signing process but will get
+            a copy of the signed document when the signing instance is completed.
+          items:
+            $ref: '#/components/schemas/Party'
         signatories:
           type: array
           description: The parties that will sign the documents.
@@ -483,11 +535,11 @@ components:
     StatusType:
       type: object
       properties:
-        reasonPhrase:
-          type: string
         statusCode:
           type: integer
           format: int32
+        reasonPhrase:
+          type: string
     ConstraintViolationProblem:
       type: object
       properties:
