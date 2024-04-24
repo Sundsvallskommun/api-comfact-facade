@@ -10,9 +10,6 @@
   },
   "response": {
     "status": 200,
-    "headers": {
-      "Content-Type": "text/xml"
-    },
     "bodyFileName": "test6_getSignatory/responses/GetSignatory.xml"
   }
 }

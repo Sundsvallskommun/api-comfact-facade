@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.within;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Base64;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -16,16 +15,10 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.jose4j.base64url.Base64;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-
-import se.sundsvall.comfactfacade.api.model.Document;
-import se.sundsvall.comfactfacade.api.model.Identification;
-import se.sundsvall.comfactfacade.api.model.NotificationMessage;
-import se.sundsvall.comfactfacade.api.model.Party;
-import se.sundsvall.comfactfacade.api.model.Reminder;
-import se.sundsvall.comfactfacade.api.model.SigningRequest;
 
 import comfact.Custom;
 import comfact.DocumentType;
@@ -37,6 +30,12 @@ import comfact.Signatory;
 import comfact.SigningInstance;
 import comfact.SigningInstanceInfo;
 import comfact.Status;
+import se.sundsvall.comfactfacade.api.model.Document;
+import se.sundsvall.comfactfacade.api.model.Identification;
+import se.sundsvall.comfactfacade.api.model.NotificationMessage;
+import se.sundsvall.comfactfacade.api.model.Party;
+import se.sundsvall.comfactfacade.api.model.Reminder;
+import se.sundsvall.comfactfacade.api.model.SigningRequest;
 
 class SigningMapperTest {
 
@@ -444,7 +443,7 @@ class SigningMapperTest {
 		assertThat(result.getFirst().getDocumentName()).isEqualTo(documentName);
 		assertThat(result.getFirst().getFileName()).isEqualTo(fileName);
 		assertThat(result.getFirst().getMimeType()).isEqualTo(mimeType);
-		assertThat(result.getFirst().getContent()).isEqualTo(content.getBytes());
+		assertThat(result.getFirst().getContent()).isEqualTo(Base64.decode(content));
 	}
 
 	@Test
@@ -469,7 +468,7 @@ class SigningMapperTest {
 		assertThat(result.getDocumentName()).isEqualTo(documentName);
 		assertThat(result.getFileName()).isEqualTo(fileName);
 		assertThat(result.getMimeType()).isEqualTo(mimeType);
-		assertThat(result.getContent()).isEqualTo(content.getBytes());
+		assertThat(result.getContent()).isEqualTo(Base64.decode(content));
 	}
 
 	@Test
@@ -655,7 +654,7 @@ class SigningMapperTest {
 
 	private boolean isValidBase64(final String s) {
 		try {
-			Base64.getDecoder().decode(s);
+			Base64.decode(s);
 			return true;
 		} catch (final IllegalArgumentException e) {
 			return false;
