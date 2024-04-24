@@ -70,7 +70,7 @@ class FeignClientInterceptorTest {
 
 		feignClientInterceptor.intercept(invocationContextMock, chainMock);
 
-		assertThat(responseMock.status()).isEqualTo(0);
+		assertThat(responseMock.status()).isZero();
 		verify(invocationContextMock).response();
 		verify(responseMock).body();
 		verify(bodyMock).asInputStream();
@@ -126,7 +126,7 @@ class FeignClientInterceptorTest {
 
 		feignClientInterceptor.intercept(invocationContextMock, chainMock);
 
-		assertThat(responseMock.status()).isEqualTo(0);
+		assertThat(responseMock.status()).isZero();
 		verify(invocationContextMock).response();
 		verify(responseMock).body();
 		verify(bodyMock).asInputStream();
@@ -148,7 +148,7 @@ class FeignClientInterceptorTest {
 
 		feignClientInterceptor.intercept(invocationContextMock, chainMock);
 
-		assertThat(responseMock.status()).isEqualTo(0);
+		assertThat(responseMock.status()).isZero();
 		verify(invocationContextMock).response();
 		verify(responseMock).body();
 		verify(bodyMock).asInputStream();
