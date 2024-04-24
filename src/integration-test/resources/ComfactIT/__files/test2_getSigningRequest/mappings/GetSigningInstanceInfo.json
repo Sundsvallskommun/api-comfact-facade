@@ -10,6 +10,9 @@
   },
   "response": {
     "status": 200,
+    "headers": {
+      "Content-Type": "text/xml"
+    },
     "bodyFileName": "test2_getSigningRequest/responses/GetSigningInstance.xml"
   }
 }

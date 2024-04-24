@@ -29,11 +29,14 @@ integration:
 
 logbook:
   body-filters:
-    # Exclude base64-encoded content from incoming requests.
+    # Exclude content from incoming requests.
     json-path:
       - key: '$..content'
-        value: '[base64]'
-    # Exclude base64-encoded content from traffic to/from skatteverket
+        value: '[binary]'
     xPath:
+      # Exclude content in traffic to/from comfact
       - key: '//*[contains(local-name(), "Content")]'
-        value: '[base64]'
+        value: '[binary]'
+      # Mask password in traffic to/from comfact
+      - key: '//*[contains(local-name(), "Password")]'
+        value: '********'

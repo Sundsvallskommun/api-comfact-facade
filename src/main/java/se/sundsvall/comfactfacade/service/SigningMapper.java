@@ -1,9 +1,9 @@
 package se.sundsvall.comfactfacade.service;
 
 import static java.util.Collections.emptyList;
+import static org.zalando.problem.Status.BAD_REQUEST;
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.GregorianCalendar;
@@ -16,27 +16,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBElement;
-import jakarta.xml.bind.JAXBException;
-
 import org.jose4j.base64url.Base64;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.w3c.dom.Element;
 import org.zalando.problem.Problem;
-
-import se.sundsvall.comfactfacade.api.model.Document;
-import se.sundsvall.comfactfacade.api.model.Identification;
-import se.sundsvall.comfactfacade.api.model.NotificationMessage;
-import se.sundsvall.comfactfacade.api.model.Party;
-import se.sundsvall.comfactfacade.api.model.Reminder;
-import se.sundsvall.comfactfacade.api.model.Signatory;
-import se.sundsvall.comfactfacade.api.model.SigningInstance;
-import se.sundsvall.comfactfacade.api.model.SigningRequest;
-import se.sundsvall.comfactfacade.api.model.SigningsResponse;
-import se.sundsvall.comfactfacade.api.model.Status;
-import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
 
 import comfact.CreateSigningInstanceRequest;
 import comfact.Custom;
@@ -52,6 +36,20 @@ import comfact.SigningInstanceInfo;
 import comfact.SigningInstanceInputType;
 import comfact.UpdateSigningInstanceRequest;
 import comfact.WithdrawSigningInstanceRequest;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
+import se.sundsvall.comfactfacade.api.model.Document;
+import se.sundsvall.comfactfacade.api.model.Identification;
+import se.sundsvall.comfactfacade.api.model.NotificationMessage;
+import se.sundsvall.comfactfacade.api.model.Party;
+import se.sundsvall.comfactfacade.api.model.Reminder;
+import se.sundsvall.comfactfacade.api.model.Signatory;
+import se.sundsvall.comfactfacade.api.model.SigningInstance;
+import se.sundsvall.comfactfacade.api.model.SigningRequest;
+import se.sundsvall.comfactfacade.api.model.SigningsResponse;
+import se.sundsvall.comfactfacade.api.model.Status;
+import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
 
 public final class SigningMapper {
 
@@ -233,8 +231,7 @@ public final class SigningMapper {
 			.withDocumentName(document.getName())
 			.withFileName(document.getFileName())
 			.withMimeType(document.getMimeType())
-			.withContent(Optional.ofNullable(document.getContent())
-				.map(content -> content.getBytes(StandardCharsets.UTF_8)).orElse(null));
+			.withContent(Base64.decode(document.getContent()));
 	}
 
 	static XMLGregorianCalendar toXMLGregorianCalendar(final OffsetDateTime offsetDateTime) {
@@ -308,7 +305,7 @@ public final class SigningMapper {
 		// Parse the first sort order as the API only supports one sort order
 		final var firstSortOrder = pageable.getSort().stream()
 			.findFirst()
-			.orElseThrow(() -> Problem.valueOf(org.zalando.problem.Status.BAD_REQUEST, "Sort order is required"));
+			.orElseThrow(() -> Problem.valueOf(BAD_REQUEST, "Sort order is required"));
 
 		return new Paginator()
 			.withPage(pageable.getPageNumber())

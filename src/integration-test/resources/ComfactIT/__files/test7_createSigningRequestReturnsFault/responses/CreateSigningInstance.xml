@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soap:Body>
+		<CreateSigningInstanceResponse xmlns="urn:comfact:prosale:signing:2.0:protocol">
+			<Result success="false">
+				<ResultCode>InvalidInputProvided</ResultCode>
+				<ResultMessage>The input supplied by the client is invalid or could not be parsed. [EventId:58f21c40446c4108a804c67ce0a2d048] Input document is not a valid PDF document.</ResultMessage>
+			</Result>
+		</CreateSigningInstanceResponse>
+	</soap:Body>
+</soap:Envelope>
