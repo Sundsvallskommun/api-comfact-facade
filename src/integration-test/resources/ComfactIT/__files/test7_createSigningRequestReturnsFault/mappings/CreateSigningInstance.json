@@ -13,6 +13,6 @@
     "headers": {
       "Content-Type": "text/xml"
     },
-    "bodyFileName": "test3_createSigningRequest/responses/CreateSigningInstance.xml"
+    "bodyFileName": "test7_createSigningRequestReturnsFault/responses/CreateSigningInstance.xml"
   }
 }

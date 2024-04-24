@@ -1,10 +1,10 @@
 package se.sundsvall.comfactfacade.apptests;
 
-
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.PATCH;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -84,4 +84,15 @@ class ComfactIT extends AbstractAppTest {
 			.sendRequestAndVerifyResponse();
 	}
 
+	@Test
+	void test7_createSigningRequestReturnsFault() {
+
+		setupCall()
+			.withServicePath("/signings")
+			.withHttpMethod(POST)
+			.withRequest("request.json")
+			.withExpectedResponseStatus(BAD_REQUEST)
+			.withExpectedResponse("response.json")
+			.sendRequestAndVerifyResponse();
+	}
 }
