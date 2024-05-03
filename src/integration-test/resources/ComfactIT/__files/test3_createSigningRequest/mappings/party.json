@@ -1,7 +1,12 @@
 {
   "request": {
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer 0000000000000000AAAAAAAAAAAAAAAA"
+      }
+    },
     "method": "GET",
-    "urlPattern": "/party/PRIVATE/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/legalId"
+    "urlPattern": "/party/PRIVATE/550e8400-e29b-41d4-a716-446655440000/legalId"
   },
   "response": {
     "body": "197001011234",

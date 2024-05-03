@@ -1,8 +1,8 @@
 {
   "signingId": "74e756409c534b34a32969aa593e568e",
   "signatoryUrls": {
-    "1234": "https://test.comfact.com/signingwebsite?id=1234",
-    "456": "https://test.comfact.com/signingwebsite?id=456",
-    "23456": "https://test.comfact.com/signingwebsite?id=1235"
+    "1234": "https://endpoint.url/signingwebsite?id=1234",
+    "456": "https://endpoint.url/signingwebsite?id=456",
+    "23456": "https://endpoint.url/signingwebsite?id=1235"
   }
 }

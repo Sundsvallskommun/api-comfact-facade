@@ -290,7 +290,7 @@
 
   <wsdl:service name="SigningService">
     <wsdl:port name="SigningSoapHttpPort" binding="pssd:SigningSoapHttpBinding">
-      <soap:address location="https://www.comfact.com/prosale/signing/service" />
+      <soap:address location="https://endpoint.url" />
     </wsdl:port>
   </wsdl:service>
 
