@@ -6,9 +6,6 @@ info:
     name: MIT License
     url: https://opensource.org/licenses/MIT
   version: "1.0"
-servers:
-  - url: http://localhost:58723
-    description: Generated server url
 tags:
   - name: Signings
     description: Signing operations

@@ -10,13 +10,13 @@
 			</Result>
 			<SigningInstanceId>74e756409c534b34a32969aa593e568e</SigningInstanceId>
 			<SignatoryUrl partyId="1234">
-				https://test.comfact.com/signingwebsite?id=1234
+				https://endpoint.url/signingwebsite?id=1234
 			</SignatoryUrl>
 			<SignatoryUrl partyId="456">
-				https://test.comfact.com/signingwebsite?id=456
+				https://endpoint.url/signingwebsite?id=456
 			</SignatoryUrl>
 			<SignatoryUrl partyId="23456">
-				https://test.comfact.com/signingwebsite?id=1235
+				https://endpoint.url/signingwebsite?id=1235
 			</SignatoryUrl>
 		</CreateSigningInstanceResponse>
 	</soap:Body>

@@ -18,7 +18,7 @@
 					<DistributionInfo distributionMethod="Attached"
 									  xmlns="urn:comfact:prosale:signing:documentdistribution:1.0:protocol"/>
 					<SignatoryUrl partyId="23456">
-						https://test.comfact.com/signingwebsite?id=NmVjM2MzYjQ3OTIxNDQ2MDgzZjU2OTk3N2Q0YThhNTcmMjM0NTY=o
+						https://endpoint.url/signingwebsite?id=NmVjM2MzYjQ3OTIxNDQ2MDgzZjU2OTk3N2Q0YThhNTcmMjM0NTY=o
 					</SignatoryUrl>
 					<TimeZone type="Microsoft"
 							  xmlns="urn:comfact:prosale:signing:timezone:2.0:protocol">W. Europe
