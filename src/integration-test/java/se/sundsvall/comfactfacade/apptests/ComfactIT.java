@@ -18,6 +18,7 @@ import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
 class ComfactIT extends AbstractAppTest {
 
 	private static final String MUNICIPALITY_ID = "2281";
+	private static final String PATH = "/" + MUNICIPALITY_ID + "/signings";
 	private static final String RESPONSE_FILE = "response.json";
 	private static final String REQUEST_FILE = "request.json";
 
@@ -26,7 +27,7 @@ class ComfactIT extends AbstractAppTest {
 	void test1_getSigningRequests() {
 
 		setupCall()
-			.withServicePath("/" + MUNICIPALITY_ID + "/signings?page=0&size=8&sort=Created,desc")
+			.withServicePath(PATH + "?page=0&size=8&sort=Created,desc")
 			.withHttpMethod(GET)
 			.withExpectedResponseStatus(OK)
 			.withExpectedResponse(RESPONSE_FILE)
@@ -37,7 +38,7 @@ class ComfactIT extends AbstractAppTest {
 	void test2_getSigningRequest() {
 
 		setupCall()
-			.withServicePath("/" + MUNICIPALITY_ID + "/signings/1")
+			.withServicePath(PATH + "/1")
 			.withHttpMethod(GET)
 			.withExpectedResponseStatus(OK)
 			.withExpectedResponse(RESPONSE_FILE)
@@ -48,7 +49,7 @@ class ComfactIT extends AbstractAppTest {
 	void test3_createSigningRequest() {
 
 		setupCall()
-			.withServicePath("/" + MUNICIPALITY_ID + "/signings")
+			.withServicePath(PATH)
 			.withHttpMethod(POST)
 			.withRequest(REQUEST_FILE)
 			.withExpectedResponseStatus(OK)
@@ -60,7 +61,7 @@ class ComfactIT extends AbstractAppTest {
 	void test4_updateSigningRequest() {
 
 		setupCall()
-			.withServicePath("/" + MUNICIPALITY_ID + "/signings/1")
+			.withServicePath(PATH + "/1")
 			.withRequest(REQUEST_FILE)
 			.withHttpMethod(PATCH)
 			.withExpectedResponseStatus(NO_CONTENT)
@@ -71,7 +72,7 @@ class ComfactIT extends AbstractAppTest {
 	void test5_cancelSigningRequest() {
 
 		setupCall()
-			.withServicePath("/" + MUNICIPALITY_ID + "/signings/1")
+			.withServicePath(PATH + "/1")
 			.withHttpMethod(DELETE)
 			.withExpectedResponseStatus(NO_CONTENT)
 			.sendRequestAndVerifyResponse();
@@ -81,7 +82,7 @@ class ComfactIT extends AbstractAppTest {
 	void test6_getSignatory() {
 
 		setupCall()
-			.withServicePath("/" + MUNICIPALITY_ID + "/signings/1/signatory/1")
+			.withServicePath(PATH + "/1/signatory/1")
 			.withHttpMethod(GET)
 			.withExpectedResponseStatus(OK)
 			.withExpectedResponse(RESPONSE_FILE)
@@ -92,7 +93,7 @@ class ComfactIT extends AbstractAppTest {
 	void test7_createSigningRequestReturnsFault() {
 
 		setupCall()
-			.withServicePath("/" + MUNICIPALITY_ID + "/signings")
+			.withServicePath(PATH)
 			.withHttpMethod(POST)
 			.withRequest(REQUEST_FILE)
 			.withExpectedResponseStatus(BAD_REQUEST)
