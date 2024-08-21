@@ -3,10 +3,13 @@ package se.sundsvall.comfactfacade.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static se.sundsvall.comfactfacade.Constants.MUNICIPALITY_ID;
 
 import java.util.List;
 import java.util.Map;
@@ -45,7 +48,7 @@ class SigningResourceTest {
 	void getSigningRequests() {
 
 		// Arrange
-		when(signingServiceMock.getSigningRequests(any()))
+		when(signingServiceMock.getSigningRequests(anyString(), any()))
 			.thenReturn(SigningsResponse.builder()
 				.withSigningInstances(List.of(new SigningInstance(), new SigningInstance()))
 				.withPagingAndSortingMetaData(PagingAndSortingMetaData.create())
@@ -53,14 +56,14 @@ class SigningResourceTest {
 
 		// Act
 		final var result = webTestClient.get()
-			.uri("/signings")
+			.uri(uriBuilder -> uriBuilder.path("/{municipalityId}/signings").build(Map.of("municipalityId", MUNICIPALITY_ID)))
 			.exchange()
 			.expectStatus().isOk().expectBody(SigningsResponse.class)
 			.returnResult()
 			.getResponseBody();
 
 		// Assert
-		verify(signingServiceMock).getSigningRequests(any());
+		verify(signingServiceMock).getSigningRequests(eq(MUNICIPALITY_ID), any());
 		assertThat(result).isNotNull();
 		assertThat(result.getSigningInstances()).hasSize(2);
 		assertThat(result.getPagingAndSortingMetaData()).isNotNull();
@@ -84,7 +87,7 @@ class SigningResourceTest {
 				.build())
 			.build();
 
-		when(signingServiceMock.createSigningRequest(signingRequest))
+		when(signingServiceMock.createSigningRequest(MUNICIPALITY_ID, signingRequest))
 			.thenReturn(CreateSigningResponse.builder()
 				.withSigningId("someSigningId")
 				.withSignatoryUrls(Map.of("somePartyId", "someUrl"))
@@ -92,7 +95,7 @@ class SigningResourceTest {
 
 		// Act
 		final var result = webTestClient.post()
-			.uri("/signings")
+			.uri("/{municipalityId}/signings", MUNICIPALITY_ID)
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -107,7 +110,7 @@ class SigningResourceTest {
 		assertThat(result.getSigningId()).isEqualTo("someSigningId");
 		assertThat(result.getSignatoryUrls()).hasSize(1);
 		assertThat(result.getSignatoryUrls()).containsEntry("somePartyId", "someUrl");
-		verify(signingServiceMock).createSigningRequest(signingRequest);
+		verify(signingServiceMock).createSigningRequest(MUNICIPALITY_ID, signingRequest);
 	}
 
 	@Test
@@ -126,7 +129,7 @@ class SigningResourceTest {
 
 		// Act
 		webTestClient.patch()
-			.uri("/signings/{signingId}", signingId)
+			.uri("/{municipalityId}/signings/{signingId}", MUNICIPALITY_ID, signingId)
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -134,7 +137,7 @@ class SigningResourceTest {
 			.isNoContent();
 
 		// Assert
-		verify(signingServiceMock).updateSigningRequest(signingId, signingRequest);
+		verify(signingServiceMock).updateSigningRequest(MUNICIPALITY_ID, signingId, signingRequest);
 	}
 
 
@@ -145,13 +148,13 @@ class SigningResourceTest {
 
 		// Act
 		webTestClient.delete()
-			.uri("/signings/{signingId}", signingId)
+			.uri("/{municipalityId}/signings/{signingId}", MUNICIPALITY_ID, signingId)
 			.exchange()
 			.expectStatus()
 			.isNoContent();
 
 		// Assert
-		verify(signingServiceMock).cancelSigningRequest(signingId);
+		verify(signingServiceMock).cancelSigningRequest(MUNICIPALITY_ID, signingId);
 	}
 
 
@@ -159,18 +162,18 @@ class SigningResourceTest {
 	void getSigningRequest() {
 		// Arrange
 		final var signingId = "someSigningId";
-		when(signingServiceMock.getSigningRequest(signingId)).thenReturn(new SigningInstance());
+		when(signingServiceMock.getSigningRequest(MUNICIPALITY_ID, signingId)).thenReturn(new SigningInstance());
 
 		// Act
 		final var result = webTestClient.get()
-			.uri("/signings/{signingId}", signingId)
+			.uri("/{municipalityId}/signings/{signingId}", MUNICIPALITY_ID, signingId)
 			.exchange()
 			.expectStatus().isOk()
 			.expectBody(SigningInstance.class)
 			.returnResult().getResponseBody();
 
 		// Assert
-		verify(signingServiceMock).getSigningRequest(signingId);
+		verify(signingServiceMock).getSigningRequest(MUNICIPALITY_ID, signingId);
 		assertThat(result).isNotNull();
 	}
 
@@ -180,11 +183,11 @@ class SigningResourceTest {
 		// Arrange
 		final var signingId = "someSigningId";
 		final var partyId = "somePartyId";
-		when(signingServiceMock.getSignatory(signingId, partyId)).thenReturn(new Signatory());
+		when(signingServiceMock.getSignatory(MUNICIPALITY_ID, signingId, partyId)).thenReturn(new Signatory());
 
 		// Act & Assert
 		final var result = webTestClient.get()
-			.uri("/signings/{signingId}/signatory/{partyId}", signingId, partyId)
+			.uri("/{municipalityId}/signings/{signingId}/signatory/{partyId}", MUNICIPALITY_ID, signingId, partyId)
 			.exchange()
 			.expectStatus().isOk()
 			.expectBody(Party.class)
@@ -193,7 +196,7 @@ class SigningResourceTest {
 
 
 		// Assert
-		verify(signingServiceMock).getSignatory(signingId, partyId);
+		verify(signingServiceMock).getSignatory(MUNICIPALITY_ID, signingId, partyId);
 		assertThat(result).isNotNull();
 	}
 

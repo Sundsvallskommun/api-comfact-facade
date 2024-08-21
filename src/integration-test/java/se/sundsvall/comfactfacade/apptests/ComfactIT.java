@@ -17,15 +17,19 @@ import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
 @WireMockAppTestSuite(files = "classpath:/ComfactIT/", classes = Application.class)
 class ComfactIT extends AbstractAppTest {
 
+	private static final String MUNICIPALITY_ID = "2281";
+	private static final String RESPONSE_FILE = "response.json";
+	private static final String REQUEST_FILE = "request.json";
+
 
 	@Test
 	void test1_getSigningRequests() {
 
 		setupCall()
-			.withServicePath("/signings?page=0&size=8&sort=Created,desc")
+			.withServicePath("/" + MUNICIPALITY_ID + "/signings?page=0&size=8&sort=Created,desc")
 			.withHttpMethod(GET)
 			.withExpectedResponseStatus(OK)
-			.withExpectedResponse("response.json")
+			.withExpectedResponse(RESPONSE_FILE)
 			.sendRequestAndVerifyResponse();
 	}
 
@@ -33,10 +37,10 @@ class ComfactIT extends AbstractAppTest {
 	void test2_getSigningRequest() {
 
 		setupCall()
-			.withServicePath("/signings/1")
+			.withServicePath("/" + MUNICIPALITY_ID + "/signings/1")
 			.withHttpMethod(GET)
 			.withExpectedResponseStatus(OK)
-			.withExpectedResponse("response.json")
+			.withExpectedResponse(RESPONSE_FILE)
 			.sendRequestAndVerifyResponse();
 	}
 
@@ -44,11 +48,11 @@ class ComfactIT extends AbstractAppTest {
 	void test3_createSigningRequest() {
 
 		setupCall()
-			.withServicePath("/signings")
+			.withServicePath("/" + MUNICIPALITY_ID + "/signings")
 			.withHttpMethod(POST)
-			.withRequest("request.json")
+			.withRequest(REQUEST_FILE)
 			.withExpectedResponseStatus(OK)
-			.withExpectedResponse("response.json")
+			.withExpectedResponse(RESPONSE_FILE)
 			.sendRequestAndVerifyResponse();
 	}
 
@@ -56,8 +60,8 @@ class ComfactIT extends AbstractAppTest {
 	void test4_updateSigningRequest() {
 
 		setupCall()
-			.withServicePath("/signings/1")
-			.withRequest("request.json")
+			.withServicePath("/" + MUNICIPALITY_ID + "/signings/1")
+			.withRequest(REQUEST_FILE)
 			.withHttpMethod(PATCH)
 			.withExpectedResponseStatus(NO_CONTENT)
 			.sendRequestAndVerifyResponse();
@@ -67,7 +71,7 @@ class ComfactIT extends AbstractAppTest {
 	void test5_cancelSigningRequest() {
 
 		setupCall()
-			.withServicePath("/signings/1")
+			.withServicePath("/" + MUNICIPALITY_ID + "/signings/1")
 			.withHttpMethod(DELETE)
 			.withExpectedResponseStatus(NO_CONTENT)
 			.sendRequestAndVerifyResponse();
@@ -77,10 +81,10 @@ class ComfactIT extends AbstractAppTest {
 	void test6_getSignatory() {
 
 		setupCall()
-			.withServicePath("/signings/1/signatory/1")
+			.withServicePath("/" + MUNICIPALITY_ID + "/signings/1/signatory/1")
 			.withHttpMethod(GET)
 			.withExpectedResponseStatus(OK)
-			.withExpectedResponse("response.json")
+			.withExpectedResponse(RESPONSE_FILE)
 			.sendRequestAndVerifyResponse();
 	}
 
@@ -88,11 +92,11 @@ class ComfactIT extends AbstractAppTest {
 	void test7_createSigningRequestReturnsFault() {
 
 		setupCall()
-			.withServicePath("/signings")
+			.withServicePath("/" + MUNICIPALITY_ID + "/signings")
 			.withHttpMethod(POST)
-			.withRequest("request.json")
+			.withRequest(REQUEST_FILE)
 			.withExpectedResponseStatus(BAD_REQUEST)
-			.withExpectedResponse("response.json")
+			.withExpectedResponse(RESPONSE_FILE)
 			.sendRequestAndVerifyResponse();
 	}
 }

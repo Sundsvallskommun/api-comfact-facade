@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
+import static se.sundsvall.comfactfacade.Constants.MUNICIPALITY_ID;
 
 import java.util.List;
 
@@ -42,11 +43,11 @@ class SigningResourceFailureTest {
 	void cancelSigningRequest_NotFound() {
 		// Arrange
 		final String signingId = "someSigningId";
-		doThrow(Problem.valueOf(Status.NOT_FOUND, "The signing request with id someSigningId was not found")).when(signingServiceMock).cancelSigningRequest(signingId);
+		doThrow(Problem.valueOf(Status.NOT_FOUND, "The signing request with id someSigningId was not found")).when(signingServiceMock).cancelSigningRequest(MUNICIPALITY_ID, signingId);
 
 		// Act
 		final var result = webTestClient.delete()
-			.uri("/signings/{signingId}", signingId)
+			.uri("/{municipalityId}/signings/{signingId}", MUNICIPALITY_ID, signingId)
 			.exchange()
 			.expectStatus().isNotFound()
 			.expectHeader().contentType(APPLICATION_PROBLEM_JSON)
@@ -59,7 +60,7 @@ class SigningResourceFailureTest {
 		assertThat(result.getStatus()).isEqualTo(Status.NOT_FOUND);
 		assertThat(result.getTitle()).isEqualTo("Not Found");
 		assertThat(result.getDetail()).isEqualTo("The signing request with id someSigningId was not found");
-		verify(signingServiceMock).cancelSigningRequest(signingId);
+		verify(signingServiceMock).cancelSigningRequest(MUNICIPALITY_ID, signingId);
 	}
 
 	@Test
@@ -80,7 +81,7 @@ class SigningResourceFailureTest {
 
 		// Act
 		final var response = webTestClient.post()
-			.uri("/signings")
+			.uri("/{municipalityId}/signings", MUNICIPALITY_ID)
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -119,7 +120,7 @@ class SigningResourceFailureTest {
 
 		// Act
 		final var response = webTestClient.post()
-			.uri("/signings")
+			.uri("/{municipalityId}/signings", MUNICIPALITY_ID)
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -156,7 +157,7 @@ class SigningResourceFailureTest {
 
 		// Act
 		final var response = webTestClient.post()
-			.uri("/signings")
+			.uri("/{municipalityId}/signings", MUNICIPALITY_ID)
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -201,7 +202,7 @@ class SigningResourceFailureTest {
 
 		// Act
 		final var response = webTestClient.post()
-			.uri("/signings")
+			.uri("/{municipalityId}/signings", MUNICIPALITY_ID)
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -245,7 +246,7 @@ class SigningResourceFailureTest {
 
 		// Act
 		final var response = webTestClient.post()
-			.uri("/signings")
+			.uri("/{municipalityId}/signings", MUNICIPALITY_ID)
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -284,7 +285,7 @@ class SigningResourceFailureTest {
 
 		// Act
 		final var response = webTestClient.post()
-			.uri("/signings")
+			.uri("/{municipalityId}/signings", MUNICIPALITY_ID)
 			.contentType(APPLICATION_JSON)
 			.bodyValue(signingRequest)
 			.exchange()
@@ -311,11 +312,11 @@ class SigningResourceFailureTest {
 		final var signingId = "someSigningId";
 		final var partyId = "somePartyId";
 		doThrow(Problem.valueOf(Status.NOT_FOUND, "The signing request with id someSigningId was not found"))
-			.when(signingServiceMock).getSignatory(signingId, partyId);
+			.when(signingServiceMock).getSignatory(MUNICIPALITY_ID, signingId, partyId);
 
 		// Act & Assert
 		final var result = webTestClient.get()
-			.uri("/signings/{signingId}/signatory/{partyId}", signingId, partyId)
+			.uri("/{municipalityId}/signings/{signingId}/signatory/{partyId}", MUNICIPALITY_ID, signingId, partyId)
 			.exchange()
 			.expectStatus().isNotFound()
 			.expectHeader().contentType(APPLICATION_PROBLEM_JSON)
@@ -328,7 +329,7 @@ class SigningResourceFailureTest {
 		assertThat(result.getStatus()).isEqualTo(Status.NOT_FOUND);
 		assertThat(result.getTitle()).isEqualTo("Not Found");
 		assertThat(result.getDetail()).isEqualTo("The signing request with id someSigningId was not found");
-		verify(signingServiceMock).getSignatory(signingId, partyId);
+		verify(signingServiceMock).getSignatory(MUNICIPALITY_ID, signingId, partyId);
 	}
 
 

@@ -23,8 +23,6 @@ import se.sundsvall.comfactfacade.integration.party.PartyClient;
 import comfact.GetSignatoryRequest;
 import comfact.GetSigningInstanceRequest;
 import comfact.SigningInstanceInputType;
-import generated.se.sundsvall.party.PartyType;
-
 
 @Service
 public class SigningService {
@@ -39,11 +37,11 @@ public class SigningService {
 		this.partyClient = partyClient;
 	}
 
-	public CreateSigningResponse createSigningRequest(final SigningRequest signingRequest) {
+	public CreateSigningResponse createSigningRequest(final String municipalityId, final SigningRequest signingRequest) {
 		final var request = toCreateSigningInstanceRequestType(signingRequest);
 		fetchPersonalNumbers(request.getSigningInstanceInput());
 
-		final var response = comfactIntegration.createSigningInstance(request);
+		final var response = comfactIntegration.createSigningInstance(municipalityId, request);
 
 		final var urlMap = new HashMap<String, String>();
 		response.getSignatoryUrls().forEach(signatoryUrl -> urlMap.put(signatoryUrl.getPartyId(), signatoryUrl.getValue().trim()));
@@ -54,30 +52,30 @@ public class SigningService {
 			.build();
 	}
 
-	public void updateSigningRequest(final String signingId, final SigningRequest signingRequest) {
+	public void updateSigningRequest(final String municipalityId, final String signingId, final SigningRequest signingRequest) {
 		final var request = toUpdateSigningInstanceRequestType(signingId, signingRequest);
 		fetchPersonalNumbers(request.getSigningInstanceInput());
 
-		comfactIntegration.updateSigningInstance(request);
+		comfactIntegration.updateSigningInstance(municipalityId, request);
 	}
 
-	public void cancelSigningRequest(final String signingId) {
-		comfactIntegration.withdrawSigningInstance(toWithdrawSigningInstanceRequestType(signingId));
+	public void cancelSigningRequest(final String municipalityId, final String signingId) {
+		comfactIntegration.withdrawSigningInstance(municipalityId, toWithdrawSigningInstanceRequestType(signingId));
 	}
 
-	public SigningInstance getSigningRequest(final String signingId) {
-		final var response = comfactIntegration.getSigningInstance(new GetSigningInstanceRequest().withSigningInstanceId(signingId));
+	public SigningInstance getSigningRequest(final String municipalityId, final String signingId) {
+		final var response = comfactIntegration.getSigningInstance(municipalityId, new GetSigningInstanceRequest().withSigningInstanceId(signingId));
 		return toSigningResponse(response);
 	}
 
-	public SigningsResponse getSigningRequests(final Pageable pageable) {
+	public SigningsResponse getSigningRequests(final String municipalityId, final Pageable pageable) {
 
-		final var response = comfactIntegration.getSigningInstanceInfo(SigningMapper.toGetSigningInstanceInfoRequest(pageable));
+		final var response = comfactIntegration.getSigningInstanceInfo(municipalityId, SigningMapper.toGetSigningInstanceInfoRequest(pageable));
 		return toSigningsResponse(response);
 	}
 
-	public se.sundsvall.comfactfacade.api.model.Signatory getSignatory(final String signingId, final String partyId) {
-		final var response = comfactIntegration.getSignatory(new GetSignatoryRequest().withPartyId(partyId).withSigningInstanceId(signingId));
+	public se.sundsvall.comfactfacade.api.model.Signatory getSignatory(final String municipalityId, final String signingId, final String partyId) {
+		final var response = comfactIntegration.getSignatory(municipalityId, new GetSignatoryRequest().withPartyId(partyId).withSigningInstanceId(signingId));
 		return SigningMapper.toSignatory(response.getSignatories().getFirst());
 
 	}
@@ -101,7 +99,7 @@ public class SigningService {
 	private void processEntity(final comfact.PartyType partyType) {
 		Optional.ofNullable(partyType)
 			.ifPresent(party -> {
-				final var legalId = partyClient.getLegalId(party.getPartyId(), PartyType.PRIVATE.name());
+				final var legalId = partyClient.getLegalId(party.getPartyId(), "PRIVATE");
 				party.setPersonalNumber(legalId);
 			});
 	}

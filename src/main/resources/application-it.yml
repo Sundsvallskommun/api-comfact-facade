@@ -24,3 +24,11 @@ spring:
           party:
             client-id: the-client-id
             client-secret: the-client-secret
+municipality:
+  ids:
+    2281:
+      username: sundsvall-username
+      password: sundsvall-password
+    2260:
+      username: ange-username
+      password: ange-password
