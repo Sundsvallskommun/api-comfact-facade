@@ -82,7 +82,7 @@ class SigningServiceTest {
 				.build()))
 			.build();
 
-		when(partyClientMock.getLegalId(partyId, "PRIVATE")).thenReturn("someLegalId");
+		when(partyClientMock.getLegalId(MUNICIPALITY_ID, partyId, "PRIVATE")).thenReturn("someLegalId");
 		when(comfactIntegrationMock.createSigningInstance(anyString(), any(CreateSigningInstanceRequest.class))).thenReturn(new comfact.CreateSigningInstanceResponse()
 			.withSigningInstanceId("123")
 			.withSignatoryUrls(new comfact.SignatoryUrl().withPartyId(partyId).withValue("someUrl")));
@@ -113,7 +113,7 @@ class SigningServiceTest {
 				.build()))
 			.build();
 
-		when(partyClientMock.getLegalId(partyId, "PRIVATE")).thenReturn("someLegalId");
+		when(partyClientMock.getLegalId(MUNICIPALITY_ID, partyId, "PRIVATE")).thenReturn("someLegalId");
 
 		// Act
 		signingService.updateSigningRequest(MUNICIPALITY_ID, signingId, signingRequest);

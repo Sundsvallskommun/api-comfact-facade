@@ -39,7 +39,7 @@ public class SigningService {
 
 	public CreateSigningResponse createSigningRequest(final String municipalityId, final SigningRequest signingRequest) {
 		final var request = toCreateSigningInstanceRequestType(signingRequest);
-		fetchPersonalNumbers(request.getSigningInstanceInput());
+		fetchPersonalNumbers(request.getSigningInstanceInput(), municipalityId);
 
 		final var response = comfactIntegration.createSigningInstance(municipalityId, request);
 
@@ -54,7 +54,7 @@ public class SigningService {
 
 	public void updateSigningRequest(final String municipalityId, final String signingId, final SigningRequest signingRequest) {
 		final var request = toUpdateSigningInstanceRequestType(signingId, signingRequest);
-		fetchPersonalNumbers(request.getSigningInstanceInput());
+		fetchPersonalNumbers( request.getSigningInstanceInput(), municipalityId);
 
 		comfactIntegration.updateSigningInstance(municipalityId, request);
 	}
@@ -81,25 +81,25 @@ public class SigningService {
 	}
 
 
-	private void fetchPersonalNumbers(final SigningInstanceInputType request) {
+	private void fetchPersonalNumbers(final SigningInstanceInputType request, final String municipalityId) {
 
-		processEntities(request.getSignatories());
+		processEntities(request.getSignatories(),municipalityId);
 
 		Optional.ofNullable(request.getInitiator())
-			.ifPresent(this::processEntity);
+			.ifPresent(partyType -> processEntity(partyType,municipalityId));
 
-		processEntities(request.getAdditionalParties());
+		processEntities(request.getAdditionalParties(),municipalityId);
 	}
 
-	private void processEntities(final List<? extends comfact.PartyType> partyTypes) {
+	private void processEntities(final List<? extends comfact.PartyType> partyTypes,final  String municipalityId) {
 		Optional.ofNullable(partyTypes)
-			.ifPresent(parties -> parties.forEach(this::processEntity));
+			.ifPresent(parties -> parties.forEach(partyType -> processEntity(partyType, municipalityId)));
 	}
 
-	private void processEntity(final comfact.PartyType partyType) {
+	private void processEntity(final comfact.PartyType partyType, final  String municipalityId) {
 		Optional.ofNullable(partyType)
 			.ifPresent(party -> {
-				final var legalId = partyClient.getLegalId(party.getPartyId(), "PRIVATE");
+				final var legalId = partyClient.getLegalId(municipalityId, party.getPartyId(), "PRIVATE");
 				party.setPersonalNumber(legalId);
 			});
 	}

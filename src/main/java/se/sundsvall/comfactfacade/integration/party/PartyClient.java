@@ -16,7 +16,7 @@ import se.sundsvall.comfactfacade.integration.party.configuration.PartyConfigura
 )
 public interface PartyClient {
 
-	@GetMapping(path = "/{type}/{partyId}/legalId")
-	String getLegalId(@PathVariable final String partyId, @PathVariable final String type);
+	@GetMapping(path = "/{municipalityId}/{type}/{partyId}/legalId")
+	String getLegalId(@PathVariable final String municipalityId, @PathVariable final String partyId, @PathVariable final String type);
 
 }
