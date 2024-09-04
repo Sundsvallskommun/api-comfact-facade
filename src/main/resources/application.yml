@@ -18,6 +18,9 @@ spring:
           party:
             authorization-grant-type: client_credentials
             provider: party
+mdc:
+  municipalityId:
+    enabled: true
 
 integration:
   comfact:
