@@ -76,8 +76,8 @@ public enum ResponseResultCode {
 
 	public static ResponseResultCode fromMessage(final String message) {
 		return Arrays.stream(values())
-			.filter(code -> code.message.equals(message)).findFirst()
+			.filter(code -> code.message.equals(message))
+			.findFirst()
 			.orElse(UNKNOWN_COMFACT_ERROR);
 	}
-
 }

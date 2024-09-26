@@ -1,9 +1,6 @@
 package se.sundsvall.comfactfacade.integration.comfact;
 
-
 import org.springframework.stereotype.Service;
-
-import se.sundsvall.comfactfacade.configuration.MunicipalityProperties;
 
 import comfact.CreateSigningInstanceRequest;
 import comfact.CreateSigningInstanceResponse;
@@ -16,6 +13,7 @@ import comfact.GetSigningInstanceRequest;
 import comfact.GetSigningInstanceResponse;
 import comfact.UpdateSigningInstanceRequest;
 import comfact.WithdrawSigningInstanceRequest;
+import se.sundsvall.comfactfacade.configuration.MunicipalityProperties;
 
 @Service
 public class ComfactIntegration {

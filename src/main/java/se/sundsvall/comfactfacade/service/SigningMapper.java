@@ -115,8 +115,7 @@ public final class SigningMapper {
 			.withPhoneNumber(signatory.getMobilePhoneNumber())
 			.withTitle(signatory.getTitle())
 			.withLanguage(signatory.getLanguage())
-			.withIdentifications(signatory.getIdentifications().stream().map(identification ->
-				new Identification(identification.getAlias())).toList())
+			.withIdentifications(signatory.getIdentifications().stream().map(identification -> new Identification(identification.getAlias())).toList())
 			.withNotificationMessage(toNotificationMessage(signatory.getNotificationMessage()))
 			.build();
 	}
@@ -140,8 +139,7 @@ public final class SigningMapper {
 	static UpdateSigningInstanceRequest toUpdateSigningInstanceRequestType(final String signingId, final SigningRequest signingRequest) {
 		return new UpdateSigningInstanceRequest()
 			.withSigningInstanceId(signingId)
-			.withSigningInstanceInput(toSigningInstanceInputType(signingRequest)
-			);
+			.withSigningInstanceInput(toSigningInstanceInputType(signingRequest));
 	}
 
 	static SigningInstanceInputType toSigningInstanceInputType(final SigningRequest signingRequest) {
@@ -284,7 +282,6 @@ public final class SigningMapper {
 				.withAnies(document));
 	}
 
-
 	static Element toDocument(final Paginator paginator) {
 		try {
 			final var document = DocumentBuilderFactory
@@ -368,5 +365,4 @@ public final class SigningMapper {
 			.map(totalItems -> (int) Math.ceil((double) totalItems / paginator.getPageSize()))
 			.orElse(0);
 	}
-
 }

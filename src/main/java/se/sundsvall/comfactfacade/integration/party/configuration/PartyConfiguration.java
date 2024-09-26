@@ -26,5 +26,4 @@ public class PartyConfiguration {
 			.withRequestTimeoutsInSeconds(properties.connectTimeout(), properties.readTimeout())
 			.composeCustomizersToOne();
 	}
-
 }

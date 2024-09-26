@@ -20,5 +20,4 @@ public class CustomPageableConfiguration implements WebMvcConfigurer {
 		resolver.setFallbackPageable(defaultPageable);
 		resolvers.add(resolver);
 	}
-
 }

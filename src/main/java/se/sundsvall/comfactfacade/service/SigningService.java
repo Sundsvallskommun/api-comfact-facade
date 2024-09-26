@@ -13,6 +13,9 @@ import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import comfact.GetSignatoryRequest;
+import comfact.GetSigningInstanceRequest;
+import comfact.SigningInstanceInputType;
 import se.sundsvall.comfactfacade.api.model.CreateSigningResponse;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
@@ -20,17 +23,12 @@ import se.sundsvall.comfactfacade.api.model.SigningsResponse;
 import se.sundsvall.comfactfacade.integration.comfact.ComfactIntegration;
 import se.sundsvall.comfactfacade.integration.party.PartyClient;
 
-import comfact.GetSignatoryRequest;
-import comfact.GetSigningInstanceRequest;
-import comfact.SigningInstanceInputType;
-
 @Service
 public class SigningService {
 
 	private final ComfactIntegration comfactIntegration;
 
 	private final PartyClient partyClient;
-
 
 	public SigningService(final ComfactIntegration comfactIntegration, final PartyClient partyClient) {
 		this.comfactIntegration = comfactIntegration;
@@ -54,7 +52,7 @@ public class SigningService {
 
 	public void updateSigningRequest(final String municipalityId, final String signingId, final SigningRequest signingRequest) {
 		final var request = toUpdateSigningInstanceRequestType(signingId, signingRequest);
-		fetchPersonalNumbers( request.getSigningInstanceInput(), municipalityId);
+		fetchPersonalNumbers(request.getSigningInstanceInput(), municipalityId);
 
 		comfactIntegration.updateSigningInstance(municipalityId, request);
 	}
@@ -80,23 +78,22 @@ public class SigningService {
 
 	}
 
-
 	private void fetchPersonalNumbers(final SigningInstanceInputType request, final String municipalityId) {
 
-		processEntities(request.getSignatories(),municipalityId);
+		processEntities(request.getSignatories(), municipalityId);
 
 		Optional.ofNullable(request.getInitiator())
-			.ifPresent(partyType -> processEntity(partyType,municipalityId));
+			.ifPresent(partyType -> processEntity(partyType, municipalityId));
 
-		processEntities(request.getAdditionalParties(),municipalityId);
+		processEntities(request.getAdditionalParties(), municipalityId);
 	}
 
-	private void processEntities(final List<? extends comfact.PartyType> partyTypes,final  String municipalityId) {
+	private void processEntities(final List<? extends comfact.PartyType> partyTypes, final String municipalityId) {
 		Optional.ofNullable(partyTypes)
 			.ifPresent(parties -> parties.forEach(partyType -> processEntity(partyType, municipalityId)));
 	}
 
-	private void processEntity(final comfact.PartyType partyType, final  String municipalityId) {
+	private void processEntity(final comfact.PartyType partyType, final String municipalityId) {
 		Optional.ofNullable(partyType)
 			.ifPresent(party -> {
 				final var legalId = partyClient.getLegalId(municipalityId, party.getPartyId(), "PRIVATE");

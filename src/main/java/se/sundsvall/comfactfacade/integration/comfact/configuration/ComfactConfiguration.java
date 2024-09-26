@@ -1,18 +1,15 @@
 package se.sundsvall.comfactfacade.integration.comfact.configuration;
 
-
-import jakarta.xml.soap.SOAPConstants;
-
 import org.springframework.cloud.openfeign.FeignBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
-import se.sundsvall.dept44.configuration.feign.FeignConfiguration;
-import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
-
 import feign.jaxb.JAXBContextFactory;
 import feign.soap.SOAPDecoder;
 import feign.soap.SOAPEncoder;
+import jakarta.xml.soap.SOAPConstants;
+import se.sundsvall.dept44.configuration.feign.FeignConfiguration;
+import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 
 @Import(FeignConfiguration.class)
 public class ComfactConfiguration {
@@ -36,5 +33,4 @@ public class ComfactConfiguration {
 			.withRequestTimeoutsInSeconds(properties.connectTimeout(), properties.readTimeout())
 			.composeCustomizersToOne();
 	}
-
 }
