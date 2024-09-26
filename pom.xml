@@ -14,21 +14,11 @@
     <version>1.0</version>
     <name>api-comfact-facade</name>
     <properties>
-        <!--- Service properties -->
-        <generated-sources-path>${project.build.directory}/generated-sources
-        </generated-sources-path>
-
-        <generated-sources-java-path>src/main/java</generated-sources-java-path>
+        <generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
         <jaxb2-maven-plugin.version>3.1.0</jaxb2-maven-plugin.version>
         <jaxb2-fluent-api.version>3.0</jaxb2-fluent-api.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
         <dependency>
             <groupId>se.sundsvall.dept44</groupId>
             <artifactId>dept44-starter-feign</artifactId>
@@ -37,16 +27,22 @@
             <groupId>se.sundsvall.dept44</groupId>
             <artifactId>dept44-models</artifactId>
         </dependency>
+        <dependency>
+            <groupId>se.sundsvall.dept44</groupId>
+            <artifactId>dept44-common-validators</artifactId>
+        </dependency>
         <!-- Test -->
         <dependency>
             <groupId>se.sundsvall.dept44</groupId>
             <artifactId>dept44-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+		<!-- Other -->
         <dependency>
-            <groupId>se.sundsvall.dept44</groupId>
-            <artifactId>dept44-common-validators</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -67,7 +63,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -78,9 +73,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>
-                                ${project.basedir}/src/main/resources/contract/party.yml
-                            </inputSpec>
+                            <inputSpec>${project.basedir}/src/main/resources/contract/party.yml</inputSpec>
                             <generateSupportingFiles>false</generateSupportingFiles>
                             <output>${generated-sources-path}</output>
                             <generatorName>spring</generatorName>
@@ -89,7 +82,7 @@
                             <generateSupportingFiles>false</generateSupportingFiles>
                             <configOptions>
                                 <useSpringBoot3>true</useSpringBoot3>
-                                <sourceFolder>${generated-sources-java-path}</sourceFolder>
+                                <sourceFolder>models</sourceFolder>
                                 <dateLibrary>java8</dateLibrary>
                                 <modelPackage>generated.se.sundsvall.party</modelPackage>
                                 <openApiNullable>false</openApiNullable>
@@ -115,9 +108,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <bindingDirectory>
-                        ${project.basedir}/src/main/resources/integrations/comfact/xjb
-                    </bindingDirectory>
+                    <bindingDirectory>${project.basedir}/src/main/resources/integrations/comfact/xjb</bindingDirectory>
                     <extension>true</extension>
                     <args>
                         <arg>-wsdl</arg>
@@ -131,11 +122,8 @@
                         </plugin>
                     </plugins>
                     <generatePackage>comfact</generatePackage>
-                    <generateDirectory>
-                        ${generated-sources-path}/${generated-sources-java-path}/generated/se/comfact
-                    </generateDirectory>
-                    <schemaDirectory>${project.basedir}/src/main/resources/integrations/comfact
-                    </schemaDirectory>
+                    <generateDirectory>${generated-sources-path}/jaxb/comfact</generateDirectory>
+                    <schemaDirectory>${project.basedir}/src/main/resources/integrations/comfact</schemaDirectory>
                 </configuration>
             </plugin>
             <plugin>
@@ -151,10 +139,9 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${generated-sources-path}/models
-                                </source>                                <!-- API model classes -->
-                                <source>${generated-sources-path}/annotations
-                                </source>                                <!-- JPAModelGen classes -->
+                                <source>${generated-sources-path}/models</source><!-- API model classes -->
+                                 <source>${generated-sources-path}/jaxb/comfact/comfact</source><!-- Comfact model classes -->
+                                <source>${generated-sources-path}/annotations</source><!-- JPAModelGen classes -->
                             </sources>
                         </configuration>
                     </execution>

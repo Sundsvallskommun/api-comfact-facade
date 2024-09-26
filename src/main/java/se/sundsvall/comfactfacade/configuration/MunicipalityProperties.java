@@ -11,5 +11,4 @@ public record MunicipalityProperties(Map<String, Municipality> ids) {
 		String username,
 		String password) {
 	}
-
 }

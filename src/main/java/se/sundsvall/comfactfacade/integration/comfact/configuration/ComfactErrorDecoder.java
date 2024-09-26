@@ -44,5 +44,4 @@ public class ComfactErrorDecoder implements ErrorDecoder {
 		final var responseResultCode = ResponseResultCode.fromMessage(resultCode);
 		return Problem.valueOf(Status.valueOf(responseResultCode.getHttpCode()), resultMessage);
 	}
-
 }
