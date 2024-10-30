@@ -1,14 +1,10 @@
 {
-  "name": "Test Testorsson",
-  "partyId": "23456",
-  "title": "Test",
-  "email": "test.testorsson@sundsvall.se",
-  "phoneNumber": "+46701234567",
-  "organization": "Sundsvalls kommun",
-  "language": "sv-SE",
-  "identifications": [
-    {
-      "alias": "SvensktEId"
-    }
-  ]
+	"phoneNumber": "+46701234567",
+	"organization": "Sundsvalls kommun",
+	"name": "Test Testorsson",
+	"language": "sv-SE",
+	"partyId": "23456",
+	"title": "Test",
+	"email": "test.testorsson@sundsvall.se",
+	"identifications": [{"alias": "SvensktEId"}]
 }

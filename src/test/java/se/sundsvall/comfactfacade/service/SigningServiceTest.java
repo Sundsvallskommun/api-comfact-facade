@@ -125,7 +125,6 @@ class SigningServiceTest {
 		assertThat(updateRequestCaptor.getValue().getSigningInstanceInput()).isNotNull();
 	}
 
-
 	@Test
 	void cancelSigningRequest() {
 		// Arrange
@@ -137,7 +136,6 @@ class SigningServiceTest {
 		assertThat(withdrawRequestCaptor.getValue()).isNotNull();
 		assertThat(withdrawRequestCaptor.getValue().getSigningInstanceId()).isEqualTo(signingId);
 	}
-
 
 	@Test
 	void getSigningRequest() {
@@ -162,7 +160,6 @@ class SigningServiceTest {
 		assertThat(getSigningInstanceRequestCaptor.getValue()).isNotNull();
 		assertThat(getSigningInstanceRequestCaptor.getValue().getSigningInstanceId()).isEqualTo(signingId);
 	}
-
 
 	@Test
 	void getSigningRequests() {

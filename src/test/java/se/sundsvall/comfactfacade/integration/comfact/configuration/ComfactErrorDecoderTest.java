@@ -16,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import feign.Response;
 
-
 @ExtendWith(MockitoExtension.class)
 class ComfactErrorDecoderTest {
 
@@ -34,14 +33,14 @@ class ComfactErrorDecoderTest {
 		when(response.body()).thenReturn(body);
 		when(body.asInputStream()).thenReturn(new ByteArrayInputStream("""
 				<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-				   <soap:Body>
-				      <GetSigningInstanceInfoResponse xmlns="urn:comfact:prosale:signing:2.0:protocol">
-				         <Result success="false">
-				            <ResultCode>DatabaseError</ResultCode>
-				            <ResultMessage>A database error occurred that can not be automatically repaired. [EventId:fd93ea28ac094e2e83b0a1b6c02058d6]</ResultMessage>
-				         </Result>
-				      </GetSigningInstanceInfoResponse>
-				   </soap:Body>
+				<soap:Body>
+					<GetSigningInstanceInfoResponse xmlns="urn:comfact:prosale:signing:2.0:protocol">
+						<Result success="false">
+							<ResultCode>DatabaseError</ResultCode>
+							<ResultMessage>A database error occurred that can not be automatically repaired. [EventId:fd93ea28ac094e2e83b0a1b6c02058d6]</ResultMessage>
+						</Result>
+					</GetSigningInstanceInfoResponse>
+				</soap:Body>
 				</soap:Envelope>
 			""".getBytes()));
 

@@ -45,7 +45,6 @@ class SigningsResponseTest {
 		assertThat(signingsResponse.getSigningInstances()).isSameAs(signingInstances);
 	}
 
-
 	@Test
 	void noDirtOnCreatedBean() {
 		assertThat(SigningsResponse.builder().build()).hasAllNullFieldsOrProperties();

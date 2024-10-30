@@ -102,7 +102,6 @@ class SigningResourceFailureTest {
 		verifyNoInteractions(signingServiceMock);
 	}
 
-
 	@Test
 	void createSigningRequest_withoutSignatory() {
 
@@ -177,7 +176,6 @@ class SigningResourceFailureTest {
 
 		verifyNoInteractions(signingServiceMock);
 	}
-
 
 	@Test
 	void createSigningRequest_withFaultyPartyId() {
@@ -331,6 +329,5 @@ class SigningResourceFailureTest {
 		assertThat(result.getDetail()).isEqualTo("The signing request with id someSigningId was not found");
 		verify(signingServiceMock).getSignatory(MUNICIPALITY_ID, signingId, partyId);
 	}
-
 
 }

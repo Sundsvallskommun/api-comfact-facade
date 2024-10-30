@@ -1,18 +1,12 @@
 {
 	"request": {
-		"url": "/comfact",
 		"method": "POST",
-		"bodyPatterns": [
-			{
-				"equalToXml": "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Header/><SOAP-ENV:Body><WithdrawSigningInstanceRequest xmlns=\"urn:comfact:prosale:signing:2.0:protocol\" xmlns:ns2=\"urn:comfact:prosale:pagination:1.0:protocol\"><Credentials><UserId>sundsvall-username</UserId><Password>sundsvall-password</Password></Credentials><SigningInstanceId>1</SigningInstanceId></WithdrawSigningInstanceRequest></SOAP-ENV:Body></SOAP-ENV:Envelope>"
-			}
-		]
+		"bodyPatterns": [{"equalToXml": "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Header/><SOAP-ENV:Body><WithdrawSigningInstanceRequest xmlns=\"urn:comfact:prosale:signing:2.0:protocol\" xmlns:ns2=\"urn:comfact:prosale:pagination:1.0:protocol\"><Credentials><UserId>sundsvall-username<\/UserId><Password>sundsvall-password<\/Password><\/Credentials><SigningInstanceId>1<\/SigningInstanceId><\/WithdrawSigningInstanceRequest><\/SOAP-ENV:Body><\/SOAP-ENV:Envelope>"}],
+		"url": "/comfact"
 	},
 	"response": {
-		"status": 200,
-		"headers": {
-			"Content-Type": "text/xml"
-		},
-		"bodyFileName": "test5_cancelSigningRequest/responses/WithdrawSigningInstance.xml"
+		"headers": {"Content-Type": "text/xml"},
+		"bodyFileName": "test5_cancelSigningRequest/responses/WithdrawSigningInstance.xml",
+		"status": 200
 	}
 }

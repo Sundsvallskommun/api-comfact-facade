@@ -16,7 +16,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -67,10 +66,14 @@ public class SigningRequest {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		final SigningRequest that = (SigningRequest) o;
-		return Objects.equals(additionalDocuments, that.additionalDocuments) && Objects.equals(language, that.language) && Objects.equals(customerReference, that.customerReference) && Objects.equals(expires, that.expires) && Objects.equals(notificationMessage, that.notificationMessage) && Objects.equals(reminder, that.reminder) && Objects.equals(initiator, that.initiator) && Objects.equals(additionalParties, that.additionalParties) && Objects.equals(signatories, that.signatories) && Objects.equals(document, that.document);
+		return Objects.equals(additionalDocuments, that.additionalDocuments) && Objects.equals(language, that.language) && Objects.equals(customerReference, that.customerReference) && Objects.equals(expires, that.expires) && Objects.equals(
+			notificationMessage, that.notificationMessage) && Objects.equals(reminder, that.reminder) && Objects.equals(initiator, that.initiator) && Objects.equals(additionalParties, that.additionalParties) && Objects.equals(signatories, that.signatories)
+			&& Objects.equals(document, that.document);
 	}
 
 	@Override

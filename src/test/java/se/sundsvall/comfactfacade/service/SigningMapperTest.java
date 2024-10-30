@@ -39,7 +39,6 @@ import se.sundsvall.comfactfacade.api.model.SigningRequest;
 
 class SigningMapperTest {
 
-
 	@Test
 	void toSigningResponse() throws DatatypeConfigurationException {
 		// Arrange
@@ -47,7 +46,6 @@ class SigningMapperTest {
 		final var zonedDateTime = now().atZoneSameInstant(ZoneId.systemDefault());
 		final var gregorianCalendar = GregorianCalendar.from(zonedDateTime);
 		final var xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
-
 
 		final var status = new Status();
 		final var customerReferenceNumber = "customerReferenceNumber";
@@ -600,7 +598,6 @@ class SigningMapperTest {
 		assertThat(result.getPagingAndSortingMetaData().getTotalRecords()).isEqualTo(totalItems);
 		assertThat(result.getPagingAndSortingMetaData().getTotalPages()).isEqualTo(totalPages);
 	}
-
 
 	@Test
 	void toSigningsResponse_noPaging() {

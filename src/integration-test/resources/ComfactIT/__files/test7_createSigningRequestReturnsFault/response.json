@@ -1,5 +1,5 @@
 {
+	"detail": "The input supplied by the client is invalid or could not be parsed. [EventId:58f21c40446c4108a804c67ce0a2d048] Input document is not a valid PDF document.",
 	"title": "Bad Request",
-	"status": 400,
-	"detail": "The input supplied by the client is invalid or could not be parsed. [EventId:58f21c40446c4108a804c67ce0a2d048] Input document is not a valid PDF document."
+	"status": 400
 }

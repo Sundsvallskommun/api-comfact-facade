@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -52,10 +51,13 @@ public class Party {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		final Party party = (Party) o;
-		return Objects.equals(name, party.name) && Objects.equals(partyId, party.partyId) && Objects.equals(notificationMessage, party.notificationMessage) && Objects.equals(title, party.title) && Objects.equals(email, party.email) && Objects.equals(phoneNumber, party.phoneNumber) && Objects.equals(organization, party.organization) && Objects.equals(language, party.language);
+		return Objects.equals(name, party.name) && Objects.equals(partyId, party.partyId) && Objects.equals(notificationMessage, party.notificationMessage) && Objects.equals(title, party.title) && Objects.equals(email, party.email) && Objects.equals(
+			phoneNumber, party.phoneNumber) && Objects.equals(organization, party.organization) && Objects.equals(language, party.language);
 	}
 
 	@Override

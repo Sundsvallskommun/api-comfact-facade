@@ -59,7 +59,6 @@ class PartyTest {
 		assertThat(result.getNotificationMessage()).isSameAs(notificationMessage);
 	}
 
-
 	@Test
 	void noDirtOnCreatedBean() {
 		assertThat(Party.builder().build()).hasAllNullFieldsOrProperties();

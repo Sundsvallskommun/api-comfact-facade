@@ -1,14 +1,12 @@
 {
-  "name": "api-gateway",
-  "request": {
-    "urlPath": "/api-gateway/token",
-    "method": "POST"
-  },
-  "response": {
-    "headers": {
-      "Content-Type": "application/json"
-    },
-    "status": 200,
-    "bodyFileName": "test3_createSigningRequest/responses/token.json"
-  }
+	"request": {
+		"method": "POST",
+		"urlPath": "/api-gateway/token"
+	},
+	"response": {
+		"headers": {"Content-Type": "application/json"},
+		"bodyFileName": "test3_createSigningRequest/responses/token.json",
+		"status": 200
+	},
+	"name": "api-gateway"
 }

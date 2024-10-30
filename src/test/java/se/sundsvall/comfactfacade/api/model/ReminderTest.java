@@ -60,7 +60,6 @@ class ReminderTest {
 
 	}
 
-
 	@Test
 	void noDirtOnCreatedBean() {
 		assertThat(Reminder.builder().build()).hasAllNullFieldsOrPropertiesExcept("enabled", "intervalInHours");

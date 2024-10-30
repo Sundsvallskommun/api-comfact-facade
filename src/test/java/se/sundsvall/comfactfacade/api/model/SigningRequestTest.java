@@ -41,30 +41,28 @@ class SigningRequestTest {
 		final var customerReference = "someCustomerReference";
 		final var expires = now();
 		final var notificationMessage = new NotificationMessage("someSubject", "someBody", "sv-SE");
-		final var party =
-			Party.builder()
-				.withName("someName")
-				.withPartyId("somePartyId")
-				.withNotificationMessage(notificationMessage)
-				.withTitle("someTitle")
-				.withEmail("someEmail")
-				.withPhoneNumber("somePhone")
-				.withOrganization("some")
-				.withLanguage("someLanguage")
-				.build();
+		final var party = Party.builder()
+			.withName("someName")
+			.withPartyId("somePartyId")
+			.withNotificationMessage(notificationMessage)
+			.withTitle("someTitle")
+			.withEmail("someEmail")
+			.withPhoneNumber("somePhone")
+			.withOrganization("some")
+			.withLanguage("someLanguage")
+			.build();
 
-		final var signatory =
-			Signatory.builder()
-				.withName("someName")
-				.withPartyId("somePartyId")
-				.withNotificationMessage(notificationMessage)
-				.withTitle("someTitle")
-				.withEmail("someEmail")
-				.withPhoneNumber("somePhone")
-				.withOrganization("some")
-				.withLanguage("someLanguage")
-				.withIdentifications(List.of(new Identification("someAlias")))
-				.build();
+		final var signatory = Signatory.builder()
+			.withName("someName")
+			.withPartyId("somePartyId")
+			.withNotificationMessage(notificationMessage)
+			.withTitle("someTitle")
+			.withEmail("someEmail")
+			.withPhoneNumber("somePhone")
+			.withOrganization("some")
+			.withLanguage("someLanguage")
+			.withIdentifications(List.of(new Identification("someAlias")))
+			.build();
 		final var additionalParties = List.of(party);
 		final var signatories = List.of(signatory);
 		final var document = new Document("someName", "someFileName", "someContentType", "someContent");

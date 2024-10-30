@@ -24,8 +24,10 @@ public class Status {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		final Status status = (Status) o;
 		return Objects.equals(code, status.code) && Objects.equals(message, status.message);
 	}
@@ -42,6 +44,5 @@ public class Status {
 			", message='" + message + '\'' +
 			'}';
 	}
-
 
 }

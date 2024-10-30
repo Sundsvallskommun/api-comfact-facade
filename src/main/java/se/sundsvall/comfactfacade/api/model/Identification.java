@@ -19,8 +19,10 @@ import lombok.Setter;
 @Schema(description = "The means of identification to use to identify the signatories.")
 public class Identification {
 
-	@OneOf({"SmsCode", "EmailCode", "SvensktEId"})
-	@Schema(description = """ 
+	@OneOf({
+		"SmsCode", "EmailCode", "SvensktEId"
+	})
+	@Schema(description = """
 		Possible values for Alias type:
 		• SmsCode – One Time Password via SMS
 		• EmailCode – One Time Password via Email
@@ -28,11 +30,12 @@ public class Identification {
 		""", example = "SmsCode")
 	private String alias;
 
-
 	@Override
 	public boolean equals(final Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		final Identification that = (Identification) o;
 		return Objects.equals(alias, that.alias);
 	}

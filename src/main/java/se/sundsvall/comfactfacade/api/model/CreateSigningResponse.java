@@ -22,8 +22,10 @@ public class CreateSigningResponse {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		final CreateSigningResponse that = (CreateSigningResponse) o;
 		return Objects.equals(signingId, that.signingId) && Objects.equals(signatoryUrls, that.signatoryUrls);
 	}
