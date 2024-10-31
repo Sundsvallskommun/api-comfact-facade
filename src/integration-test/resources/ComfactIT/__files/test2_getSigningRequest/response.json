@@ -1,93 +1,81 @@
 {
-  "notificationMessages": [
-    {
-      "subject": "Testing",
-      "body": "Testing, testing",
-      "language": "sv-se"
-    }
-  ],
-  "initiator": {
-    "name": "Test Testorsson",
-    "partyId": "111222",
-    "title": "Test",
-    "email": "test.testorsson@sundsvall.se",
-    "phoneNumber": "+46701234567",
-    "organization": "Sundsvalls kommun",
-    "language": "sv-SE"
-  },
-  "additionalParties": [
-    {
-      "name": "Test Testorsson",
-      "partyId": "12345",
-      "title": "Test",
-      "email": "test.testorsson@sundsvall.se",
-      "phoneNumber": "+46701234567",
-      "organization": "Sundsvalls kommun",
-      "language": "sv-SE"
-    }
-  ],
-  "signatories": [
-    {
-      "name": "Test Testorsson",
-      "partyId": "23456",
-      "title": "Test",
-      "email": "test.testorsson@sundsvall.se",
-      "phoneNumber": "+46701234567",
-      "organization": "Sundsvalls kommun",
-      "language": "sv-SE",
-      "identifications": [
-        {
-          "alias": "SvensktEId"
-        }
-      ]
-    },
-    {
-      "name": "Kalle Anka",
-      "partyId": "34567",
-      "title": "Test",
-      "email": "test.testorsson@sundsvall.se",
-      "phoneNumber": "+46701234567",
-      "organization": "Sundsvalls kommun",
-      "language": "sv-SE",
-      "identifications": [
-        {
-          "alias": "SvensktEId"
-        }
-      ]
-    }
-  ],
-  "status": {
-    "code": "Completed",
-    "message": "The signing instance is completed."
-  },
-  "created": "2024-01-30T10:53:42.12+01:00",
-  "changed": "2024-01-30T10:56:11.487+01:00",
-  "expires": "2024-02-29T10:53:42.12+01:00",
-  "document": {
-    "name": "TestDocument",
-    "fileName": "dummy.pdf",
-    "mimeType": "application/pdf",
-    "content": "ZEdWemRBPT0="
-  },
-  "signedDocument": {
-    "name": "TestDocument",
-    "fileName": "dummy signed.pdf",
-    "mimeType": "application/pdf",
-    "content": "ZEdWemRBPT0="
-  },
-  "additionalDocuments": [
-    {
-      "name": "TestAttachment1",
-      "fileName": "dummy2.pdf",
-      "mimeType": "application/pdf",
-      "content": "ZEdWemRBPT0="
-    },
-    {
-      "name": "TestAttachment2",
-      "fileName": "dummy3.pdf",
-      "mimeType": "application/pdf",
-      "content": "ZEdWemRBPT0="
-    }
-  ],
-  "signingId": "6ec3c3b47921446083f569977d4a8a57"
+	"signatories": [
+		{
+			"phoneNumber": "+46701234567",
+			"organization": "Sundsvalls kommun",
+			"name": "Test Testorsson",
+			"language": "sv-SE",
+			"partyId": "23456",
+			"title": "Test",
+			"email": "test.testorsson@sundsvall.se",
+			"identifications": [{"alias": "SvensktEId"}]
+		},
+		{
+			"phoneNumber": "+46701234567",
+			"organization": "Sundsvalls kommun",
+			"name": "Kalle Anka",
+			"language": "sv-SE",
+			"partyId": "34567",
+			"title": "Test",
+			"email": "test.testorsson@sundsvall.se",
+			"identifications": [{"alias": "SvensktEId"}]
+		}
+	],
+	"expires": "2024-02-29T10:53:42.12+01:00",
+	"notificationMessages": [{
+		"subject": "Testing",
+		"language": "sv-se",
+		"body": "Testing, testing"
+	}],
+	"additionalDocuments": [
+		{
+			"fileName": "dummy2.pdf",
+			"name": "TestAttachment1",
+			"mimeType": "application/pdf",
+			"content": "ZEdWemRBPT0="
+		},
+		{
+			"fileName": "dummy3.pdf",
+			"name": "TestAttachment2",
+			"mimeType": "application/pdf",
+			"content": "ZEdWemRBPT0="
+		}
+	],
+	"additionalParties": [{
+		"phoneNumber": "+46701234567",
+		"organization": "Sundsvalls kommun",
+		"name": "Test Testorsson",
+		"language": "sv-SE",
+		"partyId": "12345",
+		"title": "Test",
+		"email": "test.testorsson@sundsvall.se"
+	}],
+	"created": "2024-01-30T10:53:42.12+01:00",
+	"initiator": {
+		"phoneNumber": "+46701234567",
+		"organization": "Sundsvalls kommun",
+		"name": "Test Testorsson",
+		"language": "sv-SE",
+		"partyId": "111222",
+		"title": "Test",
+		"email": "test.testorsson@sundsvall.se"
+	},
+	"document": {
+		"fileName": "dummy.pdf",
+		"name": "TestDocument",
+		"mimeType": "application/pdf",
+		"content": "ZEdWemRBPT0="
+	},
+	"signingId": "6ec3c3b47921446083f569977d4a8a57",
+	"signedDocument": {
+		"fileName": "dummy signed.pdf",
+		"name": "TestDocument",
+		"mimeType": "application/pdf",
+		"content": "ZEdWemRBPT0="
+	},
+	"status": {
+		"code": "Completed",
+		"message": "The signing instance is completed."
+	},
+	"changed": "2024-01-30T10:56:11.487+01:00"
 }

@@ -1,18 +1,12 @@
 {
-  "request": {
-    "url": "/comfact",
-    "method": "POST",
-    "bodyPatterns": [
-      {
-        "contains": "GetSigningInstanceInfoRequest"
-      }
-    ]
-  },
-  "response": {
-    "status": 200,
-    "headers": {
-      "Content-Type": "text/xml"
-    },
-    "bodyFileName": "test1_getSigningRequests/responses/GetSigningInstanceInfo.xml"
-  }
+	"request": {
+		"method": "POST",
+		"bodyPatterns": [{"contains": "GetSigningInstanceInfoRequest"}],
+		"url": "/comfact"
+	},
+	"response": {
+		"headers": {"Content-Type": "text/xml"},
+		"bodyFileName": "test1_getSigningRequests/responses/GetSigningInstanceInfo.xml",
+		"status": 200
+	}
 }

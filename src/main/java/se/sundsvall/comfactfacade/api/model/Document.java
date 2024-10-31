@@ -27,8 +27,10 @@ public class Document {
 	@NotBlank
 	@Schema(description = "The document file name including extension,", example = "document.pdf")
 	private String fileName;
-	
-	@OneOf({"application/pdf"})
+
+	@OneOf({
+		"application/pdf"
+	})
 	@Schema(description = "The documents mimetype. Must be application/pdf", example = "application/pdf")
 	private String mimeType;
 
@@ -38,8 +40,10 @@ public class Document {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		final Document document = (Document) o;
 		return Objects.equals(name, document.name) && Objects.equals(fileName, document.fileName) && Objects.equals(mimeType, document.mimeType) && Objects.equals(content, document.content);
 	}
@@ -58,6 +62,5 @@ public class Document {
 			", content='" + content + '\'' +
 			'}';
 	}
-
 
 }

@@ -32,7 +32,9 @@ public interface ComfactClient {
 	 *                              for each signatory to start their
 	 *                              signing flow
 	 */
-	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = { "SOAPAction=CreateSigningInstance" })
+	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {
+		"SOAPAction=CreateSigningInstance"
+	})
 	CreateSigningInstanceResponse createSigningInstance(CreateSigningInstanceRequest createSigningInstance);
 
 	/**
@@ -42,7 +44,9 @@ public interface ComfactClient {
 	 * @return                       {@link UpdateSigningInstanceResponse} containing information if request was successful
 	 *                               or not
 	 */
-	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = { "SOAPAction=UpdateSigningInstance" })
+	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {
+		"SOAPAction=UpdateSigningInstance"
+	})
 	UpdateSigningInstanceResponse updateSigningInstance(UpdateSigningInstanceRequest updateSigningInstance);
 
 	/**
@@ -52,7 +56,9 @@ public interface ComfactClient {
 	 * @return                         {@link WithdrawSigningInstanceResponse} containing information if request was
 	 *                                 successful or not
 	 */
-	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = { "SOAPAction=WithdrawSigningInstance" })
+	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {
+		"SOAPAction=WithdrawSigningInstance"
+	})
 	WithdrawSigningInstanceResponse withdrawSigningInstance(WithdrawSigningInstanceRequest withdrawSigningInstance);
 
 	/**
@@ -61,7 +67,9 @@ public interface ComfactClient {
 	 * @param  getSigningInstanceRequest the request et a signing instance
 	 * @return                           {@link GetSigningInstanceResponse} containing the signing instance
 	 */
-	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = { "SOAPAction=GetSigningInstance" })
+	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {
+		"SOAPAction=GetSigningInstance"
+	})
 	GetSigningInstanceResponse getSigningInstance(GetSigningInstanceRequest getSigningInstanceRequest);
 
 	/**
@@ -71,7 +79,9 @@ public interface ComfactClient {
 	 * @return                           {@link GetSigningInstanceInfoResponse} containing the general information of
 	 *                                   existing SigningInstances
 	 */
-	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = { "SOAPAction=GetSigningInstanceInfo" })
+	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {
+		"SOAPAction=GetSigningInstanceInfo"
+	})
 	GetSigningInstanceInfoResponse getSigningInstanceInfo(GetSigningInstanceInfoRequest getSigningInstanceRequest);
 
 	/**
@@ -80,6 +90,8 @@ public interface ComfactClient {
 	 * @param  getSignatoryRequest the request to get signatory
 	 * @return                     {@link GetSignatoryResponse} containing the signatory information
 	 */
-	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = { "SOAPAction=GetSignatory" })
+	@PostMapping(consumes = TEXT_XML_UTF8, produces = TEXT_XML_UTF8, headers = {
+		"SOAPAction=GetSignatory"
+	})
 	GetSignatoryResponse getSignatory(GetSignatoryRequest getSignatoryRequest);
 }

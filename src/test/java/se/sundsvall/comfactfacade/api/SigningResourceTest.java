@@ -1,6 +1,5 @@
 package se.sundsvall.comfactfacade.api;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -32,7 +31,6 @@ import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.SigningsResponse;
 import se.sundsvall.comfactfacade.service.SigningService;
 import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
-
 
 @SpringBootTest(classes = Application.class, webEnvironment = RANDOM_PORT)
 @ActiveProfiles("junit")
@@ -69,7 +67,6 @@ class SigningResourceTest {
 		assertThat(result.getPagingAndSortingMetaData()).isNotNull();
 
 	}
-
 
 	@Test
 	void createSigningRequest() {
@@ -140,7 +137,6 @@ class SigningResourceTest {
 		verify(signingServiceMock).updateSigningRequest(MUNICIPALITY_ID, signingId, signingRequest);
 	}
 
-
 	@Test
 	void cancelSigningRequest() {
 		// Arrange
@@ -156,7 +152,6 @@ class SigningResourceTest {
 		// Assert
 		verify(signingServiceMock).cancelSigningRequest(MUNICIPALITY_ID, signingId);
 	}
-
 
 	@Test
 	void getSigningRequest() {
@@ -177,7 +172,6 @@ class SigningResourceTest {
 		assertThat(result).isNotNull();
 	}
 
-
 	@Test
 	void getSignatory() {
 		// Arrange
@@ -193,7 +187,6 @@ class SigningResourceTest {
 			.expectBody(Party.class)
 			.returnResult()
 			.getResponseBody();
-
 
 		// Assert
 		verify(signingServiceMock).getSignatory(MUNICIPALITY_ID, signingId, partyId);

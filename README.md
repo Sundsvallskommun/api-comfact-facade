@@ -9,6 +9,6 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Sundsvallskommun_api-comfact-facade&metric=vulnerabilities)](https://sonarcloud.io/summary/overall?id=Sundsvallskommun_api-comfact-facade)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Sundsvallskommun_api-comfact-facade&metric=bugs)](https://sonarcloud.io/summary/overall?id=Sundsvallskommun_api-comfact-facade)
 
-##
+## 
 
 Copyright (c) 2024 Sundsvalls kommun

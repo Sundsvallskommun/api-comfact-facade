@@ -40,7 +40,9 @@ import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 @Validated
 @RequestMapping("/{municipalityId}/signings")
 @Tag(name = "Signings", description = "Signing operations")
-@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = { Problem.class, ConstraintViolationProblem.class })))
+@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {
+	Problem.class, ConstraintViolationProblem.class
+})))
 @ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 @ApiResponse(responseCode = "502", description = "Bad Gateway", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 class SigningResource {
@@ -51,7 +53,9 @@ class SigningResource {
 		this.signingService = signingService;
 	}
 
-	@GetMapping(produces = { APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE })
+	@GetMapping(produces = {
+		APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
+	})
 	@Operation(summary = "Get all signing instances.",
 		description = "The 'sort' parameter in the Pageable object can take the values 'SigningInstanceId', 'ReferenceNumber', 'CustomerReferenceNumber', 'Created', 'Changed', 'Expires', 'StatusCode', 'StatusMessage', 'UserId', 'Language', 'SignatoryReminderStartDate', 'InitiatorEmailAddress', 'QueueCreated', 'QueueChanged'. Will default to 'SigningInstanceId' if not set. Will default to page 0 with a size of 10 if not set.")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
@@ -63,7 +67,9 @@ class SigningResource {
 		return ok(signingService.getSigningRequests(municipalityId, pageable));
 	}
 
-	@GetMapping(path = "{signingId}", produces = { APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE })
+	@GetMapping(path = "{signingId}", produces = {
+		APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
+	})
 	@Operation(summary = "Get a signing request.")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
@@ -74,7 +80,9 @@ class SigningResource {
 		return ok(signingService.getSigningRequest(municipalityId, signingId));
 	}
 
-	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = { APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE })
+	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = {
+		APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
+	})
 	@Operation(summary = "Create Signing instance.")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	ResponseEntity<CreateSigningResponse> createSigningRequest(
@@ -84,7 +92,9 @@ class SigningResource {
 		return ok(signingService.createSigningRequest(municipalityId, signingRequest));
 	}
 
-	@PatchMapping(path = "{signingId}", consumes = APPLICATION_JSON_VALUE, produces = { APPLICATION_PROBLEM_JSON_VALUE })
+	@PatchMapping(path = "{signingId}", consumes = APPLICATION_JSON_VALUE, produces = {
+		APPLICATION_PROBLEM_JSON_VALUE
+	})
 	@Operation(summary = "Update a signing instance.")
 	@ApiResponse(responseCode = "204", description = "Successful operation", useReturnTypeSchema = true)
 	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
@@ -99,7 +109,9 @@ class SigningResource {
 			.build();
 	}
 
-	@DeleteMapping(path = "{signingId}", produces = { APPLICATION_PROBLEM_JSON_VALUE })
+	@DeleteMapping(path = "{signingId}", produces = {
+		APPLICATION_PROBLEM_JSON_VALUE
+	})
 	@Operation(summary = "Annul a signing instance.")
 	@ApiResponse(responseCode = "204", description = "Successful operation", useReturnTypeSchema = true)
 	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
@@ -113,7 +125,9 @@ class SigningResource {
 			.build();
 	}
 
-	@GetMapping(path = "{signingId}/signatory/{partyId}", produces = { APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE })
+	@GetMapping(path = "{signingId}/signatory/{partyId}", produces = {
+		APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
+	})
 	@Operation(summary = "Get information about the current signatory")
 	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))

@@ -1,6 +1,5 @@
 package se.sundsvall.comfactfacade.api.model;
 
-
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanConstructor;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEquals;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanHashCode;
@@ -23,7 +22,6 @@ class IdentificationTest {
 			hasValidBeanEquals(),
 			hasValidBeanToString()));
 	}
-
 
 	@Test
 	void builder() {

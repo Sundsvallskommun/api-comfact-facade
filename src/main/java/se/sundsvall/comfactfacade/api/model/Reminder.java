@@ -36,8 +36,10 @@ public class Reminder {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		final Reminder reminder = (Reminder) o;
 		return enabled == reminder.enabled && intervalInHours == reminder.intervalInHours && Objects.equals(message, reminder.message) && Objects.equals(startDateTime, reminder.startDateTime);
 	}

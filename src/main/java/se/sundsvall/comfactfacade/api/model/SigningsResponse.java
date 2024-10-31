@@ -33,8 +33,10 @@ public class SigningsResponse {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		final SigningsResponse that = (SigningsResponse) o;
 		return Objects.equals(pagingAndSortingMetaData, that.pagingAndSortingMetaData) && Objects.equals(signingInstances, that.signingInstances);
 	}

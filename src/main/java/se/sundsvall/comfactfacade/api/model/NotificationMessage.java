@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -32,8 +31,10 @@ public class NotificationMessage {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		final NotificationMessage that = (NotificationMessage) o;
 		return Objects.equals(subject, that.subject) && Objects.equals(body, that.body) && Objects.equals(language, that.language);
 	}

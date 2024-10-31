@@ -9,7 +9,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import se.sundsvall.comfactfacade.Application;
 
-
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("junit")
 class ComfactPropertiesTest {

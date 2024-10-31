@@ -1,95 +1,77 @@
 {
-  "additionalDocuments": [
-    {
-      "name": "Business Contract",
-      "fileName": "document.pdf",
-      "mimeType": "application/pdf",
-      "content": "ZEdWemRBPT0="
-    }
-  ],
-  "language": "sv",
-  "customerReference": "1234567890",
-  "expires": "2021-12-31T23:59:59Z",
-  "notificationMessage": {
-    "subject": "Please sign the document",
-    "body": "Dear John Doe, please sign the document.",
-    "language": "sv"
-  },
-  "reminder": {
-    "message": {
-      "subject": "Please sign the document",
-      "body": "Dear John Doe, please sign the document.",
-      "language": "sv"
-    },
-    "enabled": true,
-    "intervalInHours": 24,
-    "startDateTime": "2021-12-31T23:59:59Z"
-  },
-  "initiator": {
-    "name": "John Doe",
-    "partyId": "550e8400-e29b-41d4-a716-446655440000",
-    "notificationMessage": {
-      "subject": "Please sign the document",
-      "body": "Dear John Doe, please sign the document.",
-      "language": "sv"
-    },
-    "title": "CEO",
-    "email": "john.doe@sundsvall.se",
-    "phoneNumber": "0701234567",
-    "organization": "Sundsvall Municipality",
-    "language": "sv",
-    "identifications": [
-      {
-        "alias": "SmsCode"
-      }
-    ]
-  },
-  "additionalParties": [
-    {
-      "name": "John Doe",
-      "partyId": "550e8400-e29b-41d4-a716-446655440000",
-      "notificationMessage": {
-        "subject": "Please sign the document",
-        "body": "Dear John Doe, please sign the document.",
-        "language": "sv"
-      },
-      "title": "CEO",
-      "email": "john.doe@sundsvall.se",
-      "phoneNumber": "0701234567",
-      "organization": "Sundsvall Municipality",
-      "language": "sv",
-      "identifications": [
-        {
-          "alias": "SmsCode"
-        }
-      ]
-    }
-  ],
-  "signatories": [
-    {
-      "name": "John Doe",
-      "partyId": "550e8400-e29b-41d4-a716-446655440000",
-      "notificationMessage": {
-        "subject": "Please sign the document",
-        "body": "Dear John Doe, please sign the document.",
-        "language": "sv"
-      },
-      "title": "CEO",
-      "email": "john.doe@sundsvall.se",
-      "phoneNumber": "0701234567",
-      "organization": "Sundsvall Municipality",
-      "language": "sv",
-      "identifications": [
-        {
-          "alias": "SmsCode"
-        }
-      ]
-    }
-  ],
-  "document": {
-    "name": "Business Contract",
-    "fileName": "document.pdf",
-    "mimeType": "application/pdf",
-    "content": "ZEdWemRBPT0="
-  }
+	"signatories": [{
+		"phoneNumber": "0701234567",
+		"organization": "Sundsvall Municipality",
+		"name": "John Doe",
+		"notificationMessage": {
+			"subject": "Please sign the document",
+			"language": "sv",
+			"body": "Dear John Doe, please sign the document."
+		},
+		"language": "sv",
+		"partyId": "550e8400-e29b-41d4-a716-446655440000",
+		"title": "CEO",
+		"email": "john.doe@sundsvall.se",
+		"identifications": [{"alias": "SmsCode"}]
+	}],
+	"expires": "2021-12-31T23:59:59Z",
+	"additionalDocuments": [{
+		"fileName": "document.pdf",
+		"name": "Business Contract",
+		"mimeType": "application/pdf",
+		"content": "ZEdWemRBPT0="
+	}],
+	"reminder": {
+		"intervalInHours": 24,
+		"startDateTime": "2021-12-31T23:59:59Z",
+		"message": {
+			"subject": "Please sign the document",
+			"language": "sv",
+			"body": "Dear John Doe, please sign the document."
+		},
+		"enabled": true
+	},
+	"additionalParties": [{
+		"phoneNumber": "0701234567",
+		"organization": "Sundsvall Municipality",
+		"name": "John Doe",
+		"notificationMessage": {
+			"subject": "Please sign the document",
+			"language": "sv",
+			"body": "Dear John Doe, please sign the document."
+		},
+		"language": "sv",
+		"partyId": "550e8400-e29b-41d4-a716-446655440000",
+		"title": "CEO",
+		"email": "john.doe@sundsvall.se",
+		"identifications": [{"alias": "SmsCode"}]
+	}],
+	"customerReference": "1234567890",
+	"initiator": {
+		"phoneNumber": "0701234567",
+		"organization": "Sundsvall Municipality",
+		"name": "John Doe",
+		"notificationMessage": {
+			"subject": "Please sign the document",
+			"language": "sv",
+			"body": "Dear John Doe, please sign the document."
+		},
+		"language": "sv",
+		"partyId": "550e8400-e29b-41d4-a716-446655440000",
+		"title": "CEO",
+		"email": "john.doe@sundsvall.se",
+		"identifications": [{"alias": "SmsCode"}]
+	},
+	"document": {
+		"fileName": "document.pdf",
+		"name": "Business Contract",
+		"mimeType": "application/pdf",
+		"content": "ZEdWemRBPT0="
+	},
+	"notificationMessage": {
+		"subject": "Please sign the document",
+		"language": "sv",
+		"body": "Dear John Doe, please sign the document."
+	},
+	"language": "sv"
 }

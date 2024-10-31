@@ -66,10 +66,14 @@ public class SigningInstance {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		final SigningInstance that = (SigningInstance) o;
-		return Objects.equals(notificationMessages, that.notificationMessages) && Objects.equals(initiator, that.initiator) && Objects.equals(additionalParties, that.additionalParties) && Objects.equals(signatories, that.signatories) && Objects.equals(status, that.status) && Objects.equals(customerReference, that.customerReference) && Objects.equals(created, that.created) && Objects.equals(changed, that.changed) && Objects.equals(expires, that.expires) && Objects.equals(document, that.document) && Objects.equals(signedDocument, that.signedDocument) && Objects.equals(additionalDocuments, that.additionalDocuments) && Objects.equals(signingId, that.signingId);
+		return Objects.equals(notificationMessages, that.notificationMessages) && Objects.equals(initiator, that.initiator) && Objects.equals(additionalParties, that.additionalParties) && Objects.equals(signatories, that.signatories) && Objects.equals(
+			status, that.status) && Objects.equals(customerReference, that.customerReference) && Objects.equals(created, that.created) && Objects.equals(changed, that.changed) && Objects.equals(expires, that.expires) && Objects.equals(document,
+				that.document) && Objects.equals(signedDocument, that.signedDocument) && Objects.equals(additionalDocuments, that.additionalDocuments) && Objects.equals(signingId, that.signingId);
 	}
 
 	@Override
