@@ -1,7 +1,11 @@
 {
 	"request": {
 		"method": "POST",
-		"bodyPatterns": [{"equalToXml": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Header/><SOAP-ENV:Body><GetSignatoryRequest xmlns=\"urn:comfact:prosale:signing:2.0:protocol\" xmlns:ns2=\"urn:comfact:prosale:pagination:1.0:protocol\"><Credentials><UserId>sundsvall-username<\/UserId><Password>sundsvall-password<\/Password><\/Credentials><SigningInstanceId>1<\/SigningInstanceId><PartyId>1<\/PartyId><\/GetSignatoryRequest><\/SOAP-ENV:Body><\/SOAP-ENV:Envelope>"}],
+		"bodyPatterns": [
+			{
+				"equalToXml": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Header/><SOAP-ENV:Body><GetSignatoryRequest xmlns=\"urn:comfact:prosale:signing:2.0:protocol\" xmlns:ns2=\"urn:comfact:prosale:pagination:1.0:protocol\"><Credentials><UserId>sundsvall-username</UserId><Password>sundsvall-password</Password></Credentials><SigningInstanceId>1</SigningInstanceId><PartyId>1</PartyId></GetSignatoryRequest></SOAP-ENV:Body></SOAP-ENV:Envelope>"
+			}
+		],
 		"url": "/comfact"
 	},
 	"response": {

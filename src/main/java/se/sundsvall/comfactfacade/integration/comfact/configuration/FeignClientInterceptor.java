@@ -5,13 +5,12 @@ import static java.util.Optional.ofNullable;
 import static org.apache.hc.core5.http.ContentType.TEXT_XML;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
-import org.apache.hc.core5.http.ContentType;
-import org.springframework.stereotype.Component;
-import org.springframework.util.ReflectionUtils;
-
 import feign.InvocationContext;
 import feign.Response;
 import feign.ResponseInterceptor;
+import org.apache.hc.core5.http.ContentType;
+import org.springframework.stereotype.Component;
+import org.springframework.util.ReflectionUtils;
 
 @Component
 public class FeignClientInterceptor implements ResponseInterceptor {

@@ -8,9 +8,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static se.sundsvall.comfactfacade.Constants.MUNICIPALITY_ID;
 
+import comfact.CreateSigningInstanceRequest;
+import comfact.DocumentType;
+import comfact.GetSignatoryRequest;
+import comfact.GetSigningInstanceInfoRequest;
+import comfact.GetSigningInstanceRequest;
+import comfact.SigningInstance;
+import comfact.UpdateSigningInstanceRequest;
+import comfact.WithdrawSigningInstanceRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -20,21 +27,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
 import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.Signatory;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.integration.comfact.ComfactIntegration;
 import se.sundsvall.comfactfacade.integration.party.PartyClient;
-
-import comfact.CreateSigningInstanceRequest;
-import comfact.DocumentType;
-import comfact.GetSignatoryRequest;
-import comfact.GetSigningInstanceInfoRequest;
-import comfact.GetSigningInstanceRequest;
-import comfact.SigningInstance;
-import comfact.UpdateSigningInstanceRequest;
-import comfact.WithdrawSigningInstanceRequest;
 
 @ExtendWith(MockitoExtension.class)
 class SigningServiceTest {

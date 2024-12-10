@@ -8,7 +8,11 @@
 			"partyId": "23456",
 			"title": "Test",
 			"email": "test.testorsson@sundsvall.se",
-			"identifications": [{"alias": "SvensktEId"}]
+			"identifications": [
+				{
+					"alias": "SvensktEId"
+				}
+			]
 		},
 		{
 			"phoneNumber": "+46701234567",
@@ -18,15 +22,21 @@
 			"partyId": "34567",
 			"title": "Test",
 			"email": "test.testorsson@sundsvall.se",
-			"identifications": [{"alias": "SvensktEId"}]
+			"identifications": [
+				{
+					"alias": "SvensktEId"
+				}
+			]
 		}
 	],
 	"expires": "2024-02-29T10:53:42.12+01:00",
-	"notificationMessages": [{
-		"subject": "Testing",
-		"language": "sv-se",
-		"body": "Testing, testing"
-	}],
+	"notificationMessages": [
+		{
+			"subject": "Testing",
+			"language": "sv-se",
+			"body": "Testing, testing"
+		}
+	],
 	"additionalDocuments": [
 		{
 			"fileName": "dummy2.pdf",
@@ -41,15 +51,17 @@
 			"content": "ZEdWemRBPT0="
 		}
 	],
-	"additionalParties": [{
-		"phoneNumber": "+46701234567",
-		"organization": "Sundsvalls kommun",
-		"name": "Test Testorsson",
-		"language": "sv-SE",
-		"partyId": "12345",
-		"title": "Test",
-		"email": "test.testorsson@sundsvall.se"
-	}],
+	"additionalParties": [
+		{
+			"phoneNumber": "+46701234567",
+			"organization": "Sundsvalls kommun",
+			"name": "Test Testorsson",
+			"language": "sv-SE",
+			"partyId": "12345",
+			"title": "Test",
+			"email": "test.testorsson@sundsvall.se"
+		}
+	],
 	"created": "2024-01-30T10:53:42.12+01:00",
 	"initiator": {
 		"phoneNumber": "+46701234567",

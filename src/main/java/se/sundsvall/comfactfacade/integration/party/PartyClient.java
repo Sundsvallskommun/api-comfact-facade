@@ -5,7 +5,6 @@ import static se.sundsvall.comfactfacade.integration.party.configuration.PartyCo
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import se.sundsvall.comfactfacade.integration.party.configuration.PartyConfiguration;
 
 @FeignClient(

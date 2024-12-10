@@ -6,16 +6,14 @@ import static se.sundsvall.comfactfacade.service.SigningMapper.toSigningsRespons
 import static se.sundsvall.comfactfacade.service.SigningMapper.toUpdateSigningInstanceRequestType;
 import static se.sundsvall.comfactfacade.service.SigningMapper.toWithdrawSigningInstanceRequestType;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import comfact.GetSignatoryRequest;
 import comfact.GetSigningInstanceRequest;
 import comfact.SigningInstanceInputType;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import se.sundsvall.comfactfacade.api.model.CreateSigningResponse;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
