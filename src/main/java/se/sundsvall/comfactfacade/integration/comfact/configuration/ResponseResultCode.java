@@ -1,7 +1,6 @@
 package se.sundsvall.comfactfacade.integration.comfact.configuration;
 
 import java.util.Arrays;
-
 import lombok.Getter;
 
 @Getter

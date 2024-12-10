@@ -1,15 +1,13 @@
 package se.sundsvall.comfactfacade.api.model;
 
-import java.util.Objects;
-
-import se.sundsvall.dept44.common.validators.annotation.OneOf;
-
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import se.sundsvall.dept44.common.validators.annotation.OneOf;
 
 @Getter
 @Setter

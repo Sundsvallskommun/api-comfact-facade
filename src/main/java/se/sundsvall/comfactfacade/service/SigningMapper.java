@@ -4,24 +4,6 @@ import static java.util.Collections.emptyList;
 import static org.zalando.problem.Status.BAD_REQUEST;
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Optional;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.jose4j.base64url.Base64;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.w3c.dom.Element;
-import org.zalando.problem.Problem;
-
 import comfact.CreateSigningInstanceRequest;
 import comfact.Custom;
 import comfact.DocumentType;
@@ -39,6 +21,21 @@ import comfact.WithdrawSigningInstanceRequest;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Optional;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.jose4j.base64url.Base64;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.w3c.dom.Element;
+import org.zalando.problem.Problem;
 import se.sundsvall.comfactfacade.api.model.Document;
 import se.sundsvall.comfactfacade.api.model.Identification;
 import se.sundsvall.comfactfacade.api.model.NotificationMessage;

@@ -9,10 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.allOf;
 
 import java.util.List;
-
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
-
 import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
 
 class SigningsResponseTest {

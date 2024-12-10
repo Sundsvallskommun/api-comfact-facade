@@ -1,15 +1,14 @@
 package se.sundsvall.comfactfacade.integration.comfact.configuration;
 
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
-import org.zalando.problem.ThrowableProblem;
-
 import comfact.ResponseType;
 import comfact.Result;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.soap.MessageFactory;
+import org.zalando.problem.Problem;
+import org.zalando.problem.Status;
+import org.zalando.problem.ThrowableProblem;
 
 public class ComfactErrorDecoder implements ErrorDecoder {
 

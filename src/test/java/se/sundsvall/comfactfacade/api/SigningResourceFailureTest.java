@@ -10,7 +10,6 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 import static se.sundsvall.comfactfacade.Constants.MUNICIPALITY_ID;
 
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +19,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 import org.zalando.problem.violations.ConstraintViolationProblem;
-
 import se.sundsvall.comfactfacade.Application;
 import se.sundsvall.comfactfacade.api.model.Document;
 import se.sundsvall.comfactfacade.api.model.Identification;

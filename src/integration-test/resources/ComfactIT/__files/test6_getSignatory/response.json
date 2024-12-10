@@ -6,5 +6,9 @@
 	"partyId": "23456",
 	"title": "Test",
 	"email": "test.testorsson@sundsvall.se",
-	"identifications": [{"alias": "SvensktEId"}]
+	"identifications": [
+		{
+			"alias": "SvensktEId"
+		}
+	]
 }

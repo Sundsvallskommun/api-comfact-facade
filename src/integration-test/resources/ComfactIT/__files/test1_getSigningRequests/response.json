@@ -88,7 +88,9 @@
 		"limit": 8,
 		"count": 8,
 		"totalPages": 2,
-		"sortBy": ["Created"],
+		"sortBy": [
+			"Created"
+		],
 		"page": 0
 	}
 }

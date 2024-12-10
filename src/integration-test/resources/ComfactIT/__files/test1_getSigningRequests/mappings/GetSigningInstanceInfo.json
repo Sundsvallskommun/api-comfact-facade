@@ -1,11 +1,17 @@
 {
 	"request": {
 		"method": "POST",
-		"bodyPatterns": [{"contains": "GetSigningInstanceInfoRequest"}],
+		"bodyPatterns": [
+			{
+				"contains": "GetSigningInstanceInfoRequest"
+			}
+		],
 		"url": "/comfact"
 	},
 	"response": {
-		"headers": {"Content-Type": "text/xml"},
+		"headers": {
+			"Content-Type": "text/xml"
+		},
 		"bodyFileName": "test1_getSigningRequests/responses/GetSigningInstanceInfo.xml",
 		"status": 200
 	}
