@@ -89,10 +89,6 @@ Configuration is crucial for the application to run successfully. Ensure all nec
   server:
     port: 8080
   ```
-- **Database Settings:**
-
-  No database is used by this microservice
-
 - **External Service URLs:**
 
   ```yaml
