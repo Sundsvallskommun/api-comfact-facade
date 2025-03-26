@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -39,11 +40,14 @@ import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 @Validated
 @RequestMapping("/{municipalityId}/signings")
 @Tag(name = "Signings", description = "Signing operations")
-@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {
-	Problem.class, ConstraintViolationProblem.class
-})))
-@ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
-@ApiResponse(responseCode = "502", description = "Bad Gateway", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+
+@ApiResponses(value = {
+	@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {
+		Problem.class, ConstraintViolationProblem.class
+	}))),
+	@ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class))),
+	@ApiResponse(responseCode = "502", description = "Bad Gateway", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+})
 class SigningResource {
 
 	private final SigningService signingService;
@@ -55,8 +59,11 @@ class SigningResource {
 	@GetMapping(produces = APPLICATION_JSON_VALUE)
 	@Operation(summary = "Get all signing instances.",
 		description = "The 'sort' parameter in the Pageable object can take the values 'SigningInstanceId', 'ReferenceNumber', 'CustomerReferenceNumber', 'Created', 'Changed', 'Expires', 'StatusCode', 'StatusMessage', 'UserId', 'Language', 'SignatoryReminderStartDate', 'InitiatorEmailAddress', 'QueueCreated', 'QueueChanged'. Will default to 'SigningInstanceId' if not set. Will default to page 0 with a size of 10 if not set.")
-	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
-	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true),
+		@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	})
 	ResponseEntity<SigningsResponse> getSigningRequests(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
 		final Pageable pageable) {
@@ -66,8 +73,10 @@ class SigningResource {
 
 	@GetMapping(path = "{signingId}", produces = APPLICATION_JSON_VALUE)
 	@Operation(summary = "Get a signing request.")
-	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
-	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true),
+		@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	})
 	ResponseEntity<SigningInstance> getSigningRequest(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
 		@PathVariable final String signingId) {
@@ -77,7 +86,9 @@ class SigningResource {
 
 	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	@Operation(summary = "Create Signing instance.")
-	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
+	})
 	ResponseEntity<CreateSigningResponse> createSigningRequest(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
 		@Valid @RequestBody final SigningRequest signingRequest) {
@@ -87,8 +98,10 @@ class SigningResource {
 
 	@PatchMapping(path = "{signingId}", consumes = APPLICATION_JSON_VALUE, produces = ALL_VALUE)
 	@Operation(summary = "Update a signing instance.")
-	@ApiResponse(responseCode = "204", description = "Successful operation", useReturnTypeSchema = true)
-	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "204", description = "Successful operation", useReturnTypeSchema = true),
+		@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	})
 	ResponseEntity<Void> updateSigningRequest(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
 		@PathVariable final String signingId,
@@ -102,8 +115,10 @@ class SigningResource {
 
 	@DeleteMapping(path = "{signingId}", produces = ALL_VALUE)
 	@Operation(summary = "Annul a signing instance.")
-	@ApiResponse(responseCode = "204", description = "Successful operation", useReturnTypeSchema = true)
-	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "204", description = "Successful operation", useReturnTypeSchema = true),
+		@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	})
 	ResponseEntity<Void> cancelSigningRequest(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
 		@PathVariable final String signingId) {
@@ -116,8 +131,10 @@ class SigningResource {
 
 	@GetMapping(path = "{signingId}/signatory/{partyId}", produces = APPLICATION_JSON_VALUE)
 	@Operation(summary = "Get information about the current signatory")
-	@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
-	@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true),
+		@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	})
 	ResponseEntity<Signatory> getSignatory(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
 		@PathVariable final String signingId,
