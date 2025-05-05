@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "1.0"
 servers:
-  - url: http://localhost:61830
+  - url: http://localhost:50499
     description: Generated server url
 tags:
   - name: Signings
@@ -39,20 +39,6 @@ paths:
           schema:
             $ref: "#/components/schemas/Pageable"
       responses:
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "502":
-          description: Bad Gateway
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "200":
           description: Successful operation
           content:
@@ -65,8 +51,22 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "502":
+          description: Bad Gateway
           content:
             application/problem+json:
               schema:
@@ -91,6 +91,12 @@ paths:
               $ref: "#/components/schemas/SigningRequest"
         required: true
       responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateSigningResponse"
         "400":
           description: Bad request
           content:
@@ -99,20 +105,14 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "502":
-          description: Bad Gateway
+        "500":
+          description: Internal Server error
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CreateSigningResponse"
-        "500":
-          description: Internal Server error
+        "502":
+          description: Bad Gateway
           content:
             application/problem+json:
               schema:
@@ -137,20 +137,6 @@ paths:
           schema:
             type: string
       responses:
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "502":
-          description: Bad Gateway
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "200":
           description: Successful operation
           content:
@@ -163,8 +149,22 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "502":
+          description: Bad Gateway
           content:
             application/problem+json:
               schema:
@@ -188,6 +188,14 @@ paths:
           schema:
             type: string
       responses:
+        "204":
+          description: Successful operation
+        "404":
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad request
           content:
@@ -196,26 +204,18 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "502":
-          description: Bad Gateway
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "404":
-          description: Not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "500":
           description: Internal Server error
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-        "204":
-          description: Successful operation
+        "502":
+          description: Bad Gateway
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
     patch:
       tags:
         - Signings
@@ -241,6 +241,14 @@ paths:
               $ref: "#/components/schemas/SigningRequest"
         required: true
       responses:
+        "204":
+          description: Successful operation
+        "404":
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad request
           content:
@@ -249,26 +257,18 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "502":
-          description: Bad Gateway
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "404":
-          description: Not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "500":
           description: Internal Server error
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-        "204":
-          description: Successful operation
+        "502":
+          description: Bad Gateway
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
   /{municipalityId}/signings/{signingId}/signatory/{partyId}:
     get:
       tags:
@@ -294,20 +294,6 @@ paths:
           schema:
             type: string
       responses:
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "502":
-          description: Bad Gateway
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "200":
           description: Successful operation
           content:
@@ -320,8 +306,22 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "502":
+          description: Bad Gateway
           content:
             application/problem+json:
               schema:
@@ -345,8 +345,6 @@ paths:
 components:
   schemas:
     Document:
-      required:
-        - fileName
       type: object
       properties:
         name:
@@ -355,6 +353,7 @@ components:
           nullable: true
           example: Business Contract
         fileName:
+          minLength: 1
           type: string
           description: "The document file name including extension,"
           example: document.pdf
@@ -381,8 +380,6 @@ components:
           example: SmsCode
       description: The means of identification to use to identify the signatories.
     NotificationMessage:
-      required:
-        - language
       type: object
       properties:
         subject:
@@ -394,6 +391,7 @@ components:
           description: The body of the notification message
           example: "Dear John Doe, please sign the document."
         language:
+          minLength: 1
           type: string
           description: The language of the notification message.
           example: sv-SE
@@ -461,7 +459,6 @@ components:
     Signatory:
       required:
         - email
-        - identifications
       type: object
       properties:
         name:
@@ -496,6 +493,7 @@ components:
             Instance for the current party.
           example: sv
         identifications:
+          minItems: 1
           type: array
           items:
             $ref: "#/components/schemas/Identification"
@@ -504,7 +502,6 @@ components:
       required:
         - document
         - initiator
-        - signatories
       type: object
       properties:
         additionalDocuments:
@@ -537,6 +534,7 @@ components:
           items:
             $ref: "#/components/schemas/Party"
         signatories:
+          minItems: 1
           type: array
           description: The parties that will sign the documents.
           items:
@@ -566,11 +564,11 @@ components:
     StatusType:
       type: object
       properties:
+        reasonPhrase:
+          type: string
         statusCode:
           type: integer
           format: int32
-        reasonPhrase:
-          type: string
     ConstraintViolationProblem:
       type: object
       properties:
@@ -817,7 +815,6 @@ components:
     SigningInstance:
       required:
         - initiator
-        - signatories
       type: object
       properties:
         notificationMessages:
@@ -834,6 +831,7 @@ components:
           items:
             $ref: "#/components/schemas/Party"
         signatories:
+          minItems: 1
           type: array
           description: The parties that will sign the documents.
           items:
