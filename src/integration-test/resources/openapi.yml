@@ -1,22 +1,22 @@
 openapi: 3.0.1
 info:
   title: api-comfact-facade
-  contact: { }
+  contact: {}
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
   version: "1.0"
 servers:
-  - url: http://localhost:50499
-    description: Generated server url
+- url: http://localhost:8080
+  description: Generated server url
 tags:
-  - name: Signings
-    description: Signing operations
+- name: Signings
+  description: Signing operations
 paths:
   /{municipalityId}/signings:
     get:
       tags:
-        - Signings
+      - Signings
       summary: Get all signing instances.
       description: "The 'sort' parameter in the Pageable object can take the values\
         \ 'SigningInstanceId', 'ReferenceNumber', 'CustomerReferenceNumber', 'Created',\
@@ -26,18 +26,18 @@ paths:
         \ a size of 10 if not set."
       operationId: getSigningRequests
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: "#/components/schemas/Pageable"
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
       responses:
         "200":
           description: Successful operation
@@ -57,8 +57,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server error
           content:
@@ -73,17 +73,17 @@ paths:
                 $ref: "#/components/schemas/Problem"
     post:
       tags:
-        - Signings
+      - Signings
       summary: Create Signing instance.
       operationId: createSigningRequest
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
       requestBody:
         content:
           application/json:
@@ -103,8 +103,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server error
           content:
@@ -120,22 +120,22 @@ paths:
   /{municipalityId}/signings/{signingId}:
     get:
       tags:
-        - Signings
+      - Signings
       summary: Get a signing request.
       operationId: getSigningRequest
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: signingId
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: signingId
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: Successful operation
@@ -155,8 +155,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server error
           content:
@@ -171,22 +171,22 @@ paths:
                 $ref: "#/components/schemas/Problem"
     delete:
       tags:
-        - Signings
+      - Signings
       summary: Annul a signing instance.
       operationId: cancelSigningRequest
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: signingId
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: signingId
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         "204":
           description: Successful operation
@@ -202,8 +202,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server error
           content:
@@ -218,22 +218,22 @@ paths:
                 $ref: "#/components/schemas/Problem"
     patch:
       tags:
-        - Signings
+      - Signings
       summary: Update a signing instance.
       operationId: updateSigningRequest
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: signingId
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: signingId
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -255,8 +255,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server error
           content:
@@ -272,27 +272,27 @@ paths:
   /{municipalityId}/signings/{signingId}/signatory/{partyId}:
     get:
       tags:
-        - Signings
+      - Signings
       summary: Get information about the current signatory
       operationId: getSignatory
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: signingId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: partyId
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: signingId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: Successful operation
@@ -312,8 +312,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server error
           content:
@@ -329,7 +329,7 @@ paths:
   /api-docs:
     get:
       tags:
-        - API
+      - API
       summary: OpenAPI
       operationId: getApiDocs
       responses:
@@ -345,6 +345,8 @@ paths:
 components:
   schemas:
     Document:
+      required:
+      - fileName
       type: object
       properties:
         name:
@@ -380,6 +382,8 @@ components:
           example: SmsCode
       description: The means of identification to use to identify the signatories.
     NotificationMessage:
+      required:
+      - language
       type: object
       properties:
         subject:
@@ -398,7 +402,7 @@ components:
       description: Custom message for the signature request emails.
     Party:
       required:
-        - email
+      - email
       type: object
       properties:
         name:
@@ -435,8 +439,8 @@ components:
       description: A party related to the signing process.
     Reminder:
       required:
-        - enabled
-        - intervalInHours
+      - enabled
+      - intervalInHours
       type: object
       properties:
         message:
@@ -458,7 +462,8 @@ components:
       description: A reminder for a signature request.
     Signatory:
       required:
-        - email
+      - email
+      - identifications
       type: object
       properties:
         name:
@@ -500,8 +505,9 @@ components:
       description: A Signatory related to the signing process.
     SigningRequest:
       required:
-        - document
-        - initiator
+      - document
+      - initiator
+      - signatories
       type: object
       properties:
         additionalDocuments:
@@ -555,20 +561,20 @@ components:
           type: object
           additionalProperties:
             type: object
+        status:
+          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
-        status:
-          $ref: "#/components/schemas/StatusType"
     StatusType:
       type: object
       properties:
-        reasonPhrase:
-          type: string
         statusCode:
           type: integer
           format: int32
+        reasonPhrase:
+          type: string
     ConstraintViolationProblem:
       type: object
       properties:
@@ -690,12 +696,12 @@ components:
           type: object
           additionalProperties:
             type: object
+        status:
+          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
-        status:
-          $ref: "#/components/schemas/StatusType"
         suppressed:
           type: array
           items:
@@ -765,8 +771,8 @@ components:
       description: The sort order direction
       example: ASC
       enum:
-        - ASC
-        - DESC
+      - ASC
+      - DESC
     PagingAndSortingMetaData:
       type: object
       properties:
@@ -814,7 +820,8 @@ components:
       readOnly: true
     SigningInstance:
       required:
-        - initiator
+      - initiator
+      - signatories
       type: object
       properties:
         notificationMessages:
@@ -893,4 +900,4 @@ components:
           description: The status message
           example: The signing instance is halted.
       description: Status of the signing request.
-  securitySchemes: { }
+  securitySchemes: {}
