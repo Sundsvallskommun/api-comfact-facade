@@ -1,7 +1,7 @@
 {
 	"signatories": [
 		{
-			"phoneNumber": "+46701234567",
+			"phoneNumber": "+46701740605",
 			"organization": "Sundsvalls kommun",
 			"name": "Test Testorsson",
 			"language": "sv-SE",
@@ -15,7 +15,7 @@
 			]
 		},
 		{
-			"phoneNumber": "+46701234567",
+			"phoneNumber": "+46701740605",
 			"organization": "Sundsvalls kommun",
 			"name": "Kalle Anka",
 			"language": "sv-SE",
@@ -53,7 +53,7 @@
 	],
 	"additionalParties": [
 		{
-			"phoneNumber": "+46701234567",
+			"phoneNumber": "+46701740605",
 			"organization": "Sundsvalls kommun",
 			"name": "Test Testorsson",
 			"language": "sv-SE",
@@ -64,7 +64,7 @@
 	],
 	"created": "2024-01-30T10:53:42.12+01:00",
 	"initiator": {
-		"phoneNumber": "+46701234567",
+		"phoneNumber": "+46701740605",
 		"organization": "Sundsvalls kommun",
 		"name": "Test Testorsson",
 		"language": "sv-SE",
