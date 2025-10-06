@@ -37,7 +37,7 @@ public class Party {
 	private String email;
 
 	@ValidMobileNumber(nullable = true)
-	@Schema(description = "The party phone number", example = "0701234567")
+	@Schema(description = "The party phone number", example = "0701740605")
 	private String phoneNumber;
 
 	@Schema(description = "The organization of the party.", example = "Sundsvall Municipality")

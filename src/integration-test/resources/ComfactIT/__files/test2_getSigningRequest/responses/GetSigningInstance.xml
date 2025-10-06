@@ -1,7 +1,7 @@
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 	<soap:Body>
-		<GetSigningInstanceResponse responseId="?" xmlns="urn:comfact:prosale:signing:2.0:protocol">
+		<GetSigningInstanceResponse responseId="?"
+			xmlns="urn:comfact:prosale:signing:2.0:protocol">
 			<Result success="true">
 				<ResultCode>Success</ResultCode>
 				<ResultMessage>The requested service operation was successfully completed.
@@ -20,7 +20,7 @@
 					<PersonalNumber>197001011234</PersonalNumber>
 					<EmailAddress>test.testorsson@sundsvall.se</EmailAddress>
 					<AccountId>SundIntTest</AccountId>
-					<MobilePhoneNumber>+46701234567</MobilePhoneNumber>
+					<MobilePhoneNumber>+46701740605</MobilePhoneNumber>
 					<Custom/>
 				</Initiator>
 				<AdditionalParty partyId="12345" language="sv-SE">
@@ -30,7 +30,7 @@
 					<PersonalNumber>197001011234</PersonalNumber>
 					<EmailAddress>test.testorsson@sundsvall.se</EmailAddress>
 					<AccountId>SundIntTest</AccountId>
-					<MobilePhoneNumber>+46701234567</MobilePhoneNumber>
+					<MobilePhoneNumber>+46701740605</MobilePhoneNumber>
 					<Custom/>
 				</AdditionalParty>
 				<Signatory partyId="23456" language="sv-SE">
@@ -39,39 +39,34 @@
 					<Organization>Sundsvalls kommun</Organization>
 					<PersonalNumber>197001011234</PersonalNumber>
 					<EmailAddress>test.testorsson@sundsvall.se</EmailAddress>
-					<MobilePhoneNumber>+46701234567</MobilePhoneNumber>
+					<MobilePhoneNumber>+46701740605</MobilePhoneNumber>
 					<Custom>
 						<DistributionInfo distributionMethod="Attached"
-										  xmlns="urn:comfact:prosale:signing:documentdistribution:1.0:protocol"/>
-						<SignatoryUrl partyId="23456">
-							https://endpoint.url/signingwebsite?id=NmVjM2MzYjQ3OTIxNDQ2MDgzZjU2OTk3N2Q0YThhNTcmMjM0NTY=o
+							xmlns="urn:comfact:prosale:signing:documentdistribution:1.0:protocol"/>
+						<SignatoryUrl partyId="23456"> https://endpoint.url/signingwebsite?id=NmVjM2MzYjQ3OTIxNDQ2MDgzZjU2OTk3N2Q0YThhNTcmMjM0NTY=o
 						</SignatoryUrl>
 						<TimeZone type="Microsoft"
-								  xmlns="urn:comfact:prosale:signing:timezone:2.0:protocol">W.
+							xmlns="urn:comfact:prosale:signing:timezone:2.0:protocol">W.
 							Europe Standard Time
 						</TimeZone>
 						<SignatureFieldId fieldRenderingType="Image"
-										  xmlns="urn:comfact:prosale:signing:ades:2.0:protocol">
+							xmlns="urn:comfact:prosale:signing:ades:2.0:protocol">
 							47e540cfcb8b49aa96de35283c62133d
 						</SignatureFieldId>
 					</Custom>
 					<Identification>
 						<Alias>SvensktEId</Alias>
 					</Identification>
-					<IdentificationToken identificationTokenId="SigningAuthenticationResponse1"
-										 timestamp="2024-01-30T10:54:21.3548845+01:00">
+					<IdentificationToken identificationTokenId="SigningAuthenticationResponse1" timestamp="2024-01-30T10:54:21.3548845+01:00">
 						<ExternalData xmlns="urn:comfact:prosale:signing:data:2.0:protocol"/>
 					</IdentificationToken>
-					<IdentificationToken identificationTokenId="SignatureRequest1"
-										 timestamp="2024-01-30T10:55:02.8417959+01:00">
+					<IdentificationToken identificationTokenId="SignatureRequest1" timestamp="2024-01-30T10:55:02.8417959+01:00">
 						<ExternalData xmlns="urn:comfact:prosale:signing:data:2.0:protocol"/>
 					</IdentificationToken>
-					<IdentificationToken identificationTokenId="SignatureResponse1"
-										 timestamp="2024-01-30T10:55:22.0773894+01:00">
+					<IdentificationToken identificationTokenId="SignatureResponse1" timestamp="2024-01-30T10:55:22.0773894+01:00">
 						<ExternalData xmlns="urn:comfact:prosale:signing:data:2.0:protocol"/>
 					</IdentificationToken>
-					<SignatoryAction action="Approved" timestamp="2024-01-30T10:55:22.0773894+01:00"
-									 identificationTokenIdRef="SignatureResponse1">
+					<SignatoryAction action="Approved" timestamp="2024-01-30T10:55:22.0773894+01:00" identificationTokenIdRef="SignatureResponse1">
 						<Reason>Jag undertecknar härmed följande dokument:
 							TestDocument och 2 bilagor.
 						</Reason>
@@ -83,39 +78,34 @@
 					<Organization>Sundsvalls kommun</Organization>
 					<PersonalNumber>197001011234</PersonalNumber>
 					<EmailAddress>test.testorsson@sundsvall.se</EmailAddress>
-					<MobilePhoneNumber>+46701234567</MobilePhoneNumber>
+					<MobilePhoneNumber>+46701740605</MobilePhoneNumber>
 					<Custom>
 						<DistributionInfo distributionMethod="Attached"
-										  xmlns="urn:comfact:prosale:signing:documentdistribution:1.0:protocol"/>
-						<SignatoryUrl partyId="34567">
-							https://endpoint.url/signingwebsite?id=NmVjM2MzYjQ3OTIxNDQ2MDgzZjU2OTk3N2Q0YThhNTcmMzQ1Njc=o
+							xmlns="urn:comfact:prosale:signing:documentdistribution:1.0:protocol"/>
+						<SignatoryUrl partyId="34567"> https://endpoint.url/signingwebsite?id=NmVjM2MzYjQ3OTIxNDQ2MDgzZjU2OTk3N2Q0YThhNTcmMzQ1Njc=o
 						</SignatoryUrl>
 						<TimeZone type="Microsoft"
-								  xmlns="urn:comfact:prosale:signing:timezone:2.0:protocol">W.
+							xmlns="urn:comfact:prosale:signing:timezone:2.0:protocol">W.
 							Europe Standard Time
 						</TimeZone>
 						<SignatureFieldId fieldRenderingType="Image"
-										  xmlns="urn:comfact:prosale:signing:ades:2.0:protocol">
+							xmlns="urn:comfact:prosale:signing:ades:2.0:protocol">
 							0becc27148b840e58250d5bb96d00959
 						</SignatureFieldId>
 					</Custom>
 					<Identification>
 						<Alias>SvensktEId</Alias>
 					</Identification>
-					<IdentificationToken identificationTokenId="SigningAuthenticationResponse1"
-										 timestamp="2024-01-30T10:55:40.3286418+01:00">
+					<IdentificationToken identificationTokenId="SigningAuthenticationResponse1" timestamp="2024-01-30T10:55:40.3286418+01:00">
 						<ExternalData xmlns="urn:comfact:prosale:signing:data:2.0:protocol"/>
 					</IdentificationToken>
-					<IdentificationToken identificationTokenId="SignatureRequest1"
-										 timestamp="2024-01-30T10:55:52.5162449+01:00">
+					<IdentificationToken identificationTokenId="SignatureRequest1" timestamp="2024-01-30T10:55:52.5162449+01:00">
 						<ExternalData xmlns="urn:comfact:prosale:signing:data:2.0:protocol"/>
 					</IdentificationToken>
-					<IdentificationToken identificationTokenId="SignatureResponse1"
-										 timestamp="2024-01-30T10:56:09.5497723+01:00">
+					<IdentificationToken identificationTokenId="SignatureResponse1" timestamp="2024-01-30T10:56:09.5497723+01:00">
 						<ExternalData xmlns="urn:comfact:prosale:signing:data:2.0:protocol"/>
 					</IdentificationToken>
-					<SignatoryAction action="Approved" timestamp="2024-01-30T10:56:09.5497723+01:00"
-									 identificationTokenIdRef="SignatureResponse1">
+					<SignatoryAction action="Approved" timestamp="2024-01-30T10:56:09.5497723+01:00" identificationTokenIdRef="SignatureResponse1">
 						<Reason>Jag undertecknar härmed följande dokument:
 							TestDocument och 2 bilagor.
 						</Reason>
