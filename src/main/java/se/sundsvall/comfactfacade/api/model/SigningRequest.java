@@ -26,13 +26,13 @@ public class SigningRequest {
 	@ArraySchema(schema = @Schema(implementation = Document.class, description = "Additional documents to sign."))
 	private List<Document> additionalDocuments;
 
-	@Schema(description = "The language of the signing process.", example = "sv-SE")
+	@Schema(description = "The language of the signing process.", examples = "sv-SE")
 	private String language;
 
-	@Schema(description = "The customer reference", example = "1234567890")
+	@Schema(description = "The customer reference", examples = "1234567890")
 	private String customerReference;
 
-	@Schema(description = "The date and time when the signing request expires.", example = "2021-12-31T23:59:59Z")
+	@Schema(description = "The date and time when the signing request expires.", examples = "2021-12-31T23:59:59Z")
 	private OffsetDateTime expires;
 
 	@Valid

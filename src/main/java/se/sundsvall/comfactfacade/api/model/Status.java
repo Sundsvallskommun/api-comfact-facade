@@ -15,10 +15,10 @@ import lombok.Setter;
 @Builder(setterPrefix = "with")
 public class Status {
 
-	@Schema(description = "The status code", example = "Created")
+	@Schema(description = "The status code", examples = "Created")
 	private String code;
 
-	@Schema(description = "The status message", example = "The signing instance is halted.")
+	@Schema(description = "The status message", examples = "The signing instance is halted.")
 	private String message;
 
 	@Override

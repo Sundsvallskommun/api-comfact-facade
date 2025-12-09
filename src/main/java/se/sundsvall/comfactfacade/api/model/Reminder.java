@@ -22,14 +22,14 @@ public class Reminder {
 	private NotificationMessage message;
 
 	@NotNull
-	@Schema(description = "If the reminder is enabled", example = "true")
+	@Schema(description = "If the reminder is enabled", examples = "true")
 	private boolean enabled;
 
 	@NotNull
-	@Schema(description = "The interval in hours between each reminder", example = "24")
+	@Schema(description = "The interval in hours between each reminder", examples = "24")
 	private int intervalInHours;
 
-	@Schema(description = "The date and time when the first reminder should be sent.", example = "2021-12-31T23:59:59Z")
+	@Schema(description = "The date and time when the first reminder should be sent.", examples = "2021-12-31T23:59:59Z")
 	private OffsetDateTime startDateTime;
 
 	@Override

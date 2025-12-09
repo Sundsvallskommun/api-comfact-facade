@@ -38,16 +38,16 @@ public class SigningInstance {
 	@Schema(description = "Status of the signing request.")
 	private Status status;
 
-	@Schema(description = "The customer reference", example = "1234567890")
+	@Schema(description = "The customer reference", examples = "1234567890")
 	private String customerReference;
 
-	@Schema(description = "The date and time when the signing instance was created.", example = "2021-12-31T23:59:59Z")
+	@Schema(description = "The date and time when the signing instance was created.", examples = "2021-12-31T23:59:59Z")
 	private OffsetDateTime created;
 
-	@Schema(description = "The date and time when the signing instance was last changed.", example = "2021-12-31T23:59:59Z")
+	@Schema(description = "The date and time when the signing instance was last changed.", examples = "2021-12-31T23:59:59Z")
 	private OffsetDateTime changed;
 
-	@Schema(description = "The date and time when the signing instance expires", example = "2021-12-31T23:59:59Z")
+	@Schema(description = "The date and time when the signing instance expires", examples = "2021-12-31T23:59:59Z")
 	private OffsetDateTime expires;
 
 	@Schema(description = "Information about the main document to sign.")
@@ -59,7 +59,7 @@ public class SigningInstance {
 	@ArraySchema(schema = @Schema(implementation = Document.class, description = "Additional documents to sign."))
 	private List<Document> additionalDocuments;
 
-	@Schema(description = "The signing instance id.", example = "1234567890")
+	@Schema(description = "The signing instance id.", examples = "1234567890")
 	private String signingId;
 
 	@Override
