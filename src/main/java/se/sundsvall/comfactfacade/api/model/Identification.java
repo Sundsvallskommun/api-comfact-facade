@@ -25,7 +25,7 @@ public class Identification {
 		• SmsCode – One Time Password via SMS
 		• EmailCode – One Time Password via Email
 		• SvensktEId – Swedish e-identification (Swedish BankID)
-		""", example = "SmsCode")
+		""", examples = "SmsCode")
 	private String alias;
 
 	@Override

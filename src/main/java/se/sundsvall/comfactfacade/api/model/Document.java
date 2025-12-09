@@ -18,21 +18,21 @@ import se.sundsvall.dept44.common.validators.annotation.ValidBase64;
 @Builder(setterPrefix = "with")
 public class Document {
 
-	@Schema(description = "The Document Name visible to the user in the signing process.", nullable = true, example = "Business Contract")
+	@Schema(description = "The Document Name visible to the user in the signing process.", nullable = true, examples = "Business Contract")
 	private String name;
 
 	@NotBlank
-	@Schema(description = "The document file name including extension,", example = "document.pdf")
+	@Schema(description = "The document file name including extension,", examples = "document.pdf")
 	private String fileName;
 
 	@OneOf({
 		"application/pdf"
 	})
-	@Schema(description = "The documents mimetype. Must be application/pdf", example = "application/pdf")
+	@Schema(description = "The documents mimetype. Must be application/pdf", examples = "application/pdf")
 	private String mimeType;
 
 	@ValidBase64
-	@Schema(type = "string", format = "byte", description = "Base64-encoded file (plain text)", example = "dGVzdA==")
+	@Schema(type = "string", format = "byte", description = "Base64-encoded file (plain text)", examples = "dGVzdA==")
 	private String content;
 
 	@Override

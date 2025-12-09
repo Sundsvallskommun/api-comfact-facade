@@ -17,14 +17,14 @@ import lombok.Setter;
 @Schema(description = "Custom message for the signature request emails.")
 public class NotificationMessage {
 
-	@Schema(description = "The subject of the notification message", example = "Please sign the document")
+	@Schema(description = "The subject of the notification message", examples = "Please sign the document")
 	private String subject;
 
-	@Schema(description = "The body of the notification message", example = "Dear John Doe, please sign the document.")
+	@Schema(description = "The body of the notification message", examples = "Dear John Doe, please sign the document.")
 	private String body;
 
 	@NotBlank
-	@Schema(description = "The language of the notification message.", example = "sv-SE")
+	@Schema(description = "The language of the notification message.", examples = "sv-SE")
 	private String language;
 
 	@Override

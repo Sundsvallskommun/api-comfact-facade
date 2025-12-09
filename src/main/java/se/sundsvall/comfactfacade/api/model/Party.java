@@ -19,31 +19,31 @@ import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 @Schema(description = "A party related to the signing process.")
 public class Party {
 
-	@Schema(description = "The name of the party", example = "John Doe")
+	@Schema(description = "The name of the party", examples = "John Doe")
 	private String name;
 
 	@ValidUuid(nullable = true)
-	@Schema(description = "The party id", example = "550e8400-e29b-41d4-a716-446655440000")
+	@Schema(description = "The party id", examples = "550e8400-e29b-41d4-a716-446655440000")
 	private String partyId;
 
 	@Schema(description = "Custom message for the signature request emails for the specific party. Overwrites the message in the Signing Request.")
 	private NotificationMessage notificationMessage;
 
-	@Schema(description = "The party title", example = "CEO")
+	@Schema(description = "The party title", examples = "CEO")
 	private String title;
 
 	@NotNull
-	@Schema(description = "The party email", example = "john.doe@sundsvall.se")
+	@Schema(description = "The party email", examples = "john.doe@sundsvall.se")
 	private String email;
 
 	@ValidMobileNumber(nullable = true)
-	@Schema(description = "The party phone number", example = "0701740605")
+	@Schema(description = "The party phone number", examples = "0701740605")
 	private String phoneNumber;
 
-	@Schema(description = "The organization of the party.", example = "Sundsvall Municipality")
+	@Schema(description = "The organization of the party.", examples = "Sundsvall Municipality")
 	private String organization;
 
-	@Schema(description = "Language parameter that overwrites the language of the Signing Instance for the current party.", example = "sv")
+	@Schema(description = "Language parameter that overwrites the language of the Signing Instance for the current party.", examples = "sv")
 	private String language;
 
 	@Override
