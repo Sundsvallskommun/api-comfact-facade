@@ -6,7 +6,7 @@ _The service acts as a facade and provides an api to interact with an external s
 
 ### Prerequisites
 
-- **Java 21 or higher**
+- **Java 25 or higher**
 - **Maven**
 - **Git**
 - **[Dependent Microservices](#dependencies)**
