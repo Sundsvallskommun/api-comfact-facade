@@ -1,9 +1,9 @@
 package se.sundsvall.comfactfacade;
 
-import static org.springframework.boot.SpringApplication.run;
-
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import se.sundsvall.dept44.ServiceApplication;
+
+import static org.springframework.boot.SpringApplication.run;
 
 @EnableFeignClients
 @ServiceApplication
