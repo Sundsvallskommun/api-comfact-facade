@@ -1,9 +1,5 @@
 package se.sundsvall.comfactfacade.service;
 
-import static java.util.Collections.emptyList;
-import static org.zalando.problem.Status.BAD_REQUEST;
-import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
-
 import comfact.CreateSigningInstanceRequest;
 import comfact.Custom;
 import comfact.DocumentType;
@@ -47,6 +43,10 @@ import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.SigningsResponse;
 import se.sundsvall.comfactfacade.api.model.Status;
 import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
+
+import static java.util.Collections.emptyList;
+import static org.zalando.problem.Status.BAD_REQUEST;
+import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
 public final class SigningMapper {
 

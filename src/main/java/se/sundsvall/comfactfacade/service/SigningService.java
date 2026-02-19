@@ -1,11 +1,5 @@
 package se.sundsvall.comfactfacade.service;
 
-import static se.sundsvall.comfactfacade.service.SigningMapper.toCreateSigningInstanceRequestType;
-import static se.sundsvall.comfactfacade.service.SigningMapper.toSigningResponse;
-import static se.sundsvall.comfactfacade.service.SigningMapper.toSigningsResponse;
-import static se.sundsvall.comfactfacade.service.SigningMapper.toUpdateSigningInstanceRequestType;
-import static se.sundsvall.comfactfacade.service.SigningMapper.toWithdrawSigningInstanceRequestType;
-
 import comfact.GetSignatoryRequest;
 import comfact.GetSigningInstanceRequest;
 import comfact.SigningInstanceInputType;
@@ -20,6 +14,12 @@ import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.SigningsResponse;
 import se.sundsvall.comfactfacade.integration.comfact.ComfactIntegration;
 import se.sundsvall.comfactfacade.integration.party.PartyClient;
+
+import static se.sundsvall.comfactfacade.service.SigningMapper.toCreateSigningInstanceRequestType;
+import static se.sundsvall.comfactfacade.service.SigningMapper.toSigningResponse;
+import static se.sundsvall.comfactfacade.service.SigningMapper.toSigningsResponse;
+import static se.sundsvall.comfactfacade.service.SigningMapper.toUpdateSigningInstanceRequestType;
+import static se.sundsvall.comfactfacade.service.SigningMapper.toWithdrawSigningInstanceRequestType;
 
 @Service
 public class SigningService {
