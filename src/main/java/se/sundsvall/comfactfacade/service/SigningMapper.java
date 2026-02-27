@@ -31,7 +31,6 @@ import org.jose4j.base64url.Base64;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.w3c.dom.Element;
-import org.zalando.problem.Problem;
 import se.sundsvall.comfactfacade.api.model.Document;
 import se.sundsvall.comfactfacade.api.model.Identification;
 import se.sundsvall.comfactfacade.api.model.NotificationMessage;
@@ -43,10 +42,11 @@ import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.SigningsResponse;
 import se.sundsvall.comfactfacade.api.model.Status;
 import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
+import se.sundsvall.dept44.problem.Problem;
 
 import static java.util.Collections.emptyList;
-import static org.zalando.problem.Status.BAD_REQUEST;
-import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 public final class SigningMapper {
 
