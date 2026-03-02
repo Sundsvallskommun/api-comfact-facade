@@ -4,12 +4,11 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
-import org.zalando.problem.violations.ConstraintViolationProblem;
 import se.sundsvall.comfactfacade.Application;
 import se.sundsvall.comfactfacade.api.model.Document;
 import se.sundsvall.comfactfacade.api.model.Identification;
@@ -17,6 +16,8 @@ import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.Signatory;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.service.SigningService;
+import se.sundsvall.dept44.problem.Problem;
+import se.sundsvall.dept44.problem.violations.ConstraintViolationProblem;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doThrow;
@@ -29,6 +30,7 @@ import static se.sundsvall.comfactfacade.Constants.MUNICIPALITY_ID;
 
 @SpringBootTest(classes = Application.class, webEnvironment = RANDOM_PORT)
 @ActiveProfiles("junit")
+@AutoConfigureWebTestClient
 class SigningResourceFailureTest {
 
 	@MockitoBean
@@ -41,7 +43,7 @@ class SigningResourceFailureTest {
 	void cancelSigningRequest_NotFound() {
 		// Arrange
 		final String signingId = "someSigningId";
-		doThrow(Problem.valueOf(Status.NOT_FOUND, "The signing request with id someSigningId was not found")).when(signingServiceMock).cancelSigningRequest(MUNICIPALITY_ID, signingId);
+		doThrow(Problem.valueOf(HttpStatus.NOT_FOUND, "The signing request with id someSigningId was not found")).when(signingServiceMock).cancelSigningRequest(MUNICIPALITY_ID, signingId);
 
 		// Act
 		final var result = webTestClient.delete()
@@ -55,7 +57,7 @@ class SigningResourceFailureTest {
 
 		// Assert
 		assertThat(result).isNotNull();
-		assertThat(result.getStatus()).isEqualTo(Status.NOT_FOUND);
+		assertThat(result.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertThat(result.getTitle()).isEqualTo("Not Found");
 		assertThat(result.getDetail()).isEqualTo("The signing request with id someSigningId was not found");
 		verify(signingServiceMock).cancelSigningRequest(MUNICIPALITY_ID, signingId);
@@ -93,8 +95,8 @@ class SigningResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getViolations()).satisfies(violations -> {
 			assertThat(violations).hasSize(1);
-			assertThat(violations.getFirst().getField()).isEqualTo("initiator");
-			assertThat(violations.getFirst().getMessage()).isEqualTo("must not be null");
+			assertThat(violations.getFirst().field()).isEqualTo("initiator");
+			assertThat(violations.getFirst().message()).isEqualTo("must not be null");
 		});
 
 		verifyNoInteractions(signingServiceMock);
@@ -131,8 +133,8 @@ class SigningResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getViolations()).satisfies(violations -> {
 			assertThat(violations).hasSize(1);
-			assertThat(violations.getFirst().getField()).isEqualTo("signatories");
-			assertThat(violations.getFirst().getMessage()).isEqualTo("must not be empty");
+			assertThat(violations.getFirst().field()).isEqualTo("signatories");
+			assertThat(violations.getFirst().message()).isEqualTo("must not be empty");
 		});
 
 		verifyNoInteractions(signingServiceMock);
@@ -168,8 +170,8 @@ class SigningResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getViolations()).satisfies(violations -> {
 			assertThat(violations).hasSize(1);
-			assertThat(violations.getFirst().getField()).isEqualTo("document");
-			assertThat(violations.getFirst().getMessage()).isEqualTo("must not be null");
+			assertThat(violations.getFirst().field()).isEqualTo("document");
+			assertThat(violations.getFirst().message()).isEqualTo("must not be null");
 		});
 
 		verifyNoInteractions(signingServiceMock);
@@ -307,7 +309,7 @@ class SigningResourceFailureTest {
 		// Arrange
 		final var signingId = "someSigningId";
 		final var partyId = "somePartyId";
-		doThrow(Problem.valueOf(Status.NOT_FOUND, "The signing request with id someSigningId was not found"))
+		doThrow(Problem.valueOf(HttpStatus.NOT_FOUND, "The signing request with id someSigningId was not found"))
 			.when(signingServiceMock).getSignatory(MUNICIPALITY_ID, signingId, partyId);
 
 		// Act & Assert
@@ -322,7 +324,7 @@ class SigningResourceFailureTest {
 
 		// Assert
 		assertThat(result).isNotNull();
-		assertThat(result.getStatus()).isEqualTo(Status.NOT_FOUND);
+		assertThat(result.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertThat(result.getTitle()).isEqualTo("Not Found");
 		assertThat(result.getDetail()).isEqualTo("The signing request with id someSigningId was not found");
 		verify(signingServiceMock).getSignatory(MUNICIPALITY_ID, signingId, partyId);
