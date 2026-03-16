@@ -1,7 +1,5 @@
 package se.sundsvall.comfactfacade.integration.comfact;
 
-import static se.sundsvall.comfactfacade.integration.comfact.configuration.ComfactConfiguration.CLIENT_ID;
-
 import comfact.CreateSigningInstanceRequest;
 import comfact.CreateSigningInstanceResponse;
 import comfact.GetSignatoryRequest;
@@ -18,6 +16,8 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import se.sundsvall.comfactfacade.integration.comfact.configuration.ComfactConfiguration;
+
+import static se.sundsvall.comfactfacade.integration.comfact.configuration.ComfactConfiguration.CLIENT_ID;
 
 @CircuitBreaker(name = CLIENT_ID)
 @FeignClient(name = CLIENT_ID, url = "${integration.comfact.url}", configuration = ComfactConfiguration.class)

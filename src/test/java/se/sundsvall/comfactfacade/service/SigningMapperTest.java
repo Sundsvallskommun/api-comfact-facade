@@ -1,10 +1,5 @@
 package se.sundsvall.comfactfacade.service;
 
-import static java.time.OffsetDateTime.now;
-import static java.time.temporal.ChronoUnit.SECONDS;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.within;
-
 import comfact.Custom;
 import comfact.DocumentType;
 import comfact.GetSigningInstanceResponse;
@@ -33,6 +28,11 @@ import se.sundsvall.comfactfacade.api.model.NotificationMessage;
 import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.Reminder;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
+
+import static java.time.OffsetDateTime.now;
+import static java.time.temporal.ChronoUnit.SECONDS;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
 class SigningMapperTest {
 

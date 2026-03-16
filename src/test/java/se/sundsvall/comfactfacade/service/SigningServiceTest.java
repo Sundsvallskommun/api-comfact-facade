@@ -1,13 +1,5 @@
 package se.sundsvall.comfactfacade.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static se.sundsvall.comfactfacade.Constants.MUNICIPALITY_ID;
-
 import comfact.CreateSigningInstanceRequest;
 import comfact.DocumentType;
 import comfact.GetSignatoryRequest;
@@ -32,6 +24,14 @@ import se.sundsvall.comfactfacade.api.model.Signatory;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.integration.comfact.ComfactIntegration;
 import se.sundsvall.comfactfacade.integration.party.PartyClient;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static se.sundsvall.comfactfacade.Constants.MUNICIPALITY_ID;
 
 @ExtendWith(MockitoExtension.class)
 class SigningServiceTest {

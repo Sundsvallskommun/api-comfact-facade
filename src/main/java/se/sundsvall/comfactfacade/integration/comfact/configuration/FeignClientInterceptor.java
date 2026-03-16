@@ -1,16 +1,16 @@
 package se.sundsvall.comfactfacade.integration.comfact.configuration;
 
-import static java.util.Collections.emptyList;
-import static java.util.Optional.ofNullable;
-import static org.apache.hc.core5.http.ContentType.TEXT_XML;
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-
 import feign.InvocationContext;
 import feign.Response;
 import feign.ResponseInterceptor;
 import org.apache.hc.core5.http.ContentType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
+
+import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
+import static org.apache.hc.core5.http.ContentType.TEXT_XML;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Component
 public class FeignClientInterceptor implements ResponseInterceptor {

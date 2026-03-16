@@ -6,9 +6,9 @@ import feign.Response;
 import feign.codec.ErrorDecoder;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.soap.MessageFactory;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
-import org.zalando.problem.ThrowableProblem;
+import org.springframework.http.HttpStatus;
+import se.sundsvall.dept44.problem.Problem;
+import se.sundsvall.dept44.problem.ThrowableProblem;
 
 public class ComfactErrorDecoder implements ErrorDecoder {
 
@@ -18,7 +18,7 @@ public class ComfactErrorDecoder implements ErrorDecoder {
 		try {
 			jaxbContext = JAXBContext.newInstance(ResponseType.class);
 		} catch (final Exception e) {
-			throw Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Failed to create JAXBContext");
+			throw Problem.valueOf(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create JAXBContext");
 		}
 	}
 
@@ -32,7 +32,7 @@ public class ComfactErrorDecoder implements ErrorDecoder {
 			final var typedResponse = (ResponseType) jaxbUnmarshaller.unmarshal(soapMessage.getSOAPBody().extractContentAsDocument());
 			return toThrowableProblem(typedResponse.getResult());
 		} catch (final Exception e) {
-			return Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Failed to decode SOAP response");
+			return Problem.valueOf(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to decode SOAP response");
 		}
 	}
 
@@ -41,6 +41,6 @@ public class ComfactErrorDecoder implements ErrorDecoder {
 		final var resultMessage = result.getResultMessage();
 
 		final var responseResultCode = ResponseResultCode.fromMessage(resultCode);
-		return Problem.valueOf(Status.valueOf(responseResultCode.getHttpCode()), resultMessage);
+		return Problem.valueOf(HttpStatus.valueOf(responseResultCode.getHttpCode()), resultMessage);
 	}
 }
