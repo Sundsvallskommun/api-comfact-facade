@@ -156,10 +156,12 @@ public final class SigningMapper {
 	}
 
 	static WorkflowType toWorkflowType(final String flowType) {
-		if (flowType == null) {
-			return WorkflowType.SEQUENTIAL;
-		}
-		return WorkflowType.fromValue(flowType);
+		return Optional.ofNullable(flowType)
+			// The generated WorkflowType enum has values in the format "Sequential" and "Parallel". We need to uppercase the first
+			// letter and lowercase the rest to match this.
+			.map(type -> type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase())
+			.map(WorkflowType::fromValue)
+			.orElse(WorkflowType.SEQUENTIAL);
 	}
 
 	static CreateSigningInstanceRequest toCreateSigningInstanceRequestType(final SigningRequest signingRequest) {

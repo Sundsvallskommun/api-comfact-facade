@@ -665,6 +665,16 @@ class SigningMapperTest {
 		assertThat(SigningMapper.toWorkflowType("Parallel")).isEqualTo(WorkflowType.PARALLEL);
 	}
 
+	@Test
+	void toWorkflowType_caseInsensitive() {
+		assertThat(SigningMapper.toWorkflowType("parallel")).isEqualTo(WorkflowType.PARALLEL);
+		assertThat(SigningMapper.toWorkflowType("PARALLEL")).isEqualTo(WorkflowType.PARALLEL);
+		assertThat(SigningMapper.toWorkflowType("pARALLEL")).isEqualTo(WorkflowType.PARALLEL);
+		assertThat(SigningMapper.toWorkflowType("sequential")).isEqualTo(WorkflowType.SEQUENTIAL);
+		assertThat(SigningMapper.toWorkflowType("SEQUENTIAL")).isEqualTo(WorkflowType.SEQUENTIAL);
+		assertThat(SigningMapper.toWorkflowType("sEQUENTIAL")).isEqualTo(WorkflowType.SEQUENTIAL);
+	}
+
 	private boolean isValidBase64(final String s) {
 		try {
 			Base64.decode(s);

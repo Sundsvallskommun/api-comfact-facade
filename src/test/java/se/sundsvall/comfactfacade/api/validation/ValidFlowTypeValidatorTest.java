@@ -17,7 +17,7 @@ class ValidFlowTypeValidatorTest {
 
 	@ParameterizedTest
 	@ValueSource(strings = {
-		"Parallel", "Sequential"
+		"Parallel", "parallel", "PARALLEL", "Sequential", "sequential", "SEQUENTIAL"
 	})
 	void validValues(final String value) {
 		assertThat(validator.isValid(value, null)).isTrue();
@@ -25,7 +25,7 @@ class ValidFlowTypeValidatorTest {
 
 	@ParameterizedTest
 	@ValueSource(strings = {
-		"parallel", "sequential", "PARALLEL", "SEQUENTIAL", "invalid", ""
+		"invalid", ""
 	})
 	void invalidValues(final String value) {
 		assertThat(validator.isValid(value, null)).isFalse();
