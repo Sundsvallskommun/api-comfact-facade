@@ -10,6 +10,7 @@ import comfact.Signatory;
 import comfact.SigningInstance;
 import comfact.SigningInstanceInfo;
 import comfact.Status;
+import comfact.WorkflowType;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.GregorianCalendar;
@@ -229,6 +230,7 @@ class SigningMapperTest {
 		final var document = Document.builder().build();
 		final var language = "language";
 		final var additionalDocuments = List.of(Document.builder().build());
+		final var flowType = "Parallel";
 		final var signingRequest = SigningRequest.builder()
 			.withInitiator(initiator)
 			.withAdditionalParties(additionalParties)
@@ -240,6 +242,7 @@ class SigningMapperTest {
 			.withNotificationMessage(notificationMessage)
 			.withReminder(reminder)
 			.withAdditionalDocuments(additionalDocuments)
+			.withFlowType(flowType)
 			.build();
 
 		// Act
@@ -257,6 +260,7 @@ class SigningMapperTest {
 		assertThat(result.getDocument()).isNotNull();
 		assertThat(result.getLanguage()).isEqualTo(language);
 		assertThat(result.getDocumentAttachments()).isNotNull().hasSize(1);
+		assertThat(result.getWorkflow()).isEqualTo(WorkflowType.PARALLEL);
 	}
 
 	@Test
@@ -644,6 +648,31 @@ class SigningMapperTest {
 		assertThat(result.getSigningInstances().getFirst().getSigningId()).isEqualTo(singingId);
 		assertThat(result.getPagingAndSortingMetaData()).isNull();
 
+	}
+
+	@Test
+	void toWorkflowType_null() {
+		assertThat(SigningMapper.toWorkflowType(null)).isEqualTo(WorkflowType.SEQUENTIAL);
+	}
+
+	@Test
+	void toWorkflowType_sequential() {
+		assertThat(SigningMapper.toWorkflowType("Sequential")).isEqualTo(WorkflowType.SEQUENTIAL);
+	}
+
+	@Test
+	void toWorkflowType_parallel() {
+		assertThat(SigningMapper.toWorkflowType("Parallel")).isEqualTo(WorkflowType.PARALLEL);
+	}
+
+	@Test
+	void toWorkflowType_caseInsensitive() {
+		assertThat(SigningMapper.toWorkflowType("parallel")).isEqualTo(WorkflowType.PARALLEL);
+		assertThat(SigningMapper.toWorkflowType("PARALLEL")).isEqualTo(WorkflowType.PARALLEL);
+		assertThat(SigningMapper.toWorkflowType("pARALLEL")).isEqualTo(WorkflowType.PARALLEL);
+		assertThat(SigningMapper.toWorkflowType("sequential")).isEqualTo(WorkflowType.SEQUENTIAL);
+		assertThat(SigningMapper.toWorkflowType("SEQUENTIAL")).isEqualTo(WorkflowType.SEQUENTIAL);
+		assertThat(SigningMapper.toWorkflowType("sEQUENTIAL")).isEqualTo(WorkflowType.SEQUENTIAL);
 	}
 
 	private boolean isValidBase64(final String s) {

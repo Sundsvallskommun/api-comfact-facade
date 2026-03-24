@@ -6,11 +6,10 @@
 		<artifactId>dept44-service-parent</artifactId>
 		<version>8.0.5</version>
 		<relativePath />
-		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>se.sundsvall</groupId>
 	<artifactId>api-comfact-facade</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 	<name>api-comfact-facade</name>
 	<properties>
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
@@ -141,8 +140,6 @@
 							<sources>
 								<source>${generated-sources-path}/models</source>
 								<!-- API model classes -->
-								<source>${generated-sources-path}/jaxb/comfact/comfact</source>
-								<!-- Comfact model classes -->
 								<source>${generated-sources-path}/annotations</source>
 								<!-- JPAModelGen classes -->
 							</sources>

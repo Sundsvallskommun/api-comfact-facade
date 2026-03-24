@@ -14,6 +14,7 @@ import comfact.SigningInstanceInfo;
 import comfact.SigningInstanceInputType;
 import comfact.UpdateSigningInstanceRequest;
 import comfact.WithdrawSigningInstanceRequest;
+import comfact.WorkflowType;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
@@ -150,7 +151,17 @@ public final class SigningMapper {
 			.withSignatories(Optional.ofNullable(signingRequest.getSignatories()).stream().flatMap(List::stream).map(SigningMapper::toSignatoryType).toList())
 			.withLanguage(signingRequest.getLanguage())
 			.withDocument(toDocumentType(signingRequest.getDocument()))
+			.withWorkflow(toWorkflowType(signingRequest.getFlowType()))
 			.withDocumentAttachments(toDocumentTypeList(signingRequest.getAdditionalDocuments()));
+	}
+
+	static WorkflowType toWorkflowType(final String flowType) {
+		return Optional.ofNullable(flowType)
+			// The generated WorkflowType enum has values in the format "Sequential" and "Parallel". We need to uppercase the first
+			// letter and lowercase the rest to match this.
+			.map(type -> type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase())
+			.map(WorkflowType::fromValue)
+			.orElse(WorkflowType.SEQUENTIAL);
 	}
 
 	static CreateSigningInstanceRequest toCreateSigningInstanceRequestType(final SigningRequest signingRequest) {
