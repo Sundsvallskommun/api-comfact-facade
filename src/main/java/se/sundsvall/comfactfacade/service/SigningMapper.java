@@ -14,6 +14,7 @@ import comfact.SigningInstanceInfo;
 import comfact.SigningInstanceInputType;
 import comfact.UpdateSigningInstanceRequest;
 import comfact.WithdrawSigningInstanceRequest;
+import comfact.WorkflowType;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
@@ -150,7 +151,15 @@ public final class SigningMapper {
 			.withSignatories(Optional.ofNullable(signingRequest.getSignatories()).stream().flatMap(List::stream).map(SigningMapper::toSignatoryType).toList())
 			.withLanguage(signingRequest.getLanguage())
 			.withDocument(toDocumentType(signingRequest.getDocument()))
+			.withWorkflow(toWorkflowType(signingRequest.getFlowType()))
 			.withDocumentAttachments(toDocumentTypeList(signingRequest.getAdditionalDocuments()));
+	}
+
+	static WorkflowType toWorkflowType(final String flowType) {
+		if (flowType == null) {
+			return WorkflowType.SEQUENTIAL;
+		}
+		return WorkflowType.fromValue(flowType);
 	}
 
 	static CreateSigningInstanceRequest toCreateSigningInstanceRequestType(final SigningRequest signingRequest) {

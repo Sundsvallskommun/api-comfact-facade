@@ -68,6 +68,7 @@ class SigningRequestTest {
 		final var additionalDocuments = List.of(document, new Document("someName", "someFileName", "someContentType", "someContent"));
 		final var language = "someLanguage";
 		final var reminder = new Reminder(notificationMessage, true, 24, now());
+		final var flowType = "Sequential";
 
 		// Act
 		final var result = SigningRequest.builder()
@@ -81,6 +82,7 @@ class SigningRequestTest {
 			.withNotificationMessage(notificationMessage)
 			.withReminder(reminder)
 			.withSignatories(signatories)
+			.withFlowType(flowType)
 			.build();
 
 		// Assert
@@ -95,6 +97,7 @@ class SigningRequestTest {
 		assertThat(result.getAdditionalDocuments()).isEqualTo(additionalDocuments);
 		assertThat(result.getLanguage()).isEqualTo(language);
 		assertThat(result.getReminder()).isSameAs(reminder);
+		assertThat(result.getFlowType()).isEqualTo(flowType);
 
 	}
 
