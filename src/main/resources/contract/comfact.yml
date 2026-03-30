@@ -1,0 +1,2248 @@
+openapi: 3.1.0
+info:
+  title: Comfact Signature API
+  description: |-
+    This is the OpenAPI definition for the Comfact Signature API.
+    Copyright (c) Comfact AB, Sweden.
+    ALL RIGHTS RESERVED.
+
+    #### Introduction
+    Comfact Signature is an online electronic signature solution. It complies with the
+    eIDAS Regulation and can be used for both Basic and Advanced Electronic Signatures.
+    Comfact Signature is designed to be a "fire and forget" service. Once a signing
+    instance has been created, the service will see to that signatories are notified,
+    authenticated and guided through the document signing process. The end result, the
+    electronically signed document, is then delivered back to the client application,
+    preferably via webhooks. The API works the same for both JSON and XML payloads.
+
+    #### Signing Instances
+    The majority of the operations provided by the Comfact Signature API revolve
+    around signing instances. A signing instance is a self-contained entity that
+    holds all necessary information for a set of signatories to sign one or more
+    documents. A signing instance belongs to an account in Comfact Signature. An
+    account has a configuration where additional settings can be configured, such
+    as tweaking texts in email and SMS notifications, switching signature type from
+    Basic to Advanced or subscribing to webhooks. A client business application can
+    have several accounts, configured for different scenarios, and then select the
+    appropriate one in the API call when creating a new signing instance. All valid
+    values for the status of a signing instance are listed below for reference.
+
+    - `created` The signing instance has been created on persistent storage
+    - `active` The signing instance is active and in a normal running state
+    - `approved` All signatories have approved the document and attachments
+    - `declined` A signatory has declined to sign the document or attachments
+    - `completed` The signed documents have been produced and also validated
+    - `withdrawn` The signing instance has been manually stopped by a user
+    - `expired` The signing instance has expired and is no longer progressing
+    - `halted` The signing instance has been automatically stopped by an error
+    - `faulty` This status is currently unused but is reserved for future use
+
+    #### System Languages
+    Comfact Signature supports a wide range of languages. Languages are used when
+    displaying texts on web pages, for email and SMS communications and when formatting
+    numbers, dates and times. A system language is specified by an *ISO 639* language
+    code, in conjunction with an *ISO 3166* country code. Currently supported languages
+    are listed below. New languages are added as needed.
+
+    - `bs-Latn-BA` Bosnian (Latin, Bosnia & Herzegovina)
+    - `hr-HR` Croatian (Croatia)
+    - `da-DK` Danish (Denmark)
+    - `nl-NL` Dutch (Netherlands)
+    - `en-US` English (United States)
+    - `fi-FI` Finnish (Finland)
+    - `fr-FR` French (France)
+    - `de-DE` German (Germany)
+    - `el-GR` Greek (Greece)
+    - `hu-HU` Hungarian (Hungary)
+    - `it-IT` Italian (Italy)
+    - `nb-NO` Norwegian Bokmål (Norway)
+    - `pt-PT` Portuguese (Portugal)
+    - `ro-RO` Romanian (Romania)
+    - `sr-Cyrl-RS` Serbian (Cyrillic, Serbia)
+    - `sl-SI` Slovenian (Slovenia)
+    - `es-ES` Spanish (Spain)
+    - `sv-SE` Swedish (Sweden)
+    - `uk-UA` Ukrainian (Ukraine)
+
+    #### Signatory Authentication
+    Signatories are required to be authenticated before being allowed access to documents
+    in a signing instance. Generally available authentication methods are listed below.
+    Other authentication methods are made available on a per-customer basis. Some methods
+    can only be used in combination with Basic Electronic Signatures, while others can be
+    used with both Basic and Advanced Electronic Signatures. Signature type is selected
+    per signing instance, but authentication methods are selected per signatory. Mixing
+    authentication methods in a signing instance can be useful in an international context.
+
+    - `EmailCode` One-time password via email (*Basic Electronic Signatures*)
+    - `SmsCode` One-time password via SMS (*Basic Electronic Signatures*)
+    - `SvensktEId` Swedish e-identification (*Basic or Advanced Electronic Signatures*)
+    - `SwedenConnect` European e-identification (*Basic or Advanced Electronic Signatures*)
+    - `SITHS` Swedish healthcare e-identification (*Basic or Advanced Electronic Signatures*)
+
+    #### Rate Limiting
+    Comfact Signature uses rate limiting and throttling to ensure fair access to server
+    resources and to protect against excessive or malicious use. Rate limiting is applied
+    to the API as well as the OAuth 2.0 token endpoint. The API permits a few calls per
+    second and a few hundred calls per minute. The rate limit on the OAuth 2.0 token endpoint
+    is considerably lower. Some general tips and recommendations to avoid being throttled:
+
+    - Cache your OAuth 2.0 access token for reuse. It is valid for a couple of hours
+    - If possible, implement webhooks instead of using automated polling of the API
+    - A signing instance can be big. Work with signing instance infos where possible
+    - Handle the HTTP 429 TooManyRequests response and hold making further calls
+
+    #### Data Retention
+
+    Signing instances are not kept forever by Comfact Signature. A signing instance often
+    holds personal information about its signatories as well as business data and other
+    potentially sensitive information. Signing instances are therefore deleted from the
+    system on a pre-defined schedule. Default deletion time is one week after the signing
+    instance has reached its expiry date. Deletion time is configurable on your account.
+
+    #### Versioning
+    This API definition uses *Semantic Versioning* (SemVer) to allow new features and
+    fixes to be added in a backwards-compatible way. The version number is described on
+    the *Major.Minor.Patch* form. The *Minor* version will increment when new features
+    are added. The *Patch* version will increment when bug fixes are added. The *Major*
+    version will effectively never change, as a new API definition is created instead.
+    Changes to the API may come in the form of new operations or components, additional
+    (optional) properties on existing resources, or updates to documentation. Changes
+    between API versions are listed below.
+
+    - **3.0.0** Initial version of this API definition, exposing standard functionality.
+    - **3.1.0** New feature to enable reactivation of a signing instance that is halted.
+    - **3.2.0** New feature to search and filter signing instances by group affiliation.
+    - **3.3.0** New feature to restrict access to the API by including OAuth 2.0 scopes.
+    - **3.4.0** New feature to return a signatory to a particular web page after signing.
+    - **3.5.0** New feature to support OAuth 2.0 bearer authentication for webhooks.
+    - **3.5.1** Fix for Location header incorrectly listed as part of HTTP 200 response.
+    - **3.6.1** New feature to expose the date when a signing instance will be deleted.
+  termsOfService: https://www.comfact.com/signingwebsite/home/termsofuse
+  contact:
+    name: Comfact AB
+    url: https://www.comfact.se
+    email: support@comfact.com
+  version: 3.6.1
+externalDocs:
+  description: Find out more about Comfact Signature
+  url: https://www.comfact.se/services/signature
+servers:
+  - url: https://www.comfact.com/signingservice
+    description: Production environment (Cloud)
+  - url: https://app.comfact.se/signingservice
+    description: Production environment (Sweden)
+  - url: https://test.comfact.com/signingservice
+    description: Test environment (Sweden)
+  - url: https://local.comfact.com/signingservice
+    description: Development environment (Sweden)
+tags:
+  - name: Signing Instances
+    description: Operations on the top level signing instance resources.
+  - name: Signing Instance Infos
+    description: Operations to search and filter signing instance infos.
+  - name: Reminders
+    description: Operations on automatic and manual signatory reminders.
+  - name: Signatories
+    description: Operations on the signatories of a signing instance.
+  - name: Documents
+    description: Operations on the documents of a signing instance.
+paths:
+  /api/v3/signing-instances:
+    post:
+      tags:
+        - Signing Instances
+      summary: Creates a new signing instance based on the provided input model.
+      description: |-
+        #### Introduction
+        The input model used for creating a new signing instance has several properties,
+        but only a few of these are mandatory. There must be at least one document to be
+        signed and there must be at least one signatory. Most other properties are optional
+        but can be specified to improve on privacy, secrecy or the overall user experience.
+        See the examples for how the input model may look in some common scenarios.
+
+        #### Return Links
+        Once a signatory has completed the signing process, they can be presented a link
+        that will take them back to your business application. You can provide one link
+        for when the signatory approves the document and another for when the signatory
+        declines. The signatory can also be redirected to your web pages automatically,
+        without having to click on the links. Both links may contain a substitution key
+        in the URL that is replaced with the ID of the signing instance before use.
+
+        - `{{SigningInstanceId}}`
+
+        See the relevant example on how return links and substitution keys can be used.
+      operationId: CreateSigningInstance
+      requestBody:
+        $ref: '#/components/requestBodies/SigningInstanceInput'
+      responses:
+        '201':
+          $ref: '#/components/responses/SigningInstanceSummary'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /api/v3/signing-instances/{signingInstanceId}:
+    get:
+      tags:
+        - Signing Instances
+      summary: Gets the complete signing instance that matches the specified ID.
+      operationId: GetSigningInstance
+      parameters:
+        - $ref: '#/components/parameters/signingInstanceId'
+      responses:
+        '200':
+          $ref: '#/components/responses/SigningInstance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    patch:
+      tags:
+        - Signing Instances
+      summary: Updates a target signing instance based on the provided patch model.
+      description: |-
+        #### Introduction
+        This operation can be used for updating, or patching, some of the simple properties
+        of a signing instance. More complex sub-resources, such as signatories, are patched
+        using other operations. Whether a signing instance can be patched or not is very much
+        determined by its current status. For example, it is not allowed to patch the expiry
+        date of a completed signing instance, but patching it on an expired signing instance
+        is, effectively reactivating it and extending its lifetime. Some common scenarios where
+        patching is possible, and the required status of the signing instance, are listed below.
+
+        #### Withdraw
+        A signing instance can be withdrawn by patching its status. A signing instance that
+        is in a withdrawn state has been manually stopped from progressing any further. No
+        signatories are allowed access to view or sign the documents and no signed documents
+        will be produced. The target signing instance must have one of the following statuses
+        for it to be withdrawn.
+
+        - `active`
+        - `halted`
+
+        #### Extend
+        The expiry date of a signing instance can be extended through patching. The new
+        expiry date must be greater than the current value. In case the signing instance
+        is already in an expired state, extending the expiry date will also reactivate
+        the signing instance into an active state. The signing instance must have one of
+        the following statuses to extend the expiry date.
+
+        - `active`
+        - `expired`
+
+        #### Reactivate
+        A signing instance can be reactivated by patching its status. Reactivation can only
+        be performed on a signing instance that is in a halted state. A signing instance
+        becomes halted if an error occurs that will prevent it from becoming completed.
+        A signing instance that has been reactivated often requires additional updates to
+        correct any erroneous data, such as an incorrect or misspelled email address. The
+        signing instance must have one of the following statuses to permit reactivation.
+
+        - `halted`
+
+        #### Remarks
+        This operation can also be reached via the HTTP POST method by including
+        a custom header named `X-HTTP-Method-Override` with the value `PATCH`.
+      operationId: UpdateSigningInstance
+      parameters:
+        - $ref: '#/components/parameters/signingInstanceId'
+      requestBody:
+        $ref: '#/components/requestBodies/SigningInstancePatch'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /api/v3/signing-instance-infos/{signingInstanceId}:
+    get:
+      tags:
+        - Signing Instance Infos
+      summary: Gets the signing instance info summary matching the specified ID.
+      operationId: GetSigningInstanceInfo
+      parameters:
+        - $ref: '#/components/parameters/signingInstanceId'
+      responses:
+        '200':
+          $ref: '#/components/responses/SigningInstanceInfo'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /api/v3/signing-instance-infos/search-filters:
+    post:
+      tags:
+        - Signing Instance Infos
+      summary: Creates and applies a search filter on signing instance infos.
+      operationId: CreateSearchFilter
+      requestBody:
+        $ref: '#/components/requestBodies/SearchFilter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SearchResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /api/v3/signing-instances/{signingInstanceId}/automatic-reminder:
+    get:
+      tags:
+        - Reminders
+      summary: Gets the automatic reminder currently set on the signing instance.
+      operationId: GetAutomaticReminder
+      parameters:
+        - $ref: '#/components/parameters/signingInstanceId'
+      responses:
+        '200':
+          $ref: '#/components/responses/AutomaticReminder'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    put:
+      tags:
+        - Reminders
+      summary: Sets the provided automatic reminder on the signing instance.
+      description: |-
+        #### Remarks
+        This operation can also be reached via the HTTP POST method by including
+        a custom header named `X-HTTP-Method-Override` with the value `PUT`.
+      operationId: SetAutomaticReminder
+      parameters:
+        - $ref: '#/components/parameters/signingInstanceId'
+      requestBody:
+        $ref: '#/components/requestBodies/AutomaticReminder'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /api/v3/signing-instances/{signingInstanceId}/manual-reminders:
+    post:
+      tags:
+        - Reminders
+      summary: Creates and sends a manual reminder to the selected signatories.
+      operationId: CreateManualReminder
+      parameters:
+        - $ref: '#/components/parameters/signingInstanceId'
+      requestBody:
+        $ref: '#/components/requestBodies/ManualReminder'
+      responses:
+        '202':
+          $ref: '#/components/responses/Accepted'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /api/v3/signing-instances/{signingInstanceId}/signatories:
+    get:
+      tags:
+        - Signatories
+      summary: Gets the signatories matching the filter from the signing instance.
+      operationId: GetSignatories
+      parameters:
+        - $ref: '#/components/parameters/signingInstanceId'
+        - $ref: '#/components/parameters/signatoryFilter'
+      responses:
+        '200':
+          $ref: '#/components/responses/Signatories'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /api/v3/signing-instances/{signingInstanceId}/signatories/{partyId}:
+    get:
+      tags:
+        - Signatories
+      summary: Gets the signatory with the specified ID from the signing instance.
+      operationId: GetSignatory
+      parameters:
+        - $ref: '#/components/parameters/signingInstanceId'
+        - $ref: '#/components/parameters/partyId'
+      responses:
+        '200':
+          $ref: '#/components/responses/Signatory'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    patch:
+      tags:
+        - Signatories
+      summary: Updates the target signatory based on the provided patch model.
+      description: |-
+        #### Remarks
+        This operation can also be reached via the HTTP POST method by including
+        a custom header named `X-HTTP-Method-Override` with the value `PATCH`.
+      operationId: UpdateSignatory
+      parameters:
+        - $ref: '#/components/parameters/signingInstanceId'
+        - $ref: '#/components/parameters/partyId'
+      requestBody:
+        $ref: '#/components/requestBodies/SignatoryPatch'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /api/v3/signing-instances/{signingInstanceId}/original-documents:
+    get:
+      tags:
+        - Documents
+      summary: Gets all the original documents from the target signing instance.
+      operationId: GetOriginalDocuments
+      parameters:
+        - $ref: '#/components/parameters/signingInstanceId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OriginalDocuments'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /api/v3/signing-instances/{signingInstanceId}/signed-documents:
+    get:
+      tags:
+        - Documents
+      summary: Gets all the signed documents from the target signing instance.
+      operationId: GetSignedDocuments
+      parameters:
+        - $ref: '#/components/parameters/signingInstanceId'
+      responses:
+        '200':
+          $ref: '#/components/responses/SignedDocuments'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        default:
+          $ref: '#/components/responses/GeneralError'
+webhooks:
+  event-notifications:
+    post:
+      summary: Creates and handles an event notification from a signing instance.
+      description: |-
+        #### Introduction
+        Webhooks are callbacks from Comfact Signature to your business application.
+        A request to a webhook endpoint is triggered when an event has occurred in
+        one of your signing instances. There is a defined set of events that you can
+        subscribe to. You can choose to subscribe to all, none or only some of these
+        events. Webhooks settings are handled in the configuration of your account.
+
+        #### Retry Policy
+        If your webhook endpoint responds with anything other than HTTP 200 OK for
+        a request, the call is considered a failure by Comfact Signature. A failed
+        request is retried every half hour, for a maximum period of **48** hours.
+      operationId: CreateEventNotification
+      security:
+        - BasicAuthentication: []
+        - OAuth2ClientCredentials: []
+        - BearerAuthentication: []
+      requestBody:
+        $ref: '#/components/requestBodies/EventNotification'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        default:
+          $ref: '#/components/responses/GeneralError'
+components:
+  parameters:
+    signingInstanceId:
+      description: The ID of the target signing instance resource.
+      name: signingInstanceId
+      in: path
+      required: true
+      schema:
+        type: string
+    signatoryFilter:
+      description: The indicator for filtering the set of signatories.
+      name: signatoryFilter
+      in: query
+      schema:
+        $ref: '#/components/schemas/SignatoryFilter'
+        default: all
+    partyId:
+      description: The ID of the target party or signatory resource.
+      name: partyId
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBodies:
+    SigningInstanceInput:
+      description: The input model to base the new signing instance on.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SigningInstanceInput'
+          examples:
+            SimpleSigningInstanceInput:
+              $ref: '#/components/examples/SimpleSigningInstanceInput'
+            PrivacySigningInstanceInput:
+              $ref: '#/components/examples/PrivacySigningInstanceInput'
+            ReturnLinkSigningInstanceInput:
+              $ref: '#/components/examples/ReturnLinkSigningInstanceInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/SigningInstanceInput'
+          examples:
+            SimpleSigningInstanceInput:
+              $ref: '#/components/examples/SimpleSigningInstanceInput'
+            PrivacySigningInstanceInput:
+              $ref: '#/components/examples/PrivacySigningInstanceInput'
+            ReturnLinkSigningInstanceInput:
+              $ref: '#/components/examples/ReturnLinkSigningInstanceInput'
+    SigningInstancePatch:
+      description: The patch model containing the properties to update.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SigningInstancePatch'
+          examples:
+            WithdrawSigningInstancePatch:
+              $ref: '#/components/examples/WithdrawSigningInstancePatch'
+            ReactivateSigningInstancePatch:
+              $ref: '#/components/examples/ReactivateSigningInstancePatch'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/SigningInstancePatch'
+          examples:
+            WithdrawSigningInstancePatch:
+              $ref: '#/components/examples/WithdrawSigningInstancePatch'
+            ReactivateSigningInstancePatch:
+              $ref: '#/components/examples/ReactivateSigningInstancePatch'
+    SearchFilter:
+      description: The search filter with the predicates and paginator to apply.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SearchFilter'
+          examples:
+            ExactSearchFilter:
+              $ref: '#/components/examples/ExactSearchFilter'
+            PaginatedSearchFilter:
+              $ref: '#/components/examples/PaginatedSearchFilter'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/SearchFilter'
+          examples:
+            ExactSearchFilter:
+              $ref: '#/components/examples/ExactSearchFilter'
+            PaginatedSearchFilter:
+              $ref: '#/components/examples/PaginatedSearchFilter'
+    AutomaticReminder:
+      description: The automatic reminder to set on the signing instance.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AutomaticReminder'
+          examples:
+            EnableAutomaticReminder:
+              $ref: '#/components/examples/EnableAutomaticReminder'
+            RemoveAutomaticReminder:
+              $ref: '#/components/examples/RemoveAutomaticReminder'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/AutomaticReminder'
+          examples:
+            EnableAutomaticReminder:
+              $ref: '#/components/examples/EnableAutomaticReminder'
+            RemoveAutomaticReminder:
+              $ref: '#/components/examples/RemoveAutomaticReminder'
+    ManualReminder:
+      description: The model that describes the manual reminder settings.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ManualReminder'
+          examples:
+            QuickManualReminder:
+              $ref: '#/components/examples/QuickManualReminder'
+            TargetedManualReminder:
+              $ref: '#/components/examples/TargetedManualReminder'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/ManualReminder'
+          examples:
+            QuickManualReminder:
+              $ref: '#/components/examples/QuickManualReminder'
+            TargetedManualReminder:
+              $ref: '#/components/examples/TargetedManualReminder'
+    SignatoryPatch:
+      description: The patch model containing the properties to update.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SignatoryPatch'
+          examples:
+            EmailSignatoryPatch:
+              $ref: '#/components/examples/EmailSignatoryPatch'
+            ReplaceSignatoryPatch:
+              $ref: '#/components/examples/ReplaceSignatoryPatch'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/SignatoryPatch'
+          examples:
+            EmailSignatoryPatch:
+              $ref: '#/components/examples/EmailSignatoryPatch'
+            ReplaceSignatoryPatch:
+              $ref: '#/components/examples/ReplaceSignatoryPatch'
+    EventNotification:
+      description: Information about the event in the signing instance.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventNotification'
+          examples:
+            CreatedEventNotification:
+              $ref: '#/components/examples/CreatedEventNotification'
+            ApprovedEventNotification:
+              $ref: '#/components/examples/ApprovedEventNotification'
+            DeclinedEventNotification:
+              $ref: '#/components/examples/DeclinedEventNotification'
+            CompletedEventNotification:
+              $ref: '#/components/examples/CompletedEventNotification'
+            WithdrawnEventNotification:
+              $ref: '#/components/examples/WithdrawnEventNotification'
+            ExpiredEventNotification:
+              $ref: '#/components/examples/ExpiredEventNotification'
+            HaltedEventNotification:
+              $ref: '#/components/examples/HaltedEventNotification'
+            ReactivatedEventNotification:
+              $ref: '#/components/examples/ReactivatedEventNotification'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/EventNotification'
+          examples:
+            CreatedEventNotification:
+              $ref: '#/components/examples/CreatedEventNotification'
+            ApprovedEventNotification:
+              $ref: '#/components/examples/ApprovedEventNotification'
+            DeclinedEventNotification:
+              $ref: '#/components/examples/DeclinedEventNotification'
+            CompletedEventNotification:
+              $ref: '#/components/examples/CompletedEventNotification'
+            WithdrawnEventNotification:
+              $ref: '#/components/examples/WithdrawnEventNotification'
+            ExpiredEventNotification:
+              $ref: '#/components/examples/ExpiredEventNotification'
+            HaltedEventNotification:
+              $ref: '#/components/examples/HaltedEventNotification'
+            ReactivatedEventNotification:
+              $ref: '#/components/examples/ReactivatedEventNotification'
+  responses:
+    SigningInstanceSummary:
+      description: The summary representation of the signing instance.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SigningInstanceInfo'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/SigningInstanceInfo'
+      headers:
+        Location:
+          description: The URL to the created signing instance resource.
+          schema:
+            type: string
+    SigningInstance:
+      description: The signing instance that matches the specified ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SigningInstance'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/SigningInstance'
+    SigningInstanceInfo:
+      description: The signing instance info matching the specified ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SigningInstanceInfo'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/SigningInstanceInfo'
+    SearchResult:
+      description: The paginated search result of signing instance infos.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SearchResult'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/SearchResult'
+    AutomaticReminder:
+      description: The automatic reminder settings in the signing instance.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AutomaticReminder'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/AutomaticReminder'
+    Signatories:
+      description: The container with the signatories matching the filter.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SignatoriesContainer'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/SignatoriesContainer'
+    Signatory:
+      description: The signatory that matches the specified party ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Signatory'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Signatory'
+    OriginalDocuments:
+      description: The container with the original document and attachments.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OriginalDocuments'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/OriginalDocuments'
+    SignedDocuments:
+      description: The container with the signed document and attachments.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SignedDocuments'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/SignedDocuments'
+    OK:
+      description: The requested service operation was successfully completed.
+    Accepted:
+      description: The request has been accepted and queued for processing.
+    NoContent:
+      description: The request succeeded and the response is intentionally blank.
+    BadRequest:
+      description: The supplied input is invalid or could not be understood.
+    Unauthorized:
+      description: The client is not authenticated for accessing the service.
+      headers:
+        WWW-Authenticate:
+          description: The HTTP authentication schemes supported by the service.
+          schema:
+            type: string
+    Forbidden:
+      description: The client is not authorized for accessing the operation.
+    NotFound:
+      description: The requested resource could not be found in the system.
+    Conflict:
+      description: The resource state prevents the request from being completed.
+    TooManyRequests:
+      description: The client has sent too many requests in a given amount of time.
+      headers:
+        Retry-After:
+          description: The number of seconds to wait before attempting a new request.
+          schema:
+            type: integer
+    GeneralError:
+      description: An error occurred not covered by the existing error codes.
+  schemas:
+    Action:
+      description: Indicates if a signatory has approved or declined to sign.
+      type: string
+      enum:
+        - approved
+        - declined
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    AutomaticReminder:
+      description: Settings for sending automatic reminders to signatories.
+      type: object
+      required:
+        - hourInterval
+        - enabled
+      properties:
+        startDate:
+          description: Date and time when sending automatic reminders will start.
+          type: string
+          format: date-time
+          xml:
+            name: StartDate
+        hourInterval:
+          description: The hourly interval between automatic signatory reminders.
+          type: integer
+          format: int32
+          minimum: 24
+          examples: [48]
+          xml:
+            name: HourInterval
+        reminderMessages:
+          description: Text messages included in the reminders to signatories.
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          xml:
+            name: ReminderMessage
+        enabled:
+          description: Whether automatic reminders are currently in effect.
+          type: boolean
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    DistributionMethod:
+      description: Indicates how to distribute the signed documents to a signatory.
+      type: string
+      enum:
+        - none
+        - attached
+        - download
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    DistributionStatus:
+      description: Tracks the status of a document distribution task for a signatory.
+      type: object
+      properties:
+        completed:
+          description: Indicates if the distribution task has been fully completed.
+          type: boolean
+          default: false
+          xml:
+            attribute: true
+        timestamp:
+          description: Date and time when the distribution task was completed.
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Document:
+      description: The model for representing a document in a signing instance.
+      type: object
+      required:
+        - mimeType
+        - content
+      properties:
+        documentName:
+          description: The document name, or title, displayed in user interfaces.
+          type: string
+          xml:
+            name: DocumentName
+        fileName:
+          description: The filename used when the document is handled as a file.
+          type: string
+          xml:
+            name: FileName
+        encoding:
+          description: Any applicable character encoding (IANA) of the content.
+          type: string
+          examples: ['UTF-8']
+          xml:
+            name: Encoding
+        mimeType:
+          description: The MIME type (IANA) indicating the format of the content.
+          type: string
+          examples: ['application/pdf']
+          xml:
+            name: MimeType
+        content:
+          description: The raw data bytes holding the actual document content.
+          type: string
+          format: byte
+          xml:
+            name: Content
+        documentId:
+          description: A unique ID of the document in the parent signing instance.
+          type: string
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Event:
+      description: Describes an event that has occurred in a signing instance.
+      type: object
+      required:
+        - severity
+        - timestamp
+      properties:
+        code:
+          description: The code identifying the action that created the event.
+          type: string
+          xml:
+            name: Code
+        message:
+          description: A human-readable description of the event that occurred.
+          type: string
+          xml:
+            name: Message
+        severity:
+          description: The severity of the event for the parent signing instance.
+          $ref: '#/components/schemas/Severity'
+          xml:
+            attribute: true
+        timestamp:
+          description: Date and time when the event occurred in the signing instance.
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    EventNotification:
+      description: A model for notifying a webhook about a signing instance event.
+      type: object
+      required:
+        - eventTrigger
+        - signingInstanceInfo
+        - timestamp
+      properties:
+        eventTrigger:
+          description: The trigger that initiated the webhook event notification.
+          $ref: '#/components/schemas/EventTrigger'
+          xml:
+            name: EventTrigger
+        signingInstanceInfo:
+          description: The summary representation of the affected signing instance.
+          $ref: '#/components/schemas/SigningInstanceInfo'
+          xml:
+            name: SigningInstanceInfo
+        signatoryInfo:
+          description: Information about the signatory that approved or declined.
+          $ref: '#/components/schemas/SignatoryInfo'
+          xml:
+            name: SignatoryInfo
+        signedDocument:
+          description: Signed version of the original document and its attachments.
+          $ref: '#/components/schemas/Document'
+          xml:
+            name: SignedDocument
+        signedDocumentAttachments:
+          description: Signed attachments are only available in custom scenarios.
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+          xml:
+            name: SignedDocumentAttachment
+        timestamp:
+          description: Date and time when the event notification was triggered.
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    EventTrigger:
+      description: Indicates the trigger that caused a webhook event notification.
+      type: string
+      enum:
+        - signingInstanceCreated
+        - signatoryActionApproved
+        - signatoryActionDeclined
+        - signingInstanceCompleted
+        - signingInstanceWithdrawn
+        - signingInstanceExpired
+        - signingInstanceHalted
+        - signingInstanceReactivated
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Initiator:
+      description: The model representing the contact person in a signing instance.
+      allOf:
+        - $ref: '#/components/schemas/Party'
+      type: object
+      required:
+        - emailAddress
+      properties:
+        distributionEnabled:
+          description: Whether to distribute signed documents as email attachments.
+          type: boolean
+          default: true
+          xml:
+            name: DistributionEnabled
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Log:
+      description: Holds the events that have been logged for a signing instance.
+      type: object
+      properties:
+        events:
+          description: The events that have been logged for the signing instance.
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+          xml:
+            name: Event
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    ManualReminder:
+      description: The model for sending manual reminders to signatories.
+      type: object
+      properties:
+        partyId:
+          description: The party ID of any particular signatory to target.
+          type: string
+          xml:
+            name: PartyId
+        reminderMessages:
+          description: The text messages included in the reminders to send.
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          xml:
+            name: ReminderMessage
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Message:
+      description: A human-readable text message with a subject and a body.
+      type: object
+      required:
+        - language
+      properties:
+        subject:
+          description: The text to use as the subject line of the message.
+          type: string
+          xml:
+            name: Subject
+        body:
+          description: The text to use as the body content of the message.
+          type: string
+          xml:
+            name: Body
+        language:
+          description: The language (ISO 639, ISO 3166) used in the message.
+          type: string
+          examples: ['sv-SE']
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Operator:
+      description: Comparison operators available for filter predicates.
+      type: string
+      enum:
+        - equalTo
+        - notEqualTo
+        - greaterThan
+        - lessThan
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    OriginalDocuments:
+      description: A container with the original documents of a signing instance.
+      type: object
+      required:
+        - document
+      properties:
+        document:
+          description: The main document to be approved by all the signatories.
+          $ref: '#/components/schemas/Document'
+          xml:
+            name: Document
+        documentAttachments:
+          description: Any attachments to also be approved by all signatories.
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+          xml:
+            name: DocumentAttachment
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Paginator:
+      description: The model used for page-based pagination and sorting.
+      type: object
+      required:
+        - page
+      properties:
+        page:
+          description: The zero-based index of the current page.
+          type: integer
+          format: int32
+          minimum: 0
+          xml:
+            name: Page
+        pageSize:
+          description: The maximum number of items returned per page.
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 100
+          default: 50
+          xml:
+            name: PageSize
+        totalItems:
+          description: The total number of items in the result set.
+          type: integer
+          format: int32
+          readOnly: true
+          xml:
+            name: TotalItems
+        orderByProperty:
+          description: The property to order the result set by.
+          $ref: '#/components/schemas/Property'
+          default: created
+          xml:
+            name: OrderByProperty
+        orderByDescending:
+          description: Indicates descending or ascending sort order.
+          type: boolean
+          default: true
+          xml:
+            name: OrderByDescending
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Party:
+      description: The model representing a participant in a signing instance.
+      type: object
+      properties:
+        name:
+          description: The full name of the person represented by this party.
+          type: string
+          xml:
+            name: Name
+        title:
+          description: The title of the person represented by this party.
+          type: string
+          xml:
+            name: Title
+        organization:
+          description: The organization that this person may be representing.
+          type: string
+          xml:
+            name: Organization
+        emailAddress:
+          description: The email address to use when sending email notifications.
+          type: string
+          format: email
+          xml:
+            name: EmailAddress
+        mobilePhoneNumber:
+          description: The mobile phone number (E.164) to use for notifications.
+          type: string
+          examples: ['+46701740605']
+          xml:
+            name: MobilePhoneNumber
+        partyId:
+          description: A unique ID of the party in the parent signing instance.
+          type: string
+          xml:
+            attribute: true
+        language:
+          description: The language (ISO 639, ISO 3166) to use in notifications.
+          type: string
+          examples: ['sv-SE']
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    PartyPatch:
+      description: The patch model for updating a party in a signing instance.
+      type: object
+      properties:
+        name:
+          description: The full name of the person represented by this party.
+          type: string
+          xml:
+            name: Name
+        title:
+          description: The title of the person represented by this party.
+          type: string
+          xml:
+            name: Title
+        organization:
+          description: The organization that this person may be representing.
+          type: string
+          xml:
+            name: Organization
+        emailAddress:
+          description: The email address to use when sending email notifications.
+          type: string
+          format: email
+          xml:
+            name: EmailAddress
+        mobilePhoneNumber:
+          description: The mobile phone number (E.164) to use for notifications.
+          type: string
+          examples: ['+46701740605']
+          xml:
+            name: MobilePhoneNumber
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Predicate:
+      description: A logical expression applied on a signing instance info.
+      type: object
+      required:
+        - property
+        - operator
+        - value
+      properties:
+        property:
+          description: The target property of the signing instance info.
+          $ref: '#/components/schemas/Property'
+          xml:
+            name: Property
+        operator:
+          description: The comparison operation to perform on the values.
+          $ref: '#/components/schemas/Operator'
+          xml:
+            name: Operator
+        value:
+          description: The value to compare the target property value to.
+          type: string
+          xml:
+            name: Value
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Property:
+      description: Properties that can be targeted for filtering and sorting.
+      type: string
+      enum:
+        - customerReferenceNumber
+        - expires
+        - accountId
+        - userId
+        - groupId
+        - status
+        - referenceNumber
+        - created
+        - changed
+        - deleted
+        - signingInstanceId
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    ReturnLink:
+      description: A link to a web page to redirect a signatory to after signing.
+      type: object
+      required:
+        - text
+        - url
+      properties:
+        text:
+          description: The display text of the link presented to the signatory.
+          type: string
+          xml:
+            name: Text
+        url:
+          description: The absolute URL of the link presented to the signatory.
+          type: string
+          xml:
+            name: Url
+        autoRedirect:
+          description: Whether to redirect the signatory to the URL automatically.
+          type: boolean
+          default: false
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    SearchFilter:
+      description: The model for filtering and sorting signing instance infos.
+      type: object
+      required:
+        - paginator
+      properties:
+        predicates:
+          description: The predicates to evaluate for each signing instance info.
+          type: array
+          items:
+            $ref: '#/components/schemas/Predicate'
+          xml:
+            name: Predicate
+        paginator:
+          description: The paginator describing the current pagination state.
+          $ref: '#/components/schemas/Paginator'
+          xml:
+            name: Paginator
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    SearchResult:
+      description: The model holding a paginated result set from a filter.
+      type: object
+      required:
+        - paginator
+      properties:
+        signingInstanceInfos:
+          description: The current page of matching signing instance infos.
+          type: array
+          items:
+            $ref: '#/components/schemas/SigningInstanceInfo'
+          xml:
+            name: SigningInstanceInfo
+        paginator:
+          description: The paginator describing the current pagination state.
+          $ref: '#/components/schemas/Paginator'
+          xml:
+            name: Paginator
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    SecrecySettings:
+      description: Settings related to document secrecy in a signing instance.
+      type: object
+      properties:
+        notificationTexts:
+          description: The texts used when notifying signatories about secrecy.
+          type: array
+          items:
+            $ref: '#/components/schemas/Text'
+          xml:
+            name: NotificationText
+        documentDownloadEnabled:
+          description: Whether the documents may be downloaded by signatories.
+          type: boolean
+          default: false
+          xml:
+            attribute: true
+        documentPrintingEnabled:
+          description: Whether the documents may be printed by signatories.
+          type: boolean
+          default: false
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Severity:
+      description: Defines the severity of an event in a signing instance log.
+      type: string
+      enum:
+        - information
+        - warning
+        - error
+        - critical
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    SignatoriesContainer:
+      description: A container with the set of signatories matching a filter.
+      type: object
+      properties:
+        signatories:
+          description: The set of signatories that matched the input filter.
+          type: array
+          items:
+            $ref: '#/components/schemas/Signatory'
+          xml:
+            name: Signatory
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Signatory:
+      description: The model representing a document signer in a signing instance.
+      allOf:
+        - $ref: '#/components/schemas/Party'
+      type: object
+      required:
+        - authenticationMethods
+      properties:
+        personalNumber:
+          description: National identification number used in eID authentication.
+          type: string
+          xml:
+            name: PersonalNumber
+        accountId:
+          description: An account ID for authentication using a custom provider.
+          type: string
+          xml:
+            name: AccountId
+        notificationMessage:
+          description: The message to include in notifications to this signatory.
+          $ref: '#/components/schemas/Message'
+          xml:
+            name: NotificationMessage
+        authenticationMethods:
+          description: The authentication methods allowed for this signatory.
+          type: array
+          minItems: 1
+          items:
+            type: string
+          examples: [['EmailCode', 'SmsCode', 'SvensktEId', 'SwedenConnect']]
+          xml:
+            name: AuthenticationMethod
+        signatoryUrl:
+          description: The absolute URL to the landing page for this signatory.
+          type: string
+          readOnly: true
+          xml:
+            name: SignatoryUrl
+        signatoryAction:
+          description: Only present once the signatory has approved or declined.
+          $ref: '#/components/schemas/SignatoryAction'
+          readOnly: true
+          xml:
+            name: SignatoryAction
+        approvedReturnLink:
+          description: The link to return the signatory to when they have approved.
+          $ref: '#/components/schemas/ReturnLink'
+          xml:
+            name: ApprovedReturnLink
+        declinedReturnLink:
+          description: The link to return the signatory to when they have declined.
+          $ref: '#/components/schemas/ReturnLink'
+          xml:
+            name: DeclinedReturnLink
+        distributionMethod:
+          description: Indicates how the signed documents are distributed by email.
+          $ref: '#/components/schemas/DistributionMethod'
+          default: attached
+          xml:
+            name: DistributionMethod
+        distributionStatus:
+          description: Status of the distribution task when using the download method.
+          $ref: '#/components/schemas/DistributionStatus'
+          readOnly: true
+          xml:
+            name: DistributionStatus
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    SignatoryAction:
+      description: Action indicating whether a signatory has approved or declined.
+      type: object
+      required:
+        - action
+        - timestamp
+      properties:
+        reason:
+          description: The reason given for either approving or declining.
+          type: string
+          xml:
+            name: Reason
+        action:
+          description: Main indicator for the action taken by the signatory.
+          $ref: '#/components/schemas/Action'
+          xml:
+            attribute: true
+        timestamp:
+          description: Date and time when the signatory action was registered.
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    SignatoryFilter:
+      description: An indicator for filtering signatories in a signing instance.
+      type: string
+      enum:
+        - all
+        - active
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    SignatoryInfo:
+      description: The summary representation of a signatory in a signing instance.
+      allOf:
+        - $ref: '#/components/schemas/Party'
+      type: object
+      required:
+        - partyId
+      properties:
+        personalNumber:
+          description: National identification number used in eID authentication.
+          type: string
+          xml:
+            name: PersonalNumber
+        accountId:
+          description: An account ID for authentication using a custom provider.
+          type: string
+          xml:
+            name: AccountId
+        signatoryAction:
+          description: Only present once the signatory has approved or declined.
+          $ref: '#/components/schemas/SignatoryAction'
+          xml:
+            name: SignatoryAction
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    SignatoryPatch:
+      description: The patch model for updating a signatory in a signing instance.
+      allOf:
+        - $ref: '#/components/schemas/PartyPatch'
+      type: object
+      properties:
+        personalNumber:
+          description: National identification number used in eID authentication.
+          type: string
+          xml:
+            name: PersonalNumber
+        accountId:
+          description: An account ID for authentication using a custom provider.
+          type: string
+          xml:
+            name: AccountId
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    SignedDocuments:
+      description: A container with the signed documents of a signing instance.
+      type: object
+      properties:
+        signedDocument:
+          description: Signed version of the original document and its attachments.
+          $ref: '#/components/schemas/Document'
+          xml:
+            name: SignedDocument
+        signedDocumentAttachments:
+          description: Signed attachments are only available in custom scenarios.
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+          xml:
+            name: SignedDocumentAttachment
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    SigningInstance:
+      description: A self-contained entity describing a document signing process.
+      allOf:
+        - $ref: '#/components/schemas/SigningInstanceInput'
+      type: object
+      required:
+        - expires
+        - accountId
+        - userId
+        - status
+        - referenceNumber
+        - created
+        - changed
+        - deleted
+        - signingInstanceId
+      properties:
+        userId:
+          description: The unique ID of the user that owns the signing instance.
+          type: string
+          xml:
+            name: UserId
+        groupId:
+          description: The ID of the group to which the signing instance belongs.
+          type: string
+          xml:
+            name: GroupId
+        status:
+          description: Indicates the overall status of the signing instance.
+          $ref: '#/components/schemas/Status'
+          xml:
+            name: Status
+        referenceNumber:
+          description: A user-friendly reference that can be used for tracking.
+          type: string
+          xml:
+            name: ReferenceNumber
+        created:
+          description: Date and time when the signing instance was first created.
+          type: string
+          format: date-time
+          xml:
+            name: Created
+        changed:
+          description: Date and time when the signing instance was last changed.
+          type: string
+          format: date-time
+          xml:
+            name: Changed
+        deleted:
+          description: Date and time when the signing instance will be deleted.
+          type: string
+          format: date-time
+          xml:
+            name: Deleted
+        signedDocument:
+          description: Signed version of the original document and its attachments.
+          $ref: '#/components/schemas/Document'
+          xml:
+            name: SignedDocument
+        signedDocumentAttachments:
+          description: Signed attachments are only available in custom scenarios.
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+          xml:
+            name: SignedDocumentAttachment
+        log:
+          description: Event log with the events logged for the signing instance.
+          $ref: '#/components/schemas/Log'
+          xml:
+            name: Log
+        signingInstanceId:
+          description: A unique ID assigned to the signing instance upon creation.
+          type: string
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    SigningInstanceInfo:
+      description: The summary representation of a signing instance resource.
+      type: object
+      required:
+        - expires
+        - accountId
+        - userId
+        - status
+        - referenceNumber
+        - created
+        - changed
+        - deleted
+        - signingInstanceId
+      properties:
+        customerReferenceNumber:
+          description: An optional reference that can be used for tracking.
+          type: string
+          xml:
+            name: CustomerReferenceNumber
+        expires:
+          description: Date and time when the signing instance will expire.
+          type: string
+          format: date-time
+          xml:
+            name: Expires
+        accountId:
+          description: The unique ID of the associated account configuration.
+          type: string
+          xml:
+            name: AccountId
+        userId:
+          description: The unique ID of the user that owns the signing instance.
+          type: string
+          xml:
+            name: UserId
+        groupId:
+          description: The ID of the group to which the signing instance belongs.
+          type: string
+          xml:
+            name: GroupId
+        status:
+          description: Indicates the overall status of the signing instance.
+          $ref: '#/components/schemas/Status'
+          xml:
+            name: Status
+        referenceNumber:
+          description: A user-friendly reference that can be used for tracking.
+          type: string
+          xml:
+            name: ReferenceNumber
+        created:
+          description: Date and time when the signing instance was first created.
+          type: string
+          format: date-time
+          xml:
+            name: Created
+        changed:
+          description: Date and time when the signing instance was last changed.
+          type: string
+          format: date-time
+          xml:
+            name: Changed
+        deleted:
+          description: Date and time when the signing instance will be deleted.
+          type: string
+          format: date-time
+          xml:
+            name: Deleted
+        signingInstanceId:
+          description: A unique ID assigned to the signing instance upon creation.
+          type: string
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    SigningInstanceInput:
+      description: The input model for creating a signing instance resource.
+      type: object
+      required:
+        - signatories
+        - document
+      properties:
+        customerReferenceNumber:
+          description: An optional reference that can be used for tracking.
+          type: string
+          xml:
+            name: CustomerReferenceNumber
+        expires:
+          description: Date and time when the signing instance will expire.
+          type: string
+          format: date-time
+          xml:
+            name: Expires
+        initiator:
+          description: Represents the contact person for the signing instance.
+          $ref: '#/components/schemas/Initiator'
+          xml:
+            name: Initiator
+        notificationMessages:
+          description: Text messages included in notifications to signatories.
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          xml:
+            name: NotificationMessage
+        automaticReminder:
+          description: Settings for sending automatic reminders to signatories.
+          $ref: '#/components/schemas/AutomaticReminder'
+          xml:
+            name: AutomaticReminder
+        signatories:
+          description: Parties actively participating in signing the documents.
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Signatory'
+          xml:
+            name: Signatory
+        additionalParties:
+          description: Additional parties to notify once signing is completed.
+          type: array
+          items:
+            $ref: '#/components/schemas/Party'
+          xml:
+            name: AdditionalParty
+        document:
+          description: The main document to be approved by all the signatories.
+          $ref: '#/components/schemas/Document'
+          xml:
+            name: Document
+        documentAttachments:
+          description: Any attachments to also be approved by all signatories.
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+          xml:
+            name: DocumentAttachment
+        secrecySettings:
+          description: Settings for document secrecy in the signing instance.
+          $ref: '#/components/schemas/SecrecySettings'
+          xml:
+            name: SecrecySettings
+        accountId:
+          description: The unique ID of the associated account configuration.
+          type: string
+          xml:
+            name: AccountId
+        workflow:
+          description: The order in which the signatories are allowed to sign.
+          $ref: '#/components/schemas/Workflow'
+          default: sequential
+          xml:
+            attribute: true
+        language:
+          description: Default text and formatting language (ISO 639, ISO 3166).
+          type: string
+          default: 'en-US'
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    SigningInstancePatch:
+      description: The patch model for updating a signing instance resource.
+      type: object
+      properties:
+        expires:
+          description: Date and time when the signing instance will expire.
+          type: string
+          format: date-time
+          xml:
+            name: Expires
+        status:
+          description: Indicates the overall status of the signing instance.
+          $ref: '#/components/schemas/StatusPatch'
+          xml:
+            name: Status
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Status:
+      description: An indicator for the overall status of a signing instance.
+      type: string
+      enum:
+        - created
+        - active
+        - approved
+        - declined
+        - completed
+        - withdrawn
+        - expired
+        - halted
+        - faulty
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    StatusPatch:
+      description: An indicator for updating the status of a signing instance.
+      type: string
+      enum:
+        - active
+        - withdrawn
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Text:
+      description: A human-readable text with a value and a language indicator.
+      type: object
+      required:
+        - value
+        - language
+      properties:
+        value:
+          description: The textual value expressed in the indicated language.
+          type: string
+          xml:
+            name: Value
+        language:
+          description: The language (ISO 639, ISO 3166) used in the text value.
+          type: string
+          examples: ['sv-SE']
+          xml:
+            attribute: true
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+    Workflow:
+      description: Defines the order in which signatories are allowed to sign.
+      type: string
+      enum:
+        - sequential
+        - parallel
+      xml:
+        namespace: 'urn:comfact:signature:3:core'
+  securitySchemes:
+    BasicAuthentication:
+      description: Basic authentication (RFC 7617) with username and password.
+      type: http
+      scheme: basic
+    OAuth2ClientCredentials:
+      description: OAuth 2.0 authentication using the client credentials flow.
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /signingservice/oauth2/token
+          scopes:
+            core: The scope needed for managing signing instances via this Core API.
+            scim: The scope needed for managing users and groups via the SCIM API.
+    BearerAuthentication:
+      description: OAuth 2.0 bearer authentication (RFC 6750) with request header.
+      type: http
+      scheme: bearer
+  examples:
+    SimpleSigningInstanceInput:
+      summary: Simple example of a signatory signing a document using SMS OTP.
+      value:
+        initiator:
+          name: 'Stan S. Stanman'
+          organization: 'Used Ship Emporium'
+          emailAddress: 'sales@example.com'
+        signatories:
+          - name: 'Guybrush Threepwood'
+            emailAddress: 'pirate@example.com'
+            mobilePhoneNumber: '+13405552450'
+            authenticationMethods: ['SmsCode']
+        document:
+          documentName: 'Sea Monkey'
+          fileName: 'sea monkey.pdf'
+          mimeType: 'application/pdf'
+          content: 'JVBERi0yLjA='
+    PrivacySigningInstanceInput:
+      summary: Example of secrecy settings combined with download distribution.
+      value:
+        customerReferenceNumber: 'My Reference 1'
+        expires: '2024-07-25T15:00:00Z'
+        initiator:
+          name: 'Bonnie Bacon'
+          title: 'HR Manager'
+          organization: 'Cibo E Cose'
+          emailAddress: 'bonnie@example.com'
+          distributionEnabled: false
+        notificationMessages:
+          - body: 'Si prega di rivedere e firmare il documento.'
+            language: 'it-IT'
+          - body: 'Vänligen granska och underteckna dokumentet.'
+            language: 'sv-SE'
+        automaticReminder:
+          startDate: '2024-07-17T10:00:00Z'
+          hourInterval: 72
+          enabled: true
+        signatories:
+          - name: 'Roberto Ravioli'
+            title: 'Saucier'
+            emailAddress: 'roberto@example.com'
+            partyId: 'party1'
+            language: 'it-IT'
+            authenticationMethods: ['SwedenConnect']
+            distributionMethod: download
+          - name: 'Greta Gräslök'
+            title: 'CEO'
+            organization: 'Cibo E Cose'
+            emailAddress: 'greta@example.com'
+            partyId: 'party2'
+            language: 'sv-SE'
+            personalNumber: '199211242426'
+            authenticationMethods: ['SvensktEId']
+            distributionMethod: download
+        document:
+          documentName: 'Employment Contract'
+          fileName: 'employment contract.pdf'
+          mimeType: 'application/pdf'
+          content: 'JVBERi0yLjA='
+          documentId: 'document1'
+        documentAttachments:
+          - documentName: 'Privacy Policy'
+            fileName: 'privacy policy.pdf'
+            mimeType: 'application/pdf'
+            content: 'JVBERi0yLjA='
+            documentId: 'document2'
+        secrecySettings:
+          notificationTexts:
+            - value: 'Si prega di notare che questo documento è riservato.'
+              language: 'it-IT'
+            - value: 'Observera att detta dokument är konfidentiellt.'
+              language: 'sv-SE'
+        workflow: parallel
+        language: 'en-US'
+    ReturnLinkSigningInstanceInput:
+      summary: Example of returning a signatory to your web pages after signing.
+      value:
+        initiator:
+          name: 'Stan S. Stanman'
+          organization: 'Used Ship Emporium'
+          emailAddress: 'sales@example.com'
+        signatories:
+          - partyId: 'guybrush'
+            name: 'Guybrush Threepwood'
+            emailAddress: 'pirate@example.com'
+            mobilePhoneNumber: '+13405552450'
+            authenticationMethods: ['SmsCode']
+            approvedReturnLink:
+              text: 'Back To Used Ship Emporium'
+              url: 'https://www.example.com/approved?pid=guybrush&sid={{SigningInstanceId}}'
+              autoRedirect: true
+            declinedReturnLink:
+              text: 'Back To Used Ship Emporium'
+              url: 'https://www.example.com/declined?pid=guybrush&sid={{SigningInstanceId}}'
+              autoRedirect: true
+        document:
+          documentName: 'Sea Monkey'
+          fileName: 'sea monkey.pdf'
+          mimeType: 'application/pdf'
+          content: 'JVBERi0yLjA='
+    WithdrawSigningInstancePatch:
+      summary: Example patch model for withdrawing an active signing instance.
+      value:
+        status: withdrawn
+    ReactivateSigningInstancePatch:
+      summary: Example patch model to reactivate and extend a signing instance.
+      value:
+        expires: '2024-08-18T15:00:00Z'
+        status: active
+    ExactSearchFilter:
+      summary: Example search filter for finding a particular signing instance.
+      value:
+        predicates:
+          - property: referenceNumber
+            operator: equalTo
+            value: '123456SE'
+        paginator:
+          page: 0
+    PaginatedSearchFilter:
+      summary: Example search filter for retrieving page six of a result set.
+      value:
+        predicates:
+          - property: status
+            operator: equalTo
+            value: 'completed'
+          - property: created
+            operator: lessThan
+            value: '2024-07-10T08:00:00Z'
+        paginator:
+          page: 5
+          pageSize: 20
+          orderByProperty: expires
+          orderByDescending: false
+    EnableAutomaticReminder:
+      summary: Example to enable automatic reminders in a signing instance.
+      value:
+        hourInterval: 48
+        reminderMessages:
+          - subject: 'Un promemoria amichevole'
+            body: 'Si prega di firmare questo documento prima di Natale.'
+            language: 'it-IT'
+          - subject: 'En vänlig påminnelse'
+            body: 'Vänligen underteckna detta dokument före jul.'
+            language: 'sv-SE'
+        enabled: true
+    RemoveAutomaticReminder:
+      summary: Example to remove automatic reminders in a signing instance.
+      value:
+        hourInterval: 24
+        enabled: false
+    QuickManualReminder:
+      summary: Example of a manual reminder sent to all active signatories.
+      value: {}
+    TargetedManualReminder:
+      summary: Example of a manual reminder sent to a particular signatory.
+      value:
+        partyId: 'party2'
+        reminderMessages:
+          - body: 'Please sign this document before Christmas.'
+            language: 'en-US'
+    EmailSignatoryPatch:
+      summary: Example patch for updating the email address of a signatory.
+      value:
+        emailAddress: 'roberto.ravioli@example.com'
+    ReplaceSignatoryPatch:
+      summary: Example patch to replace a signatory in a signing instance.
+      value:
+        name: 'Görel Gurka'
+        title: 'CFO'
+        emailAddress: 'gorel@example.com'
+        personalNumber: '199405024143'
+    CreatedEventNotification:
+      summary: Example event notification when a signing instance is created.
+      value:
+        eventTrigger: signingInstanceCreated
+        signingInstanceInfo:
+          customerReferenceNumber: 'My Reference 1'
+          expires: '2024-07-25T15:00:00Z'
+          accountId: 'MyAccount'
+          userId: 'MyUser'
+          status: created
+          referenceNumber: '123456SE'
+          created: '2024-07-05T15:35:30Z'
+          changed: '2024-07-05T15:35:30Z'
+          deleted: '2024-08-01T15:00:00Z'
+          signingInstanceId: '66f80e875f08450f936be759ad87c0e8'
+        timestamp: '2024-07-05T15:35:31Z'
+    ApprovedEventNotification:
+      summary: Example event notification when a signatory has approved.
+      value:
+        eventTrigger: signatoryActionApproved
+        signingInstanceInfo:
+          customerReferenceNumber: 'My Reference 1'
+          expires: '2024-07-25T15:00:00Z'
+          accountId: 'MyAccount'
+          userId: 'MyUser'
+          status: active
+          referenceNumber: '123456SE'
+          created: '2024-07-05T15:35:30Z'
+          changed: '2024-07-07T14:14:56Z'
+          deleted: '2024-08-01T15:00:00Z'
+          signingInstanceId: '66f80e875f08450f936be759ad87c0e8'
+        signatoryInfo:
+          name: 'Greta Gräslök'
+          title: 'CEO'
+          organization: 'Cibo E Cose'
+          emailAddress: 'greta@example.com'
+          partyId: 'party2'
+          language: 'sv-SE'
+          personalNumber: '199211242426'
+          signatoryAction:
+            reason: 'Jag undertecknar härmed dokumentet.'
+            action: approved
+            timestamp: '2024-07-07T14:20:28Z'
+        timestamp: '2024-07-07T14:20:28Z'
+    DeclinedEventNotification:
+      summary: Example event notification when a signatory has declined.
+      value:
+        eventTrigger: signatoryActionDeclined
+        signingInstanceInfo:
+          customerReferenceNumber: 'My Reference 1'
+          expires: '2024-07-25T15:00:00Z'
+          accountId: 'MyAccount'
+          userId: 'MyUser'
+          status: declined
+          referenceNumber: '123456SE'
+          created: '2024-07-05T15:35:30Z'
+          changed: '2024-07-07T14:14:56Z'
+          deleted: '2024-08-01T15:00:00Z'
+          signingInstanceId: '66f80e875f08450f936be759ad87c0e8'
+        signatoryInfo:
+          name: 'Greta Gräslök'
+          title: 'CEO'
+          organization: 'Cibo E Cose'
+          emailAddress: 'greta@example.com'
+          partyId: 'party2'
+          language: 'sv-SE'
+          personalNumber: '199211242426'
+          signatoryAction:
+            reason: 'Jag vill inte underteckna dokumentet.'
+            action: declined
+            timestamp: '2024-07-07T14:20:28Z'
+        timestamp: '2024-07-07T14:20:28Z'
+    CompletedEventNotification:
+      summary: Example event notification when a signing instance is completed.
+      value:
+        eventTrigger: signingInstanceCompleted
+        signingInstanceInfo:
+          customerReferenceNumber: 'My Reference 1'
+          expires: '2024-07-25T15:00:00Z'
+          accountId: 'MyAccount'
+          userId: 'MyUser'
+          status: completed
+          referenceNumber: '123456SE'
+          created: '2024-07-05T15:35:30Z'
+          changed: '2024-07-21T21:07:46Z'
+          deleted: '2024-08-01T15:00:00Z'
+          signingInstanceId: '66f80e875f08450f936be759ad87c0e8'
+        signedDocument:
+          documentName: 'Employment Contract'
+          fileName: 'employment contract signed.pdf'
+          mimeType: 'application/pdf'
+          content: 'JVBERi0yLjA='
+          documentId: 'dfcee2bab3604696b9325a9f74ba2139'
+        timestamp: '2024-07-21T21:08:16Z'
+    WithdrawnEventNotification:
+      summary: Example event notification when a signing instance is withdrawn.
+      value:
+        eventTrigger: signingInstanceWithdrawn
+        signingInstanceInfo:
+          customerReferenceNumber: 'My Reference 1'
+          expires: '2024-07-25T15:00:00Z'
+          accountId: 'MyAccount'
+          userId: 'MyUser'
+          status: withdrawn
+          referenceNumber: '123456SE'
+          created: '2024-07-05T15:35:30Z'
+          changed: '2024-07-17T10:19:27Z'
+          deleted: '2024-08-01T15:00:00Z'
+          signingInstanceId: '66f80e875f08450f936be759ad87c0e8'
+        timestamp: '2024-07-18T12:36:10Z'
+    ExpiredEventNotification:
+      summary: Example event notification when a signing instance has expired.
+      value:
+        eventTrigger: signingInstanceExpired
+        signingInstanceInfo:
+          customerReferenceNumber: 'My Reference 1'
+          expires: '2024-07-25T15:00:00Z'
+          accountId: 'MyAccount'
+          userId: 'MyUser'
+          status: expired
+          referenceNumber: '123456SE'
+          created: '2024-07-05T15:35:30Z'
+          changed: '2024-07-19T07:55:26Z'
+          deleted: '2024-08-01T15:00:00Z'
+          signingInstanceId: '66f80e875f08450f936be759ad87c0e8'
+        timestamp: '2024-07-25T15:08:22Z'
+    HaltedEventNotification:
+      summary: Example event notification when a signing instance is halted.
+      value:
+        eventTrigger: signingInstanceHalted
+        signingInstanceInfo:
+          customerReferenceNumber: 'My Reference 1'
+          expires: '2024-07-25T15:00:00Z'
+          accountId: 'MyAccount'
+          userId: 'MyUser'
+          status: halted
+          referenceNumber: '123456SE'
+          created: '2024-07-05T15:35:30Z'
+          changed: '2024-07-14T09:17:44Z'
+          deleted: '2024-08-01T15:00:00Z'
+          signingInstanceId: '66f80e875f08450f936be759ad87c0e8'
+        timestamp: '2024-07-14T16:23:42Z'
+    ReactivatedEventNotification:
+      summary: Example event notification when a signing instance is reactivated.
+      value:
+        eventTrigger: signingInstanceReactivated
+        signingInstanceInfo:
+          customerReferenceNumber: 'My Reference 1'
+          expires: '2024-08-18T15:00:00Z'
+          accountId: 'MyAccount'
+          userId: 'MyUser'
+          status: active
+          referenceNumber: '123456SE'
+          created: '2024-07-05T15:35:30Z'
+          changed: '2024-07-25T15:08:23Z'
+          deleted: '2024-08-25T15:00:00Z'
+          signingInstanceId: '66f80e875f08450f936be759ad87c0e8'
+        timestamp: '2024-07-26T06:47:06Z'
+security:
+  - OAuth2ClientCredentials: [core]

@@ -1,13 +1,11 @@
 package se.sundsvall.comfactfacade.service;
 
-import comfact.CreateSigningInstanceRequest;
-import comfact.DocumentType;
-import comfact.GetSignatoryRequest;
-import comfact.GetSigningInstanceInfoRequest;
-import comfact.GetSigningInstanceRequest;
-import comfact.SigningInstance;
-import comfact.UpdateSigningInstanceRequest;
-import comfact.WithdrawSigningInstanceRequest;
+import generated.se.sundsvall.comfact.Paginator;
+import generated.se.sundsvall.comfact.Property;
+import generated.se.sundsvall.comfact.SearchFilter;
+import generated.se.sundsvall.comfact.SearchResult;
+import generated.se.sundsvall.comfact.SigningInstanceInput;
+import generated.se.sundsvall.comfact.SigningInstancePatch;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -27,7 +25,6 @@ import se.sundsvall.comfactfacade.integration.party.PartyClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,22 +46,13 @@ class SigningServiceTest {
 	private SigningService signingService;
 
 	@Captor
-	private ArgumentCaptor<CreateSigningInstanceRequest> createRequestCaptor;
+	private ArgumentCaptor<SigningInstanceInput> inputCaptor;
 
 	@Captor
-	private ArgumentCaptor<UpdateSigningInstanceRequest> updateRequestCaptor;
+	private ArgumentCaptor<SigningInstancePatch> patchCaptor;
 
 	@Captor
-	private ArgumentCaptor<WithdrawSigningInstanceRequest> withdrawRequestCaptor;
-
-	@Captor
-	private ArgumentCaptor<GetSigningInstanceRequest> getSigningInstanceRequestCaptor;
-
-	@Captor
-	private ArgumentCaptor<GetSigningInstanceInfoRequest> getSigningInstanceInfoRequestCaptor;
-
-	@Captor
-	private ArgumentCaptor<GetSignatoryRequest> getSignatoryRequestCaptor;
+	private ArgumentCaptor<SearchFilter> searchFilterCaptor;
 
 	@Test
 	void createSigningRequest() {
@@ -80,9 +68,12 @@ class SigningServiceTest {
 			.build();
 
 		when(partyClientMock.getLegalId(MUNICIPALITY_ID, partyId, "PRIVATE")).thenReturn("someLegalId");
-		when(comfactIntegrationMock.createSigningInstance(anyString(), any(CreateSigningInstanceRequest.class))).thenReturn(new comfact.CreateSigningInstanceResponse()
-			.withSigningInstanceId("123")
-			.withSignatoryUrls(new comfact.SignatoryUrl().withPartyId(partyId).withValue("someUrl")));
+		when(comfactIntegrationMock.createSigningInstance(any(SigningInstanceInput.class)))
+			.thenReturn(new generated.se.sundsvall.comfact.SigningInstance()
+				.signingInstanceId("123")
+				.signatories(List.of(new generated.se.sundsvall.comfact.Signatory()
+					.partyId(partyId)
+					.signatoryUrl("someUrl"))));
 
 		// Act
 		final var result = signingService.createSigningRequest(MUNICIPALITY_ID, request);
@@ -92,11 +83,10 @@ class SigningServiceTest {
 		assertThat(result.getSigningId()).isEqualTo("123");
 		assertThat(result.getSignatoryUrls()).hasSize(1);
 		assertThat(result.getSignatoryUrls()).containsEntry("partyId", "someUrl");
-		verify(comfactIntegrationMock).createSigningInstance(eq(MUNICIPALITY_ID), createRequestCaptor.capture());
-		assertThat(createRequestCaptor.getValue()).isNotNull();
-		assertThat(createRequestCaptor.getValue().getSigningInstanceInput()).isNotNull();
-		assertThat(createRequestCaptor.getValue().getSigningInstanceInput().getSignatories()).hasSize(1).satisfies(
-			signatory -> assertThat(signatory.getFirst().getPartyId()).isEqualTo(partyId));
+		verify(comfactIntegrationMock).createSigningInstance(inputCaptor.capture());
+		assertThat(inputCaptor.getValue()).isNotNull();
+		assertThat(inputCaptor.getValue().getSignatories()).hasSize(1).satisfies(
+			signatories -> assertThat(signatories.getFirst().getPartyId()).isEqualTo(partyId));
 	}
 
 	@Test
@@ -116,36 +106,33 @@ class SigningServiceTest {
 		signingService.updateSigningRequest(MUNICIPALITY_ID, signingId, signingRequest);
 
 		// Assert
-		verify(comfactIntegrationMock).updateSigningInstance(eq(MUNICIPALITY_ID), updateRequestCaptor.capture());
-		assertThat(updateRequestCaptor.getValue()).isNotNull();
-		assertThat(updateRequestCaptor.getValue().getSigningInstanceId()).isEqualTo(signingId);
-		assertThat(updateRequestCaptor.getValue().getSigningInstanceInput()).isNotNull();
+		verify(comfactIntegrationMock).updateSigningInstance(eq(signingId), patchCaptor.capture());
+		assertThat(patchCaptor.getValue()).isNotNull();
 	}
 
 	@Test
 	void cancelSigningRequest() {
 		// Arrange
 		final var signingId = "someSigningId";
+
 		// Act
 		signingService.cancelSigningRequest(MUNICIPALITY_ID, signingId);
+
 		// Assert
-		verify(comfactIntegrationMock).withdrawSigningInstance(eq(MUNICIPALITY_ID), withdrawRequestCaptor.capture());
-		assertThat(withdrawRequestCaptor.getValue()).isNotNull();
-		assertThat(withdrawRequestCaptor.getValue().getSigningInstanceId()).isEqualTo(signingId);
+		verify(comfactIntegrationMock).withdrawSigningInstance(signingId);
 	}
 
 	@Test
 	void getSigningRequest() {
 		// Arrange
 		final var signingId = "someSigningId";
-		final var response = new comfact.GetSigningInstanceResponse()
-			.withSigningInstance(new SigningInstance()
-				.withSigningInstanceId(signingId)
-				.withDocument(new DocumentType()
-					.withContent("someContent".getBytes(StandardCharsets.UTF_8)))
-				.withStatus(new comfact.Status()
-					.withStatusCode("OK")));
-		when(comfactIntegrationMock.getSigningInstance(anyString(), any(GetSigningInstanceRequest.class))).thenReturn(response);
+		final var response = new generated.se.sundsvall.comfact.SigningInstance()
+			.signingInstanceId(signingId)
+			.document(new generated.se.sundsvall.comfact.Document()
+				.content("someContent".getBytes(StandardCharsets.UTF_8)))
+			.status(generated.se.sundsvall.comfact.Status.ACTIVE);
+
+		when(comfactIntegrationMock.getSigningInstance(signingId)).thenReturn(response);
 
 		// Act
 		final var result = signingService.getSigningRequest(MUNICIPALITY_ID, signingId);
@@ -153,23 +140,23 @@ class SigningServiceTest {
 		// Assert
 		assertThat(result).isNotNull();
 		assertThat(result.getSigningId()).isEqualTo(signingId);
-		verify(comfactIntegrationMock).getSigningInstance(eq(MUNICIPALITY_ID), getSigningInstanceRequestCaptor.capture());
-		assertThat(getSigningInstanceRequestCaptor.getValue()).isNotNull();
-		assertThat(getSigningInstanceRequestCaptor.getValue().getSigningInstanceId()).isEqualTo(signingId);
+		verify(comfactIntegrationMock).getSigningInstance(signingId);
 	}
 
 	@Test
 	void getSigningRequests() {
 		// Arrange
-		final var response = new comfact.GetSigningInstanceInfoResponse()
-			.withSigningInstanceInfos(
-				new comfact.SigningInstanceInfo().withSigningInstanceId("123").withStatus(new comfact.Status().withStatusCode("OK")),
-				new comfact.SigningInstanceInfo().withSigningInstanceId("456").withStatus(new comfact.Status().withStatusCode("OK")));
+		final var searchResult = new SearchResult()
+			.signingInstanceInfos(List.of(
+				new generated.se.sundsvall.comfact.SigningInstanceInfo().signingInstanceId("123").status(generated.se.sundsvall.comfact.Status.ACTIVE),
+				new generated.se.sundsvall.comfact.SigningInstanceInfo().signingInstanceId("456").status(generated.se.sundsvall.comfact.Status.ACTIVE)))
+			.paginator(new Paginator().page(0).pageSize(2).orderByProperty(Property.CREATED).orderByDescending(true));
 
-		when(comfactIntegrationMock.getSigningInstanceInfo(anyString(), any())).thenReturn(response);
+		when(comfactIntegrationMock.searchSigningInstanceInfos(any(SearchFilter.class))).thenReturn(searchResult);
 		when(pageableMock.getPageNumber()).thenReturn(0);
 		when(pageableMock.getPageSize()).thenReturn(2);
-		when(pageableMock.getSort()).thenReturn(Sort.by(Sort.Order.asc("Created")));
+		when(pageableMock.getSort()).thenReturn(Sort.by(Sort.Order.asc("created")));
+
 		// Act
 		final var result = signingService.getSigningRequests(MUNICIPALITY_ID, pageableMock);
 
@@ -179,9 +166,9 @@ class SigningServiceTest {
 		assertThat(result.getSigningInstances().getFirst().getSigningId()).isEqualTo("123");
 		assertThat(result.getSigningInstances().getLast().getSigningId()).isEqualTo("456");
 
-		verify(comfactIntegrationMock).getSigningInstanceInfo(eq(MUNICIPALITY_ID), getSigningInstanceInfoRequestCaptor.capture());
-		assertThat(getSigningInstanceInfoRequestCaptor.getValue()).isNotNull();
-		assertThat(getSigningInstanceInfoRequestCaptor.getValue().getCustom().getAnies()).hasSize(1);
+		verify(comfactIntegrationMock).searchSigningInstanceInfos(searchFilterCaptor.capture());
+		assertThat(searchFilterCaptor.getValue()).isNotNull();
+		assertThat(searchFilterCaptor.getValue().getPaginator()).isNotNull();
 	}
 
 	@Test
@@ -189,9 +176,8 @@ class SigningServiceTest {
 		// Arrange
 		final var signingId = "someSigningId";
 		final var partyId = "somePartyId";
-		when(comfactIntegrationMock.getSignatory(anyString(), any(GetSignatoryRequest.class))).thenReturn(new comfact.GetSignatoryResponse()
-			.withSignatories(new comfact.Signatory()
-				.withPartyId(partyId)));
+		when(comfactIntegrationMock.getSignatory(signingId, partyId))
+			.thenReturn(new generated.se.sundsvall.comfact.Signatory().partyId(partyId));
 
 		// Act
 		final var result = signingService.getSignatory(MUNICIPALITY_ID, signingId, partyId);
@@ -199,10 +185,6 @@ class SigningServiceTest {
 		// Assert
 		assertThat(result).isNotNull();
 		assertThat(result.getPartyId()).isEqualTo(partyId);
-		verify(comfactIntegrationMock).getSignatory(eq(MUNICIPALITY_ID), getSignatoryRequestCaptor.capture());
-		assertThat(getSignatoryRequestCaptor.getValue()).isNotNull();
-		assertThat(getSignatoryRequestCaptor.getValue().getSigningInstanceId()).isEqualTo(signingId);
-		assertThat(getSignatoryRequestCaptor.getValue().getPartyId()).isEqualTo(partyId);
+		verify(comfactIntegrationMock).getSignatory(signingId, partyId);
 	}
-
 }

@@ -1,18 +1,13 @@
 {
 	"request": {
 		"method": "POST",
-		"bodyPatterns": [
-			{
-				"contains": "GetSigningInstanceInfoRequest"
-			}
-		],
-		"url": "/comfact"
+		"url": "/api/v3/signing-instance-infos/search-filters"
 	},
 	"response": {
 		"headers": {
-			"Content-Type": "text/xml"
+			"Content-Type": "application/json"
 		},
-		"bodyFileName": "test1_getSigningRequests/responses/GetSigningInstanceInfo.xml",
+		"bodyFileName": "test1_getSigningRequests/responses/SearchResult.json",
 		"status": 200
 	}
 }

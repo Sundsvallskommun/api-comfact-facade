@@ -65,7 +65,7 @@ class SigningResource {
 		@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	})
 	ResponseEntity<SigningsResponse> getSigningRequests(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
+		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
 		final Pageable pageable) {
 
 		return ok(signingService.getSigningRequests(municipalityId, pageable));
@@ -78,7 +78,7 @@ class SigningResource {
 		@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	})
 	ResponseEntity<SigningInstance> getSigningRequest(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
+		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
 		@PathVariable final String signingId) {
 
 		return ok(signingService.getSigningRequest(municipalityId, signingId));
@@ -90,7 +90,7 @@ class SigningResource {
 		@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	})
 	ResponseEntity<CreateSigningResponse> createSigningRequest(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
+		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
 		@Valid @RequestBody final SigningRequest signingRequest) {
 
 		return ok(signingService.createSigningRequest(municipalityId, signingRequest));

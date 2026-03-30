@@ -1,59 +1,44 @@
 package se.sundsvall.comfactfacade.integration.comfact;
 
-import comfact.CreateSigningInstanceRequest;
-import comfact.CreateSigningInstanceResponse;
-import comfact.Credentials;
-import comfact.GetSignatoryRequest;
-import comfact.GetSignatoryResponse;
-import comfact.GetSigningInstanceInfoRequest;
-import comfact.GetSigningInstanceInfoResponse;
-import comfact.GetSigningInstanceRequest;
-import comfact.GetSigningInstanceResponse;
-import comfact.UpdateSigningInstanceRequest;
-import comfact.WithdrawSigningInstanceRequest;
+import generated.se.sundsvall.comfact.SearchFilter;
+import generated.se.sundsvall.comfact.SearchResult;
+import generated.se.sundsvall.comfact.Signatory;
+import generated.se.sundsvall.comfact.SigningInstance;
+import generated.se.sundsvall.comfact.SigningInstanceInput;
+import generated.se.sundsvall.comfact.SigningInstancePatch;
+import generated.se.sundsvall.comfact.StatusPatch;
 import org.springframework.stereotype.Service;
-import se.sundsvall.comfactfacade.configuration.MunicipalityProperties;
 
 @Service
 public class ComfactIntegration {
 
 	private final ComfactClient comfactClient;
 
-	private final MunicipalityProperties municipalityProperties;
-
-	public ComfactIntegration(final ComfactClient comfactClient,
-		final MunicipalityProperties municipalityProperties) {
+	public ComfactIntegration(final ComfactClient comfactClient) {
 		this.comfactClient = comfactClient;
-		this.municipalityProperties = municipalityProperties;
 	}
 
-	private Credentials toCredentials(final String municipalityId) {
-		final var properties = municipalityProperties.ids().get(municipalityId);
-		return new comfact.Credentials().withPassword(properties.password()).withUserId(properties.username());
+	public SigningInstance createSigningInstance(final SigningInstanceInput input) {
+		return comfactClient.createSigningInstance(input);
 	}
 
-	public CreateSigningInstanceResponse createSigningInstance(final String municipalityId, final CreateSigningInstanceRequest request) {
-		return comfactClient.createSigningInstance(request.withCredentials(toCredentials(municipalityId)));
+	public SigningInstance updateSigningInstance(final String signingInstanceId, final SigningInstancePatch patch) {
+		return comfactClient.updateSigningInstance(signingInstanceId, patch);
 	}
 
-	public void updateSigningInstance(final String municipalityId, final UpdateSigningInstanceRequest request) {
-		comfactClient.updateSigningInstance(request.withCredentials(toCredentials(municipalityId)));
+	public void withdrawSigningInstance(final String signingInstanceId) {
+		comfactClient.updateSigningInstance(signingInstanceId, new SigningInstancePatch().status(StatusPatch.WITHDRAWN));
 	}
 
-	public void withdrawSigningInstance(final String municipalityId, final WithdrawSigningInstanceRequest request) {
-		comfactClient.withdrawSigningInstance(request.withCredentials(toCredentials(municipalityId)));
+	public SigningInstance getSigningInstance(final String signingInstanceId) {
+		return comfactClient.getSigningInstance(signingInstanceId);
 	}
 
-	public GetSigningInstanceResponse getSigningInstance(final String municipalityId, final GetSigningInstanceRequest request) {
-		return comfactClient.getSigningInstance(request.withCredentials(toCredentials(municipalityId)));
+	public SearchResult searchSigningInstanceInfos(final SearchFilter searchFilter) {
+		return comfactClient.searchSigningInstanceInfos(searchFilter);
 	}
 
-	public GetSigningInstanceInfoResponse getSigningInstanceInfo(final String municipalityId, final GetSigningInstanceInfoRequest request) {
-		return comfactClient.getSigningInstanceInfo(request.withCredentials(toCredentials(municipalityId)));
+	public Signatory getSignatory(final String signingInstanceId, final String partyId) {
+		return comfactClient.getSignatory(signingInstanceId, partyId);
 	}
-
-	public GetSignatoryResponse getSignatory(final String municipalityId, final GetSignatoryRequest request) {
-		return comfactClient.getSignatory(request.withCredentials(toCredentials(municipalityId)));
-	}
-
 }

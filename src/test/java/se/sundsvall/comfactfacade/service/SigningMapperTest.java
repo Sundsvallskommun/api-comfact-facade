@@ -1,24 +1,11 @@
 package se.sundsvall.comfactfacade.service;
 
-import comfact.Custom;
-import comfact.DocumentType;
-import comfact.GetSigningInstanceResponse;
-import comfact.MessageType;
-import comfact.Paginator;
-import comfact.PartyType;
-import comfact.Signatory;
-import comfact.SigningInstance;
-import comfact.SigningInstanceInfo;
-import comfact.Status;
-import comfact.WorkflowType;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.GregorianCalendar;
+import generated.se.sundsvall.comfact.Message;
+import generated.se.sundsvall.comfact.Paginator;
+import generated.se.sundsvall.comfact.Property;
+import generated.se.sundsvall.comfact.SearchResult;
+import generated.se.sundsvall.comfact.Workflow;
 import java.util.List;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import org.jose4j.base64url.Base64;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
@@ -38,46 +25,42 @@ import static org.assertj.core.api.Assertions.within;
 class SigningMapperTest {
 
 	@Test
-	void toSigningResponse() throws DatatypeConfigurationException {
+	void toSigningResponse() {
 		// Arrange
-
-		final var zonedDateTime = now().atZoneSameInstant(ZoneId.systemDefault());
-		final var gregorianCalendar = GregorianCalendar.from(zonedDateTime);
-		final var xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
-
-		final var status = new Status();
+		final var offsetDateTime = now();
+		final var status = generated.se.sundsvall.comfact.Status.ACTIVE;
 		final var customerReferenceNumber = "customerReferenceNumber";
-		final var document = new DocumentType();
-		final var initiator = new PartyType();
-		final var additionalParties = List.of(new PartyType());
-		final var signatories = List.of(new Signatory());
-		final var additionalDocuments = List.of(new DocumentType());
+		final var document = new generated.se.sundsvall.comfact.Document();
+		final var initiator = new generated.se.sundsvall.comfact.Initiator();
+		final var additionalParties = List.of(new generated.se.sundsvall.comfact.Party());
+		final var signatories = List.of(new generated.se.sundsvall.comfact.Signatory());
+		final var additionalDocuments = List.of(new generated.se.sundsvall.comfact.Document());
 		final var signingId = "signingId";
-		final var notificationMessages = new MessageType();
-		final var signedDocument = new DocumentType();
+		final var notificationMessages = new Message();
+		final var signedDocument = new generated.se.sundsvall.comfact.Document();
 
-		final var getSigningInstanceResponse = new GetSigningInstanceResponse()
-			.withSigningInstance(new SigningInstance()
-				.withSigningInstanceId(signingId)
-				.withStatus(status)
-				.withCustomerReferenceNumber(customerReferenceNumber)
-				.withCreated(xmlGregorianCalendar)
-				.withChanged(xmlGregorianCalendar)
-				.withExpires(xmlGregorianCalendar)
-				.withDocument(document)
-				.withInitiator(initiator)
-				.withAdditionalParties(additionalParties)
-				.withSignatories(signatories)
-				.withDocumentAttachments(additionalDocuments)
-				.withNotificationMessages(notificationMessages)
-				.withSignedDocument(signedDocument));
+		final var signingInstance = new generated.se.sundsvall.comfact.SigningInstance()
+			.signingInstanceId(signingId)
+			.status(status)
+			.customerReferenceNumber(customerReferenceNumber)
+			.created(offsetDateTime)
+			.changed(offsetDateTime)
+			.expires(offsetDateTime)
+			.document(document)
+			.initiator(initiator)
+			.additionalParties(additionalParties)
+			.signatories(signatories)
+			.documentAttachments(additionalDocuments)
+			.notificationMessages(List.of(notificationMessages))
+			.signedDocument(signedDocument);
 
 		// Act
-		final var result = SigningMapper.toSigningResponse(getSigningInstanceResponse);
+		final var result = SigningMapper.toSigningResponse(signingInstance);
 
 		// Assert
 		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(result.getStatus()).isNotNull();
+		assertThat(result.getStatus().getCode()).isEqualTo("active");
 		assertThat(result.getCustomerReference()).isEqualTo(customerReferenceNumber);
 		assertThat(result.getCreated()).isCloseTo(now(), within(1, SECONDS));
 		assertThat(result.getChanged()).isCloseTo(now(), within(1, SECONDS));
@@ -99,13 +82,13 @@ class SigningMapperTest {
 		final var body = "body";
 		final var language = "language";
 
-		final var messageType = new MessageType()
-			.withSubject(subject)
-			.withBody(body)
-			.withLanguage(language);
+		final var message = new Message()
+			.subject(subject)
+			.body(body)
+			.language(language);
 
 		// Act
-		final var result = SigningMapper.toNotificationMessage(messageType);
+		final var result = SigningMapper.toNotificationMessage(message);
 
 		// Assert
 		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
@@ -120,21 +103,19 @@ class SigningMapperTest {
 		final var name = "name";
 		final var title = "title";
 		final var organization = "organization";
-		final var personalNumber = "personalNumber";
 		final var emailAddress = "emailAddress";
 		final var mobilePhoneNumber = "mobilePhoneNumber";
 		final var partyId = "partyId";
 		final var language = "language";
 
-		final var party = new PartyType()
-			.withName(name)
-			.withTitle(title)
-			.withOrganization(organization)
-			.withPersonalNumber(personalNumber)
-			.withEmailAddress(emailAddress)
-			.withMobilePhoneNumber(mobilePhoneNumber)
-			.withPartyId(partyId)
-			.withLanguage(language);
+		final var party = new generated.se.sundsvall.comfact.Party()
+			.name(name)
+			.title(title)
+			.organization(organization)
+			.emailAddress(emailAddress)
+			.mobilePhoneNumber(mobilePhoneNumber)
+			.partyId(partyId)
+			.language(language);
 
 		// Act
 		final var result = SigningMapper.toParty(party);
@@ -148,27 +129,57 @@ class SigningMapperTest {
 		assertThat(result.getPhoneNumber()).isEqualTo(mobilePhoneNumber);
 		assertThat(result.getPartyId()).isEqualTo(partyId);
 		assertThat(result.getLanguage()).isEqualTo(language);
-
 	}
 
 	@Test
-	void toSigningInstanceInfoType() throws DatatypeConfigurationException {
+	void toPartyFromInitiator() {
 		// Arrange
-		final var zonedDateTime = now().atZoneSameInstant(ZoneId.systemDefault());
-		final var gregorianCalendar = GregorianCalendar.from(zonedDateTime);
-		final var xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+		final var name = "name";
+		final var title = "title";
+		final var organization = "organization";
+		final var emailAddress = "emailAddress";
+		final var mobilePhoneNumber = "mobilePhoneNumber";
+		final var partyId = "partyId";
+		final var language = "language";
 
-		final var status = new Status();
+		final var initiator = new generated.se.sundsvall.comfact.Initiator()
+			.name(name)
+			.title(title)
+			.organization(organization)
+			.emailAddress(emailAddress)
+			.mobilePhoneNumber(mobilePhoneNumber)
+			.partyId(partyId)
+			.language(language);
+
+		// Act
+		final var result = SigningMapper.toParty(initiator);
+
+		// Assert
+		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("notificationMessage", "identifications");
+		assertThat(result.getName()).isEqualTo(name);
+		assertThat(result.getTitle()).isEqualTo(title);
+		assertThat(result.getOrganization()).isEqualTo(organization);
+		assertThat(result.getEmail()).isEqualTo(emailAddress);
+		assertThat(result.getPhoneNumber()).isEqualTo(mobilePhoneNumber);
+		assertThat(result.getPartyId()).isEqualTo(partyId);
+		assertThat(result.getLanguage()).isEqualTo(language);
+	}
+
+	@Test
+	void toSigningInstanceInfoType() {
+		// Arrange
+		final var offsetDateTime = now();
+		final var status = generated.se.sundsvall.comfact.Status.CREATED;
 		final var customerReferenceNumber = "customerReferenceNumber";
 		final var signingId = "signingId";
 
-		final var signingInstanceInfo = new SigningInstanceInfo()
-			.withStatus(status)
-			.withCustomerReferenceNumber(customerReferenceNumber)
-			.withCreated(xmlGregorianCalendar)
-			.withChanged(xmlGregorianCalendar)
-			.withExpires(xmlGregorianCalendar)
-			.withSigningInstanceId(signingId);
+		final var signingInstanceInfo = new generated.se.sundsvall.comfact.SigningInstanceInfo()
+			.status(status)
+			.customerReferenceNumber(customerReferenceNumber)
+			.created(offsetDateTime)
+			.changed(offsetDateTime)
+			.expires(offsetDateTime)
+			.signingInstanceId(signingId);
 
 		// Act
 		final var result = SigningMapper.toSigningInstanceInfoType(signingInstanceInfo);
@@ -187,36 +198,26 @@ class SigningMapperTest {
 		assertThat(result.getExpires()).isCloseTo(now(), within(1, SECONDS));
 		assertThat(result.getSigningId()).isEqualTo(signingId);
 		assertThat(result.getStatus()).isNotNull();
-
 	}
 
 	@Test
-	void toWithdrawSigningInstanceRequestType() {
+	void toSigningInstancePatch() {
 		// Arrange
 		final var signingId = "signingId";
+		final var signingRequest = SigningRequest.builder()
+			.withExpires(now())
+			.build();
+
 		// Act
-		final var result = SigningMapper.toWithdrawSigningInstanceRequestType(signingId);
+		final var result = SigningMapper.toSigningInstancePatch(signingId, signingRequest);
 
 		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("credentials", "requestingSource", "custom", "requestId");
-		assertThat(result.getSigningInstanceId()).isEqualTo(signingId);
+		assertThat(result).isNotNull();
+		assertThat(result.getExpires()).isCloseTo(now(), within(1, SECONDS));
 	}
 
 	@Test
-	void toUpdateSigningInstanceRequestType() {
-		// Arrange
-		final var signingId = "signingId";
-		final var signingRequest = SigningRequest.builder().build();
-		// Act
-		final var result = SigningMapper.toUpdateSigningInstanceRequestType(signingId, signingRequest);
-		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("credentials", "requestingSource", "custom", "requestId");
-		assertThat(result.getSigningInstanceId()).isEqualTo(signingId);
-		assertThat(result.getSigningInstanceInput()).isNotNull();
-	}
-
-	@Test
-	void toSigningInstanceInputType() {
+	void toSigningInstanceInput() {
 		// Arrange
 		final var customerReference = "customerReference";
 		final var expires = now();
@@ -246,37 +247,25 @@ class SigningMapperTest {
 			.build();
 
 		// Act
-		final var result = SigningMapper.toSigningInstanceInputType(signingRequest);
+		final var result = SigningMapper.toSigningInstanceInput(signingRequest);
 
 		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("custom");
+		assertThat(result).isNotNull();
 		assertThat(result.getCustomerReferenceNumber()).isEqualTo(customerReference);
-		assertThat(result.getExpires().toGregorianCalendar().toZonedDateTime()).isCloseTo(expires.toZonedDateTime(), within(1, SECONDS));
+		assertThat(result.getExpires()).isCloseTo(expires, within(1, SECONDS));
 		assertThat(result.getNotificationMessages()).isNotNull().hasSize(1);
-		assertThat(result.getSignatoryReminder()).isNotNull();
+		assertThat(result.getAutomaticReminder()).isNotNull();
 		assertThat(result.getInitiator()).isNotNull();
 		assertThat(result.getAdditionalParties()).isNotNull().hasSize(1);
 		assertThat(result.getSignatories()).isNotNull().hasSize(1);
 		assertThat(result.getDocument()).isNotNull();
 		assertThat(result.getLanguage()).isEqualTo(language);
 		assertThat(result.getDocumentAttachments()).isNotNull().hasSize(1);
-		assertThat(result.getWorkflow()).isEqualTo(WorkflowType.PARALLEL);
+		assertThat(result.getWorkflow()).isEqualTo(Workflow.PARALLEL);
 	}
 
 	@Test
-	void toCreateSigningInstanceRequestType() {
-		// Arrange
-		final var signingRequest = SigningRequest.builder().build();
-
-		// Act
-		final var result = SigningMapper.toCreateSigningInstanceRequestType(signingRequest);
-
-		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("credentials", "requestingSource", "custom", "requestId");
-	}
-
-	@Test
-	void toSignatoryType() {
+	void toComfactSignatory() {
 		// Arrange
 		final var subject = "subject";
 		final var body = "body";
@@ -287,13 +276,13 @@ class SigningMapperTest {
 		final var mobilePhoneNumber = "mobilePhoneNumber";
 		final var partyId = "partyId";
 		final var language = "language";
-		final var identifications = List.of(Identification.builder().build());
+		final var identifications = List.of(new Identification("SmsCode"));
 		final var notificationMessage = NotificationMessage.builder()
 			.withSubject(subject)
 			.withBody(body)
 			.withLanguage(language)
 			.build();
-		final var party = se.sundsvall.comfactfacade.api.model.Signatory.builder()
+		final var signatory = se.sundsvall.comfactfacade.api.model.Signatory.builder()
 			.withName(name)
 			.withTitle(title)
 			.withOrganization(organization)
@@ -306,10 +295,10 @@ class SigningMapperTest {
 			.build();
 
 		// Act
-		final var result = SigningMapper.toSignatoryType(party);
+		final var result = SigningMapper.toComfactSignatory(signatory);
 
 		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("signatoryAction", "accountId", "custom", "personalNumber");
+		assertThat(result).isNotNull();
 		assertThat(result.getName()).isEqualTo(name);
 		assertThat(result.getTitle()).isEqualTo(title);
 		assertThat(result.getOrganization()).isEqualTo(organization);
@@ -317,12 +306,15 @@ class SigningMapperTest {
 		assertThat(result.getMobilePhoneNumber()).isEqualTo(mobilePhoneNumber);
 		assertThat(result.getPartyId()).isEqualTo(partyId);
 		assertThat(result.getLanguage()).isEqualTo(language);
-		assertThat(result.getIdentifications()).isNotNull().hasSize(1);
-		assertThat(result.getNotificationMessage()).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(result.getAuthenticationMethods()).isNotNull().hasSize(1).containsExactly("SmsCode");
+		assertThat(result.getNotificationMessage()).isNotNull();
+		assertThat(result.getNotificationMessage().getSubject()).isEqualTo(subject);
+		assertThat(result.getNotificationMessage().getBody()).isEqualTo(body);
+		assertThat(result.getNotificationMessage().getLanguage()).isEqualTo(language);
 	}
 
 	@Test
-	void toMessageType() {
+	void toMessage() {
 		// Arrange
 		final var subject = "subject";
 		final var body = "body";
@@ -334,18 +326,17 @@ class SigningMapperTest {
 			.build();
 
 		// Act
-		final var result = SigningMapper.toMessageType(notificationMessage);
+		final var result = SigningMapper.toMessage(notificationMessage);
 
 		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(result).isNotNull();
 		assertThat(result.getSubject()).isEqualTo(subject);
 		assertThat(result.getBody()).isEqualTo(body);
 		assertThat(result.getLanguage()).isEqualTo(language);
-
 	}
 
 	@Test
-	void toSignatoryReminderType() {
+	void toAutomaticReminder() {
 		// Arrange
 		final var subject = "subject";
 		final var body = "body";
@@ -368,22 +359,21 @@ class SigningMapperTest {
 			.build();
 
 		// Act
-		final var result = SigningMapper.toSignatoryReminderType(reminder);
+		final var result = SigningMapper.toAutomaticReminder(reminder);
 
 		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(result).isNotNull();
 		assertThat(result.getReminderMessages()).isNotNull().hasSize(1);
 		assertThat(result.getReminderMessages().getFirst().getSubject()).isEqualTo(subject);
 		assertThat(result.getReminderMessages().getFirst().getBody()).isEqualTo(body);
 		assertThat(result.getReminderMessages().getFirst().getLanguage()).isEqualTo(language);
-		assertThat(result.isEnabled()).isEqualTo(enabled);
+		assertThat(result.getEnabled()).isEqualTo(enabled);
 		assertThat(result.getHourInterval()).isEqualTo(intervalInHours);
-		assertThat(result.getStartDate().toGregorianCalendar().toZonedDateTime()).isCloseTo(startDateTime.toZonedDateTime(), within(1, SECONDS));
-
+		assertThat(result.getStartDate()).isCloseTo(startDateTime, within(1, SECONDS));
 	}
 
 	@Test
-	void toPartyType() {
+	void toComfactParty() {
 		// Arrange
 		final var name = "name";
 		final var title = "title";
@@ -404,10 +394,10 @@ class SigningMapperTest {
 			.build();
 
 		// Act
-		final var result = SigningMapper.toPartyType(party);
+		final var result = SigningMapper.toComfactParty(party);
 
 		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("accountId", "custom", "personalNumber");
+		assertThat(result).isNotNull();
 		assertThat(result.getName()).isEqualTo(name);
 		assertThat(result.getTitle()).isEqualTo(title);
 		assertThat(result.getOrganization()).isEqualTo(organization);
@@ -415,11 +405,10 @@ class SigningMapperTest {
 		assertThat(result.getMobilePhoneNumber()).isEqualTo(mobilePhoneNumber);
 		assertThat(result.getPartyId()).isEqualTo(partyId);
 		assertThat(result.getLanguage()).isEqualTo(language);
-
 	}
 
 	@Test
-	void toDocumentTypeList() {
+	void toComfactDocumentList() {
 		// Arrange
 		final var documentName = "documentName";
 		final var fileName = "fileName";
@@ -434,11 +423,10 @@ class SigningMapperTest {
 			.build();
 
 		// Act
-		final var result = SigningMapper.toDocumentTypeList(List.of(document));
+		final var result = SigningMapper.toComfactDocumentList(List.of(document));
 
 		// Assert
 		assertThat(result).hasSize(1);
-		assertThat(result.getFirst()).isNotNull().hasNoNullFieldsOrPropertiesExcept("encoding", "size", "documentPassword", "documentId");
 		assertThat(result.getFirst().getDocumentName()).isEqualTo(documentName);
 		assertThat(result.getFirst().getFileName()).isEqualTo(fileName);
 		assertThat(result.getFirst().getMimeType()).isEqualTo(mimeType);
@@ -446,7 +434,7 @@ class SigningMapperTest {
 	}
 
 	@Test
-	void toDocumentType() {
+	void toComfactDocument() {
 		// Arrange
 		final var documentName = "documentName";
 		final var fileName = "fileName";
@@ -459,42 +447,16 @@ class SigningMapperTest {
 			.withMimeType(mimeType)
 			.withContent(content)
 			.build();
+
 		// Act
-		final var result = SigningMapper.toDocumentType(document);
+		final var result = SigningMapper.toComfactDocument(document);
 
 		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("encoding", "size", "documentPassword", "documentId");
+		assertThat(result).isNotNull();
 		assertThat(result.getDocumentName()).isEqualTo(documentName);
 		assertThat(result.getFileName()).isEqualTo(fileName);
 		assertThat(result.getMimeType()).isEqualTo(mimeType);
 		assertThat(result.getContent()).isEqualTo(Base64.decode(content));
-	}
-
-	@Test
-	void toXMLGregorianCalendar() {
-		// Arrange
-		final var offsetDateTime = now();
-
-		// Act
-		final var result = SigningMapper.toXMLGregorianCalendar(offsetDateTime);
-
-		// Assert
-		assertThat(result).isNotNull();
-		assertThat(result.toGregorianCalendar().toZonedDateTime()).isCloseTo(ZonedDateTime.now(), within(1, SECONDS));
-	}
-
-	@Test
-	void toOffsetDateTime() throws DatatypeConfigurationException {
-		// Arrange
-		final var zonedDateTime = now().atZoneSameInstant(ZoneId.systemDefault());
-		final var gregorianCalendar = GregorianCalendar.from(zonedDateTime);
-		final var xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
-
-		// Act
-		final var result = SigningMapper.toOffsetDateTime(xmlGregorianCalendar);
-
-		// Assert
-		assertThat(result).isNotNull().isCloseTo(now(), within(1, SECONDS));
 	}
 
 	@Test
@@ -505,13 +467,14 @@ class SigningMapperTest {
 		final var mimeType = "mimeType";
 		final var content = "content".getBytes();
 
-		final var documentType = new DocumentType()
-			.withDocumentName(documentName)
-			.withFileName(fileName)
-			.withMimeType(mimeType)
-			.withContent(content);
+		final var document = new generated.se.sundsvall.comfact.Document()
+			.documentName(documentName)
+			.fileName(fileName)
+			.mimeType(mimeType)
+			.content(content);
+
 		// Act
-		final var result = SigningMapper.toDocument(documentType);
+		final var result = SigningMapper.toDocument(document);
 
 		// Assert
 		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
@@ -525,73 +488,69 @@ class SigningMapperTest {
 	@Test
 	void toStatus() {
 		// Arrange
-		final var statusCode = "statusCode";
-		final var statusMessage = "statusMessage";
-		final var status = new comfact.Status()
-			.withStatusCode(statusCode)
-			.withStatusMessage(statusMessage);
+		final var status = generated.se.sundsvall.comfact.Status.ACTIVE;
 
 		// Act
 		final var result = SigningMapper.toStatus(status);
 
 		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
-		assertThat(result.getCode()).isEqualTo(statusCode);
-		assertThat(result.getMessage()).isEqualTo(statusMessage);
+		assertThat(result).isNotNull();
+		assertThat(result.getCode()).isEqualTo("active");
 	}
 
 	@Test
-	void toGetSigningInstanceInfoRequest() {
+	void toStatus_null() {
+		assertThat(SigningMapper.toStatus(null)).isNull();
+	}
+
+	@Test
+	void toSearchFilter() {
 		// Arrange
-		final var pageable = PageRequest.of(0, 10).withSort(Sort.by(Sort.Order.desc("Created")));
+		final var pageable = PageRequest.of(0, 10).withSort(Sort.by(Sort.Order.desc("created")));
 
 		// Act
-		final var result = SigningMapper.toGetSigningInstanceInfoRequest(pageable);
+		final var result = SigningMapper.toSearchFilter(pageable);
 
 		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("credentials", "requestingSource", "requestId");
-		assertThat(result.getCustom()).isNotNull();
-		assertThat(result.getCustom().getAnies()).hasSize(1);
-
+		assertThat(result).isNotNull();
+		assertThat(result.getPaginator()).isNotNull();
+		assertThat(result.getPaginator().getPage()).isZero();
+		assertThat(result.getPaginator().getPageSize()).isEqualTo(10);
+		assertThat(result.getPaginator().getOrderByDescending()).isTrue();
+		assertThat(result.getPaginator().getOrderByProperty()).isEqualTo(Property.CREATED);
 	}
 
 	@Test
 	void toSigningsResponse() {
-		// Arrang
+		// Arrange
 		final var page = 0;
 		final var pageSize = 10;
 		final var totalItems = 20;
-		final var orderByProperty = "Created";
-		final var orderByDescending = true;
-
 		final var totalPages = totalItems / pageSize;
-		final var singingId = "123";
+		final var signingId = "123";
 
 		final var paginator = new Paginator()
-			.withPage(page)
-			.withPageSize(pageSize)
-			.withOrderByDescending(orderByDescending)
-			.withTotalItems(totalItems)
-			.withOrderByProperty(orderByProperty);
+			.page(page)
+			.pageSize(pageSize)
+			.orderByDescending(true)
+			.totalItems(totalItems)
+			.orderByProperty(Property.CREATED);
 
-		final var doc = SigningMapper.toDocument(paginator);
-		final var custom = new Custom().withAnies(doc);
+		final var signingInstanceInfo = new generated.se.sundsvall.comfact.SigningInstanceInfo()
+			.signingInstanceId(signingId)
+			.status(generated.se.sundsvall.comfact.Status.ACTIVE);
 
-		final var signingInstanceInfo = new SigningInstanceInfo()
-			.withSigningInstanceId(singingId)
-			.withStatus(new comfact.Status().withStatusCode("OK"));
-
-		final var response = new comfact.GetSigningInstanceInfoResponse()
-			.withSigningInstanceInfos(signingInstanceInfo)
-			.withCustom(custom);
+		final var searchResult = new SearchResult()
+			.signingInstanceInfos(List.of(signingInstanceInfo))
+			.paginator(paginator);
 
 		// Act
-		final var result = SigningMapper.toSigningsResponse(response);
+		final var result = SigningMapper.toSigningsResponse(searchResult);
 
 		// Assert
 		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(result.getSigningInstances()).hasSize(1);
-		assertThat(result.getSigningInstances().getFirst().getSigningId()).isEqualTo(singingId);
+		assertThat(result.getSigningInstances().getFirst().getSigningId()).isEqualTo(signingId);
 
 		assertThat(result.getPagingAndSortingMetaData().getPage()).isEqualTo(page);
 		assertThat(result.getPagingAndSortingMetaData().getCount()).isEqualTo(1);
@@ -603,76 +562,47 @@ class SigningMapperTest {
 	@Test
 	void toSigningsResponse_noPaging() {
 		// Arrange
-		final var singingId = "123";
-		final var signingInstanceInfo = new SigningInstanceInfo()
-			.withSigningInstanceId(singingId)
-			.withStatus(new comfact.Status().withStatusCode("OK"));
+		final var signingId = "123";
+		final var signingInstanceInfo = new generated.se.sundsvall.comfact.SigningInstanceInfo()
+			.signingInstanceId(signingId)
+			.status(generated.se.sundsvall.comfact.Status.ACTIVE);
 
-		final var response = new comfact.GetSigningInstanceInfoResponse()
-			.withSigningInstanceInfos(signingInstanceInfo);
+		final var searchResult = new SearchResult()
+			.signingInstanceInfos(List.of(signingInstanceInfo));
 
 		// Act
-		final var result = SigningMapper.toSigningsResponse(response);
+		final var result = SigningMapper.toSigningsResponse(searchResult);
 
 		// Assert
 		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("pagingAndSortingMetaData");
 		assertThat(result.getSigningInstances()).hasSize(1);
-		assertThat(result.getSigningInstances().getFirst().getSigningId()).isEqualTo(singingId);
+		assertThat(result.getSigningInstances().getFirst().getSigningId()).isEqualTo(signingId);
 		assertThat(result.getPagingAndSortingMetaData()).isNull();
 	}
 
 	@Test
-	void toSigningsResponse_missingCustom() throws ParserConfigurationException {
-		// Arrange
-		final var document = DocumentBuilderFactory
-			.newInstance()
-			.newDocumentBuilder()
-			.newDocument();
-
-		// Arrange
-		final var singingId = "123";
-		final var signingInstanceInfo = new SigningInstanceInfo()
-			.withSigningInstanceId(singingId)
-			.withStatus(new comfact.Status().withStatusCode("OK"));
-
-		final var response = new comfact.GetSigningInstanceInfoResponse()
-			.withSigningInstanceInfos(signingInstanceInfo)
-			.withCustom(new Custom().withAnies(document.getDocumentElement()));
-
-		// Act
-		final var result = SigningMapper.toSigningsResponse(response);
-
-		// Assert
-		assertThat(result).isNotNull().hasNoNullFieldsOrPropertiesExcept("pagingAndSortingMetaData");
-		assertThat(result.getSigningInstances()).hasSize(1);
-		assertThat(result.getSigningInstances().getFirst().getSigningId()).isEqualTo(singingId);
-		assertThat(result.getPagingAndSortingMetaData()).isNull();
-
+	void toWorkflow_null() {
+		assertThat(SigningMapper.toWorkflow(null)).isEqualTo(Workflow.SEQUENTIAL);
 	}
 
 	@Test
-	void toWorkflowType_null() {
-		assertThat(SigningMapper.toWorkflowType(null)).isEqualTo(WorkflowType.SEQUENTIAL);
+	void toWorkflow_sequential() {
+		assertThat(SigningMapper.toWorkflow("Sequential")).isEqualTo(Workflow.SEQUENTIAL);
 	}
 
 	@Test
-	void toWorkflowType_sequential() {
-		assertThat(SigningMapper.toWorkflowType("Sequential")).isEqualTo(WorkflowType.SEQUENTIAL);
+	void toWorkflow_parallel() {
+		assertThat(SigningMapper.toWorkflow("Parallel")).isEqualTo(Workflow.PARALLEL);
 	}
 
 	@Test
-	void toWorkflowType_parallel() {
-		assertThat(SigningMapper.toWorkflowType("Parallel")).isEqualTo(WorkflowType.PARALLEL);
-	}
-
-	@Test
-	void toWorkflowType_caseInsensitive() {
-		assertThat(SigningMapper.toWorkflowType("parallel")).isEqualTo(WorkflowType.PARALLEL);
-		assertThat(SigningMapper.toWorkflowType("PARALLEL")).isEqualTo(WorkflowType.PARALLEL);
-		assertThat(SigningMapper.toWorkflowType("pARALLEL")).isEqualTo(WorkflowType.PARALLEL);
-		assertThat(SigningMapper.toWorkflowType("sequential")).isEqualTo(WorkflowType.SEQUENTIAL);
-		assertThat(SigningMapper.toWorkflowType("SEQUENTIAL")).isEqualTo(WorkflowType.SEQUENTIAL);
-		assertThat(SigningMapper.toWorkflowType("sEQUENTIAL")).isEqualTo(WorkflowType.SEQUENTIAL);
+	void toWorkflow_caseInsensitive() {
+		assertThat(SigningMapper.toWorkflow("parallel")).isEqualTo(Workflow.PARALLEL);
+		assertThat(SigningMapper.toWorkflow("PARALLEL")).isEqualTo(Workflow.PARALLEL);
+		assertThat(SigningMapper.toWorkflow("pARALLEL")).isEqualTo(Workflow.PARALLEL);
+		assertThat(SigningMapper.toWorkflow("sequential")).isEqualTo(Workflow.SEQUENTIAL);
+		assertThat(SigningMapper.toWorkflow("SEQUENTIAL")).isEqualTo(Workflow.SEQUENTIAL);
+		assertThat(SigningMapper.toWorkflow("sEQUENTIAL")).isEqualTo(Workflow.SEQUENTIAL);
 	}
 
 	private boolean isValidBase64(final String s) {
@@ -683,5 +613,4 @@ class SigningMapperTest {
 			return false;
 		}
 	}
-
 }

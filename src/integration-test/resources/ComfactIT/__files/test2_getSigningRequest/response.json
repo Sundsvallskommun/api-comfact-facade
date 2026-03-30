@@ -86,8 +86,7 @@
 		"content": "ZEdWemRBPT0="
 	},
 	"status": {
-		"code": "Completed",
-		"message": "The signing instance is completed."
+		"code": "completed"
 	},
 	"changed": "2024-01-30T10:56:11.487+01:00"
 }

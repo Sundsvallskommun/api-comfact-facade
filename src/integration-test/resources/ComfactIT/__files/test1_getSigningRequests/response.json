@@ -5,8 +5,7 @@
 			"created": "2024-01-29T11:49:54.683+01:00",
 			"signingId": "1e4d6a9667eb4e7bba0cd6189f70317a",
 			"status": {
-				"code": "Expired",
-				"message": "The signing instance is expired."
+				"code": "expired"
 			},
 			"changed": "2024-02-28T12:03:30.187+01:00"
 		},
@@ -15,8 +14,7 @@
 			"created": "2024-01-29T11:59:24.653+01:00",
 			"signingId": "ab52bd8876d04c14a10b164bf13feb46",
 			"status": {
-				"code": "Halted",
-				"message": "The signing instance is halted."
+				"code": "halted"
 			},
 			"changed": "2024-01-29T14:00:39.79+01:00"
 		},
@@ -25,8 +23,7 @@
 			"created": "2024-01-29T14:08:23.37+01:00",
 			"signingId": "3b38fb22367147cda078eb86fc1e74a4",
 			"status": {
-				"code": "Withdrawn",
-				"message": "The signing instance is withdrawn."
+				"code": "withdrawn"
 			},
 			"changed": "2024-01-29T16:05:14.62+01:00"
 		},
@@ -35,8 +32,7 @@
 			"created": "2024-01-29T14:15:41.17+01:00",
 			"signingId": "a73f7e6575bf44d6927f69441f67807f",
 			"status": {
-				"code": "Expired",
-				"message": "The signing instance is expired."
+				"code": "expired"
 			},
 			"changed": "2024-02-28T14:33:35.76+01:00"
 		},
@@ -45,8 +41,7 @@
 			"created": "2024-01-29T15:17:03.38+01:00",
 			"signingId": "6394658efc2341e9acf4156e90af0153",
 			"status": {
-				"code": "Completed",
-				"message": "The signing instance is completed."
+				"code": "completed"
 			},
 			"changed": "2024-01-29T15:28:40.89+01:00"
 		},
@@ -55,8 +50,7 @@
 			"created": "2024-01-30T10:41:40.77+01:00",
 			"signingId": "cbeb4d29aa314dd09c4344a76d1fdec2",
 			"status": {
-				"code": "Completed",
-				"message": "The signing instance is completed."
+				"code": "completed"
 			},
 			"changed": "2024-01-30T10:45:09.74+01:00"
 		},
@@ -65,8 +59,7 @@
 			"created": "2024-01-30T10:53:42.12+01:00",
 			"signingId": "6ec3c3b47921446083f569977d4a8a57",
 			"status": {
-				"code": "Completed",
-				"message": "The signing instance is completed."
+				"code": "completed"
 			},
 			"changed": "2024-01-30T10:56:11.487+01:00"
 		},
@@ -76,8 +69,7 @@
 			"customerReference": "1234567890",
 			"signingId": "00ae68bd7c0f42a194e2de45b9c55514",
 			"status": {
-				"code": "Withdrawn",
-				"message": "The signing instance is withdrawn."
+				"code": "withdrawn"
 			},
 			"changed": "2024-03-14T15:14:04.79+01:00"
 		}
@@ -89,7 +81,7 @@
 		"count": 8,
 		"totalPages": 2,
 		"sortBy": [
-			"Created"
+			"created"
 		],
 		"page": 0
 	}
