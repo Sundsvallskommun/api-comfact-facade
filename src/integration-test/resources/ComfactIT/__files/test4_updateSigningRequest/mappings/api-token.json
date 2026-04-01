@@ -1,14 +1,17 @@
 {
 	"request": {
 		"method": "POST",
-		"urlPath": "/api-gateway/token"
+		"url": "/api-gateway/token"
 	},
 	"response": {
+		"status": 200,
 		"headers": {
 			"Content-Type": "application/json"
 		},
-		"bodyFileName": "test4_updateSigningRequest/responses/token.json",
-		"status": 200
-	},
-	"name": "api-gateway"
+		"jsonBody": {
+			"access_token": "0000000000000000AAAAAAAAAAAAAAAA",
+			"token_type": "Bearer",
+			"expires_in": 0
+		}
+	}
 }

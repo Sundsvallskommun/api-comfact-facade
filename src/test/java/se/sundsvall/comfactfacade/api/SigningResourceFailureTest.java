@@ -43,7 +43,7 @@ class SigningResourceFailureTest {
 	void cancelSigningRequest_NotFound() {
 		// Arrange
 		final String signingId = "someSigningId";
-		doThrow(Problem.valueOf(HttpStatus.NOT_FOUND, "The signing request with id someSigningId was not found")).when(signingServiceMock).cancelSigningRequest(MUNICIPALITY_ID, signingId);
+		doThrow(Problem.valueOf(HttpStatus.NOT_FOUND, "The signing request with id someSigningId was not found")).when(signingServiceMock).cancelSigningRequest(signingId);
 
 		// Act
 		final var result = webTestClient.delete()
@@ -60,7 +60,7 @@ class SigningResourceFailureTest {
 		assertThat(result.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertThat(result.getTitle()).isEqualTo("Not Found");
 		assertThat(result.getDetail()).isEqualTo("The signing request with id someSigningId was not found");
-		verify(signingServiceMock).cancelSigningRequest(MUNICIPALITY_ID, signingId);
+		verify(signingServiceMock).cancelSigningRequest(signingId);
 	}
 
 	@Test
@@ -310,7 +310,7 @@ class SigningResourceFailureTest {
 		final var signingId = "someSigningId";
 		final var partyId = "somePartyId";
 		doThrow(Problem.valueOf(HttpStatus.NOT_FOUND, "The signing request with id someSigningId was not found"))
-			.when(signingServiceMock).getSignatory(MUNICIPALITY_ID, signingId, partyId);
+			.when(signingServiceMock).getSignatory(signingId, partyId);
 
 		// Act & Assert
 		final var result = webTestClient.get()
@@ -327,7 +327,7 @@ class SigningResourceFailureTest {
 		assertThat(result.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertThat(result.getTitle()).isEqualTo("Not Found");
 		assertThat(result.getDetail()).isEqualTo("The signing request with id someSigningId was not found");
-		verify(signingServiceMock).getSignatory(MUNICIPALITY_ID, signingId, partyId);
+		verify(signingServiceMock).getSignatory(signingId, partyId);
 	}
 
 }

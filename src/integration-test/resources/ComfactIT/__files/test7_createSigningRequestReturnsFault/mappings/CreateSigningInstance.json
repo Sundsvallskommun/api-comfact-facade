@@ -1,18 +1,100 @@
 {
 	"request": {
 		"method": "POST",
+		"url": "/api/v3/signing-instances",
 		"bodyPatterns": [
 			{
-				"equalToXml": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Header/><SOAP-ENV:Body><CreateSigningInstanceRequest xmlns=\"urn:comfact:prosale:signing:2.0:protocol\" xmlns:ns2=\"urn:comfact:prosale:pagination:1.0:protocol\"><Credentials><UserId>sundsvall-username</UserId><Password>sundsvall-password</Password></Credentials><SigningInstanceInput workflow=\"Sequential\" language=\"sv\"><CustomerReferenceNumber>1234567890</CustomerReferenceNumber><Expires>2022-01-01T00:59:59.000+01:00</Expires><NotificationMessage language=\"sv\"><Subject>Please sign the document</Subject><Body>Dear John Doe, please sign the document.</Body></NotificationMessage><SignatoryReminder enabled=\"true\"><StartDate>2022-01-01T00:59:59.000+01:00</StartDate><HourInterval>24</HourInterval><ReminderMessage language=\"sv\"><Subject>Please sign the document</Subject><Body>Dear John Doe, please sign the document.</Body></ReminderMessage></SignatoryReminder><Initiator language=\"sv\" partyId=\"550e8400-e29b-41d4-a716-446655440000\"><Name>John Doe</Name><Title>CEO</Title><Organization>Sundsvall Municipality</Organization><PersonalNumber>197001011234</PersonalNumber><EmailAddress>john.doe@sundsvall.se</EmailAddress><MobilePhoneNumber>0701740605</MobilePhoneNumber></Initiator><AdditionalParty language=\"sv\" partyId=\"550e8400-e29b-41d4-a716-446655440000\"><Name>John Doe</Name><Title>CEO</Title><Organization>Sundsvall Municipality</Organization><PersonalNumber>197001011234</PersonalNumber><EmailAddress>john.doe@sundsvall.se</EmailAddress><MobilePhoneNumber>0701740605</MobilePhoneNumber></AdditionalParty><Signatory language=\"sv\" partyId=\"550e8400-e29b-41d4-a716-446655440000\"><Name>John Doe</Name><Title>CEO</Title><Organization>Sundsvall Municipality</Organization><PersonalNumber>197001011234</PersonalNumber><EmailAddress>john.doe@sundsvall.se</EmailAddress><MobilePhoneNumber>0701740605</MobilePhoneNumber><NotificationMessage language=\"sv\"><Subject>Please sign the document</Subject><Body>Dear John Doe, please sign the document.</Body></NotificationMessage><Identification><Alias>SmsCode</Alias></Identification></Signatory><Document><DocumentName>Business Contract</DocumentName><FileName>document.pdf</FileName><MimeType>application/pdf</MimeType><Content>ZEdWemRBPT0=</Content></Document><DocumentAttachment><DocumentName>Business Contract</DocumentName><FileName>document.pdf</FileName><MimeType>application/pdf</MimeType><Content>ZEdWemRBPT0=</Content></DocumentAttachment></SigningInstanceInput></CreateSigningInstanceRequest></SOAP-ENV:Body></SOAP-ENV:Envelope>"
+				"equalToJson": {
+					"additionalParties": [
+						{
+							"emailAddress": "john.doe@sundsvall.se",
+							"language": "sv",
+							"mobilePhoneNumber": "0701740605",
+							"name": "John Doe",
+							"organization": "Sundsvall Municipality",
+							"partyId": "550e8400-e29b-41d4-a716-446655440000",
+							"title": "CEO"
+						}
+					],
+					"automaticReminder": {
+						"enabled": true,
+						"hourInterval": 24,
+						"reminderMessages": [
+							{
+								"body": "Dear John Doe, please sign the document.",
+								"language": "sv",
+								"subject": "Please sign the document"
+							}
+						],
+						"startDate": "2021-12-31T23:59:59Z"
+					},
+					"customerReferenceNumber": "1234567890",
+					"document": {
+						"content": "ZEdWemRBPT0=",
+						"documentName": "Business Contract",
+						"fileName": "document.pdf",
+						"mimeType": "application/pdf"
+					},
+					"documentAttachments": [
+						{
+							"content": "ZEdWemRBPT0=",
+							"documentName": "Business Contract",
+							"fileName": "document.pdf",
+							"mimeType": "application/pdf"
+						}
+					],
+					"expires": "2021-12-31T23:59:59Z",
+					"initiator": {
+						"distributionEnabled": true,
+						"emailAddress": "john.doe@sundsvall.se",
+						"language": "sv",
+						"mobilePhoneNumber": "0701740605",
+						"name": "John Doe",
+						"organization": "Sundsvall Municipality",
+						"partyId": "550e8400-e29b-41d4-a716-446655440000",
+						"title": "CEO"
+					},
+					"language": "sv",
+					"notificationMessages": [
+						{
+							"body": "Dear John Doe, please sign the document.",
+							"language": "sv",
+							"subject": "Please sign the document"
+						}
+					],
+					"signatories": [
+						{
+							"authenticationMethods": [
+								"SmsCode"
+							],
+							"distributionMethod": "attached",
+							"emailAddress": "john.doe@sundsvall.se",
+							"language": "sv",
+							"mobilePhoneNumber": "0701740605",
+							"name": "John Doe",
+							"notificationMessage": {
+								"body": "Dear John Doe, please sign the document.",
+								"language": "sv",
+								"subject": "Please sign the document"
+							},
+							"organization": "Sundsvall Municipality",
+							"partyId": "550e8400-e29b-41d4-a716-446655440000",
+							"personalNumber": "197001011234",
+							"title": "CEO"
+						}
+					],
+					"workflow": "sequential"
+				},
+				"ignoreArrayOrder": true,
+				"ignoreExtraElements": false
 			}
-		],
-		"url": "/comfact"
+		]
 	},
 	"response": {
+		"status": 400,
 		"headers": {
-			"Content-Type": "text/xml"
+			"Content-Type": "application/problem+json"
 		},
-		"bodyFileName": "test7_createSigningRequestReturnsFault/responses/CreateSigningInstance.xml",
-		"status": 200
+		"bodyFileName": "test7_createSigningRequestReturnsFault/responses/Error.json"
 	}
 }

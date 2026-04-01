@@ -65,10 +65,10 @@ class SigningResource {
 		@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	})
 	ResponseEntity<SigningsResponse> getSigningRequests(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
+		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
 		final Pageable pageable) {
 
-		return ok(signingService.getSigningRequests(municipalityId, pageable));
+		return ok(signingService.getSigningRequests(pageable));
 	}
 
 	@GetMapping(path = "{signingId}", produces = APPLICATION_JSON_VALUE)
@@ -78,10 +78,10 @@ class SigningResource {
 		@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	})
 	ResponseEntity<SigningInstance> getSigningRequest(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
+		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
 		@PathVariable final String signingId) {
 
-		return ok(signingService.getSigningRequest(municipalityId, signingId));
+		return ok(signingService.getSigningRequest(signingId));
 	}
 
 	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -90,7 +90,7 @@ class SigningResource {
 		@ApiResponse(responseCode = "200", description = "Successful operation", useReturnTypeSchema = true)
 	})
 	ResponseEntity<CreateSigningResponse> createSigningRequest(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
+		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
 		@Valid @RequestBody final SigningRequest signingRequest) {
 
 		return ok(signingService.createSigningRequest(municipalityId, signingRequest));
@@ -103,7 +103,7 @@ class SigningResource {
 		@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	})
 	ResponseEntity<Void> updateSigningRequest(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
+		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
 		@PathVariable final String signingId,
 		@Valid @RequestBody final SigningRequest signingRequest) {
 
@@ -120,10 +120,10 @@ class SigningResource {
 		@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	})
 	ResponseEntity<Void> cancelSigningRequest(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
+		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
 		@PathVariable final String signingId) {
 
-		signingService.cancelSigningRequest(municipalityId, signingId);
+		signingService.cancelSigningRequest(signingId);
 		return noContent()
 			.header(CONTENT_TYPE, ALL_VALUE)
 			.build();
@@ -136,10 +136,10 @@ class SigningResource {
 		@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	})
 	ResponseEntity<Signatory> getSignatory(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
+		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
 		@PathVariable final String signingId,
 		@PathVariable final String partyId) {
 
-		return ok(signingService.getSignatory(municipalityId, signingId, partyId));
+		return ok(signingService.getSignatory(signingId, partyId));
 	}
 }

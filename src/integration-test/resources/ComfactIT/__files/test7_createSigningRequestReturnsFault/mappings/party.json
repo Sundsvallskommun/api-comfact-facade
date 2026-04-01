@@ -1,13 +1,28 @@
 {
 	"request": {
-		"method": "GET",
-		"urlPattern": "/party/2281/PRIVATE/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/legalId"
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer 0000000000000000AAAAAAAAAAAAAAAA"
+			}
+		},
+		"method": "POST",
+		"urlPattern": "/party/2281/PRIVATE/legalIds",
+		"bodyPatterns": [
+			{
+				"equalToJson": [
+					"550e8400-e29b-41d4-a716-446655440000"
+				],
+				"ignoreExtraElements": false
+			}
+		]
 	},
 	"response": {
 		"headers": {
-			"Content-Type": "text/plain"
+			"Content-Type": "application/json"
 		},
-		"body": "197001011234",
-		"status": "200"
+		"jsonBody": {
+			"550e8400-e29b-41d4-a716-446655440000": "197001011234"
+		},
+		"status": 200
 	}
 }

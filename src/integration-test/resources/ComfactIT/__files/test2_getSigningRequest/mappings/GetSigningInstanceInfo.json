@@ -1,18 +1,13 @@
 {
 	"request": {
-		"method": "POST",
-		"bodyPatterns": [
-			{
-				"contains": "GetSigningInstanceRequest"
-			}
-		],
-		"url": "/comfact"
+		"method": "GET",
+		"url": "/api/v3/signing-instances/1"
 	},
 	"response": {
 		"headers": {
-			"Content-Type": "text/xml"
+			"Content-Type": "application/json"
 		},
-		"bodyFileName": "test2_getSigningRequest/responses/GetSigningInstance.xml",
+		"bodyFileName": "test2_getSigningRequest/responses/SigningInstance.json",
 		"status": 200
 	}
 }

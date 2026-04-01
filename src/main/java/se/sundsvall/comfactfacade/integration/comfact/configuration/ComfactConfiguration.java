@@ -1,34 +1,32 @@
 package se.sundsvall.comfactfacade.integration.comfact.configuration;
 
-import feign.jaxb.JAXBContextFactory;
-import feign.soap.SOAPDecoder;
-import feign.soap.SOAPEncoder;
-import jakarta.xml.soap.SOAPConstants;
+import java.util.List;
+import java.util.Set;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.openfeign.FeignBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import se.sundsvall.dept44.configuration.feign.FeignConfiguration;
 import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
+import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
+@Configuration
+@EnableConfigurationProperties(ComfactProperties.class)
 @Import(FeignConfiguration.class)
 public class ComfactConfiguration {
 
 	public static final String CLIENT_ID = "comfact";
 
-	private static final JAXBContextFactory JAXB_FACTORY = new JAXBContextFactory.Builder().build();
-
-	private static final SOAPEncoder.Builder SOAP_ENCODER_BUILDER = new SOAPEncoder.Builder()
-		.withFormattedOutput(false)
-		.withJAXBContextFactory(JAXB_FACTORY)
-		.withSOAPProtocol(SOAPConstants.SOAP_1_1_PROTOCOL)
-		.withWriteXmlDeclaration(true);
-
 	@Bean
-	FeignBuilderCustomizer feignBuilderCustomizer(final ComfactProperties properties) {
+	FeignBuilderCustomizer feignBuilderCustomizer(final ComfactProperties properties, final ClientRegistrationRepository clientRegistrationRepository) {
 		return FeignMultiCustomizer.create()
-			.withDecoder(new SOAPDecoder(JAXB_FACTORY))
-			.withEncoder(SOAP_ENCODER_BUILDER.build())
-			.withErrorDecoder(new ComfactErrorDecoder())
+			.withErrorDecoder(new ProblemErrorDecoder(CLIENT_ID, List.of(BAD_REQUEST.value(), NOT_FOUND.value())))
+			.withRetryableOAuth2InterceptorForClientRegistration(clientRegistrationRepository.findByRegistrationId(CLIENT_ID), Set.of())
 			.withRequestTimeoutsInSeconds(properties.connectTimeout(), properties.readTimeout())
 			.composeCustomizersToOne();
 	}

@@ -18,6 +18,12 @@ spring:
           party:
             authorization-grant-type: client_credentials
             provider: party
+          comfact:
+            authorization-grant-type: client_credentials
+            # The token endpoint doesn't accept Basic auth with special characters in the client-id
+            # Hence why we change to client_secret_post
+            client-authentication-method: client_secret_post
+            provider: comfact
 mdc:
   municipalityId:
     enabled: true
@@ -36,10 +42,3 @@ logbook:
     json-path:
       - key: '$..content'
         value: '[binary]'
-    xPath:
-      # Exclude content in traffic to/from comfact
-      - key: '//*[contains(local-name(), "Content")]'
-        value: '[binary]'
-      # Mask password in traffic to/from comfact
-      - key: '//*[contains(local-name(), "Password")]'
-        value: '********'

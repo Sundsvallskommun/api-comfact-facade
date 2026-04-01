@@ -1,0 +1,88 @@
+{
+	"signingInstanceId": "6ec3c3b47921446083f569977d4a8a57",
+	"status": "completed",
+	"customerReferenceNumber": null,
+	"language": "en-US",
+	"created": "2024-01-30T10:53:42.12+01:00",
+	"changed": "2024-01-30T10:56:11.487+01:00",
+	"expires": "2024-02-29T10:53:42.12+01:00",
+	"notificationMessages": [
+		{
+			"subject": "Testing",
+			"language": "sv-se",
+			"body": "Testing, testing"
+		}
+	],
+	"initiator": {
+		"name": "Test Testorsson",
+		"title": "Test",
+		"organization": "Sundsvalls kommun",
+		"emailAddress": "test.testorsson@sundsvall.se",
+		"mobilePhoneNumber": "+46701740605",
+		"partyId": "111222",
+		"language": "sv-SE"
+	},
+	"signatories": [
+		{
+			"name": "Test Testorsson",
+			"title": "Test",
+			"organization": "Sundsvalls kommun",
+			"emailAddress": "test.testorsson@sundsvall.se",
+			"mobilePhoneNumber": "+46701740605",
+			"partyId": "23456",
+			"language": "sv-SE",
+			"authenticationMethods": [
+				"SvensktEId"
+			]
+		},
+		{
+			"name": "Kalle Anka",
+			"title": "Test",
+			"organization": "Sundsvalls kommun",
+			"emailAddress": "test.testorsson@sundsvall.se",
+			"mobilePhoneNumber": "+46701740605",
+			"partyId": "34567",
+			"language": "sv-SE",
+			"authenticationMethods": [
+				"SvensktEId"
+			]
+		}
+	],
+	"additionalParties": [
+		{
+			"name": "Test Testorsson",
+			"title": "Test",
+			"organization": "Sundsvalls kommun",
+			"emailAddress": "test.testorsson@sundsvall.se",
+			"mobilePhoneNumber": "+46701740605",
+			"partyId": "12345",
+			"language": "sv-SE"
+		}
+	],
+	"document": {
+		"documentName": "TestDocument",
+		"fileName": "dummy.pdf",
+		"mimeType": "application/pdf",
+		"content": "ZEdWemRBPT0="
+	},
+	"documentAttachments": [
+		{
+			"documentName": "TestAttachment1",
+			"fileName": "dummy2.pdf",
+			"mimeType": "application/pdf",
+			"content": "ZEdWemRBPT0="
+		},
+		{
+			"documentName": "TestAttachment2",
+			"fileName": "dummy3.pdf",
+			"mimeType": "application/pdf",
+			"content": "ZEdWemRBPT0="
+		}
+	],
+	"signedDocument": {
+		"documentName": "TestDocument",
+		"fileName": "dummy signed.pdf",
+		"mimeType": "application/pdf",
+		"content": "ZEdWemRBPT0="
+	}
+}

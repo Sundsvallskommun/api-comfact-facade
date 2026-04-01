@@ -1,0 +1,18 @@
+{
+	"name": "Test Testorsson",
+	"title": "Test",
+	"organization": "Sundsvalls kommun",
+	"emailAddress": "test.testorsson@sundsvall.se",
+	"mobilePhoneNumber": "+46701740605",
+	"partyId": "23456",
+	"language": "sv-SE",
+	"authenticationMethods": [
+		"SvensktEId"
+	],
+	"notificationMessage": null,
+	"signatoryAction": {
+		"action": "approved",
+		"timestamp": "2024-01-30T10:55:22.077+01:00",
+		"reason": "Jag undertecknar härmed följande dokument: TestDocument och 2 bilagor."
+	}
+}

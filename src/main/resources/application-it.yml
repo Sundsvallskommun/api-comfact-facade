@@ -7,9 +7,7 @@ logging:
 
 integration:
   comfact:
-    url: http://localhost:${wiremock.server.port:}/comfact
-    username: comfact-username
-    password: comfact-password
+    url: http://localhost:${wiremock.server.port:}
   party:
     url: http://localhost:${wiremock.server.port:}/party
 
@@ -20,15 +18,12 @@ spring:
         provider:
           party:
             token-uri: http://localhost:${wiremock.server.port:}/api-gateway/token
+          comfact:
+            token-uri: http://localhost:${wiremock.server.port:}/api-gateway/token
         registration:
           party:
             client-id: the-client-id
             client-secret: the-client-secret
-municipality:
-  ids:
-    2281:
-      username: sundsvall-username
-      password: sundsvall-password
-    2260:
-      username: ange-username
-      password: ange-password
+          comfact:
+            client-id: Spänks!
+            client-secret: the-client-secret
