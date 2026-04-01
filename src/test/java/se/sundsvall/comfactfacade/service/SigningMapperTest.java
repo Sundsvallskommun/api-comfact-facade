@@ -1,9 +1,12 @@
 package se.sundsvall.comfactfacade.service;
 
+import generated.se.sundsvall.comfact.Initiator;
 import generated.se.sundsvall.comfact.Message;
 import generated.se.sundsvall.comfact.Paginator;
 import generated.se.sundsvall.comfact.Property;
 import generated.se.sundsvall.comfact.SearchResult;
+import generated.se.sundsvall.comfact.SigningInstanceInfo;
+import generated.se.sundsvall.comfact.Status;
 import generated.se.sundsvall.comfact.Workflow;
 import java.util.List;
 import org.jose4j.base64url.Base64;
@@ -28,10 +31,10 @@ class SigningMapperTest {
 	void toSigningResponse() {
 		// Arrange
 		final var offsetDateTime = now();
-		final var status = generated.se.sundsvall.comfact.Status.ACTIVE;
+		final var status = Status.ACTIVE;
 		final var customerReferenceNumber = "customerReferenceNumber";
 		final var document = new generated.se.sundsvall.comfact.Document();
-		final var initiator = new generated.se.sundsvall.comfact.Initiator();
+		final var initiator = new Initiator();
 		final var additionalParties = List.of(new generated.se.sundsvall.comfact.Party());
 		final var signatories = List.of(new generated.se.sundsvall.comfact.Signatory());
 		final var additionalDocuments = List.of(new generated.se.sundsvall.comfact.Document());
@@ -142,7 +145,7 @@ class SigningMapperTest {
 		final var partyId = "partyId";
 		final var language = "language";
 
-		final var initiator = new generated.se.sundsvall.comfact.Initiator()
+		final var initiator = new Initiator()
 			.name(name)
 			.title(title)
 			.organization(organization)
@@ -169,11 +172,11 @@ class SigningMapperTest {
 	void toSigningInstanceInfoType() {
 		// Arrange
 		final var offsetDateTime = now();
-		final var status = generated.se.sundsvall.comfact.Status.CREATED;
+		final var status = Status.CREATED;
 		final var customerReferenceNumber = "customerReferenceNumber";
 		final var signingId = "signingId";
 
-		final var signingInstanceInfo = new generated.se.sundsvall.comfact.SigningInstanceInfo()
+		final var signingInstanceInfo = new SigningInstanceInfo()
 			.status(status)
 			.customerReferenceNumber(customerReferenceNumber)
 			.created(offsetDateTime)
@@ -487,7 +490,7 @@ class SigningMapperTest {
 	@Test
 	void toStatus() {
 		// Arrange
-		final var status = generated.se.sundsvall.comfact.Status.ACTIVE;
+		final var status = Status.ACTIVE;
 
 		// Act
 		final var result = SigningMapper.toStatus(status);
@@ -535,9 +538,9 @@ class SigningMapperTest {
 			.totalItems(totalItems)
 			.orderByProperty(Property.CREATED);
 
-		final var signingInstanceInfo = new generated.se.sundsvall.comfact.SigningInstanceInfo()
+		final var signingInstanceInfo = new SigningInstanceInfo()
 			.signingInstanceId(signingId)
-			.status(generated.se.sundsvall.comfact.Status.ACTIVE);
+			.status(Status.ACTIVE);
 
 		final var searchResult = new SearchResult()
 			.signingInstanceInfos(List.of(signingInstanceInfo))
@@ -562,9 +565,9 @@ class SigningMapperTest {
 	void toSigningsResponse_noPaging() {
 		// Arrange
 		final var signingId = "123";
-		final var signingInstanceInfo = new generated.se.sundsvall.comfact.SigningInstanceInfo()
+		final var signingInstanceInfo = new SigningInstanceInfo()
 			.signingInstanceId(signingId)
-			.status(generated.se.sundsvall.comfact.Status.ACTIVE);
+			.status(Status.ACTIVE);
 
 		final var searchResult = new SearchResult()
 			.signingInstanceInfos(List.of(signingInstanceInfo));

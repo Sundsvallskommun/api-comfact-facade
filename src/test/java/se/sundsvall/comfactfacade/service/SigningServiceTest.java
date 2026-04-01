@@ -1,11 +1,15 @@
 package se.sundsvall.comfactfacade.service;
 
+import generated.se.sundsvall.comfact.Document;
 import generated.se.sundsvall.comfact.Paginator;
 import generated.se.sundsvall.comfact.Property;
 import generated.se.sundsvall.comfact.SearchFilter;
 import generated.se.sundsvall.comfact.SearchResult;
+import generated.se.sundsvall.comfact.SigningInstance;
+import generated.se.sundsvall.comfact.SigningInstanceInfo;
 import generated.se.sundsvall.comfact.SigningInstanceInput;
 import generated.se.sundsvall.comfact.SigningInstancePatch;
+import generated.se.sundsvall.comfact.Status;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +74,7 @@ class SigningServiceTest {
 
 		when(partyClientMock.getLegalIds(MUNICIPALITY_ID, List.of(partyId))).thenReturn(Map.of(partyId, "someLegalId"));
 		when(comfactIntegrationMock.createSigningInstance(any(SigningInstanceInput.class)))
-			.thenReturn(new generated.se.sundsvall.comfact.SigningInstance()
+			.thenReturn(new SigningInstance()
 				.signingInstanceId("123")
 				.signatories(List.of(new generated.se.sundsvall.comfact.Signatory()
 					.partyId(partyId)
@@ -127,11 +131,11 @@ class SigningServiceTest {
 	void getSigningRequest() {
 		// Arrange
 		final var signingId = "someSigningId";
-		final var response = new generated.se.sundsvall.comfact.SigningInstance()
+		final var response = new SigningInstance()
 			.signingInstanceId(signingId)
-			.document(new generated.se.sundsvall.comfact.Document()
+			.document(new Document()
 				.content("someContent".getBytes(StandardCharsets.UTF_8)))
-			.status(generated.se.sundsvall.comfact.Status.ACTIVE);
+			.status(Status.ACTIVE);
 
 		when(comfactIntegrationMock.getSigningInstance(signingId)).thenReturn(response);
 
@@ -149,8 +153,8 @@ class SigningServiceTest {
 		// Arrange
 		final var searchResult = new SearchResult()
 			.signingInstanceInfos(List.of(
-				new generated.se.sundsvall.comfact.SigningInstanceInfo().signingInstanceId("123").status(generated.se.sundsvall.comfact.Status.ACTIVE),
-				new generated.se.sundsvall.comfact.SigningInstanceInfo().signingInstanceId("456").status(generated.se.sundsvall.comfact.Status.ACTIVE)))
+				new SigningInstanceInfo().signingInstanceId("123").status(Status.ACTIVE),
+				new SigningInstanceInfo().signingInstanceId("456").status(Status.ACTIVE)))
 			.paginator(new Paginator().page(0).pageSize(2).orderByProperty(Property.CREATED).orderByDescending(true));
 
 		when(comfactIntegrationMock.searchSigningInstanceInfos(any(SearchFilter.class))).thenReturn(searchResult);

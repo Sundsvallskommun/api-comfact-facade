@@ -87,18 +87,18 @@ public class SigningService {
 					.toList();
 
 				if (!partyIds.isEmpty()) {
-					final var legalIds = partyClient.getLegalIds(municipalityId, partyIds);
+					final var legalIdsByPartyId = partyClient.getLegalIds(municipalityId, partyIds);
 
 					// Check if we're missing any, in that case, throw an exception as we cannot continue.
 					final var missingPartyIds = partyIds.stream()
-						.filter(id -> !legalIds.containsKey(id))
+						.filter(id -> !legalIdsByPartyId.containsKey(id))
 						.toList();
 
 					if (!missingPartyIds.isEmpty()) {
 						throw Problem.valueOf(BAD_REQUEST, "Could not find legalId for partyId(s): " + missingPartyIds);
 					}
 
-					signatories.forEach(signatory -> signatory.setPersonalNumber(legalIds.get(signatory.getPartyId())));
+					signatories.forEach(signatory -> signatory.setPersonalNumber(legalIdsByPartyId.get(signatory.getPartyId())));
 				}
 			});
 	}
