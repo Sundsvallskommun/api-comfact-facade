@@ -2,6 +2,7 @@ package se.sundsvall.comfactfacade.service;
 
 import generated.se.sundsvall.comfact.SigningInstanceInput;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,9 @@ import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.SigningsResponse;
 import se.sundsvall.comfactfacade.integration.comfact.ComfactIntegration;
 import se.sundsvall.comfactfacade.integration.party.PartyClient;
+import se.sundsvall.dept44.problem.Problem;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static se.sundsvall.comfactfacade.service.SigningMapper.toSearchFilter;
 import static se.sundsvall.comfactfacade.service.SigningMapper.toSigningInstanceInput;
 import static se.sundsvall.comfactfacade.service.SigningMapper.toSigningResponse;
@@ -52,33 +55,51 @@ public class SigningService {
 
 		// For update, we create a new signing instance with the updated data
 		// The REST API uses PATCH for updates with SigningInstancePatch
-		comfactIntegration.updateSigningInstance(signingId, SigningMapper.toSigningInstancePatch(signingId, signingRequest));
+		comfactIntegration.updateSigningInstance(signingId, SigningMapper.toSigningInstancePatch(signingRequest));
 	}
 
-	public void cancelSigningRequest(final String municipalityId, final String signingId) {
+	public void cancelSigningRequest(final String signingId) {
 		comfactIntegration.withdrawSigningInstance(signingId);
 	}
 
-	public SigningInstance getSigningRequest(final String municipalityId, final String signingId) {
+	public SigningInstance getSigningRequest(final String signingId) {
 		final var response = comfactIntegration.getSigningInstance(signingId);
 		return toSigningResponse(response);
 	}
 
-	public SigningsResponse getSigningRequests(final String municipalityId, final Pageable pageable) {
+	public SigningsResponse getSigningRequests(final Pageable pageable) {
 		final var response = comfactIntegration.searchSigningInstanceInfos(toSearchFilter(pageable));
 		return toSigningsResponse(response);
 	}
 
-	public Signatory getSignatory(final String municipalityId, final String signingId, final String partyId) {
+	public Signatory getSignatory(final String signingId, final String partyId) {
 		final var response = comfactIntegration.getSignatory(signingId, partyId);
 		return SigningMapper.toSignatory(response);
 	}
 
 	private void fetchPersonalNumbers(final SigningInstanceInput input, final String municipalityId) {
 		Optional.ofNullable(input.getSignatories())
-			.ifPresent(signatories -> signatories.forEach(signatory -> {
-				final var legalId = partyClient.getLegalId(municipalityId, signatory.getPartyId(), "PRIVATE");
-				signatory.setPersonalNumber(legalId);
-			}));
+			.ifPresent(signatories -> {
+
+				final var partyIds = signatories.stream()
+					.map(generated.se.sundsvall.comfact.Signatory::getPartyId)
+					.filter(Objects::nonNull)
+					.toList();
+
+				if (!partyIds.isEmpty()) {
+					final var legalIds = partyClient.getLegalIds(municipalityId, partyIds);
+
+					// Check if we're missing any, in that case, throw an exception as we cannot continue.
+					final var missingPartyIds = partyIds.stream()
+						.filter(id -> !legalIds.containsKey(id))
+						.toList();
+
+					if (!missingPartyIds.isEmpty()) {
+						throw Problem.valueOf(BAD_REQUEST, "Could not find legalId for partyId(s): " + missingPartyIds);
+					}
+
+					signatories.forEach(signatory -> signatory.setPersonalNumber(legalIds.get(signatory.getPartyId())));
+				}
+			});
 	}
 }

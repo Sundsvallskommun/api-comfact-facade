@@ -209,7 +209,7 @@ class SigningMapperTest {
 			.build();
 
 		// Act
-		final var result = SigningMapper.toSigningInstancePatch(signingId, signingRequest);
+		final var result = SigningMapper.toSigningInstancePatch(signingRequest);
 
 		// Assert
 		assertThat(result).isNotNull();

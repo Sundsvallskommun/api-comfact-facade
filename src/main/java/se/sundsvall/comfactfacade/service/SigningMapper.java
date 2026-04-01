@@ -124,7 +124,7 @@ public final class SigningMapper {
 			.build();
 	}
 
-	static SigningInstancePatch toSigningInstancePatch(final String signingId, final SigningRequest signingRequest) {
+	static SigningInstancePatch toSigningInstancePatch(final SigningRequest signingRequest) {
 		return new SigningInstancePatch()
 			.expires(signingRequest.getExpires());
 	}

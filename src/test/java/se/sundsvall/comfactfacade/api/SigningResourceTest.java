@@ -23,8 +23,6 @@ import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -46,7 +44,7 @@ class SigningResourceTest {
 	void getSigningRequests() {
 
 		// Arrange
-		when(signingServiceMock.getSigningRequests(anyString(), any()))
+		when(signingServiceMock.getSigningRequests(any()))
 			.thenReturn(SigningsResponse.builder()
 				.withSigningInstances(List.of(new SigningInstance(), new SigningInstance()))
 				.withPagingAndSortingMetaData(PagingAndSortingMetaData.create())
@@ -61,7 +59,7 @@ class SigningResourceTest {
 			.getResponseBody();
 
 		// Assert
-		verify(signingServiceMock).getSigningRequests(eq(MUNICIPALITY_ID), any());
+		verify(signingServiceMock).getSigningRequests(any());
 		assertThat(result).isNotNull();
 		assertThat(result.getSigningInstances()).hasSize(2);
 		assertThat(result.getPagingAndSortingMetaData()).isNotNull();
@@ -150,14 +148,14 @@ class SigningResourceTest {
 			.isNoContent();
 
 		// Assert
-		verify(signingServiceMock).cancelSigningRequest(MUNICIPALITY_ID, signingId);
+		verify(signingServiceMock).cancelSigningRequest(signingId);
 	}
 
 	@Test
 	void getSigningRequest() {
 		// Arrange
 		final var signingId = "someSigningId";
-		when(signingServiceMock.getSigningRequest(MUNICIPALITY_ID, signingId)).thenReturn(new SigningInstance());
+		when(signingServiceMock.getSigningRequest(signingId)).thenReturn(new SigningInstance());
 
 		// Act
 		final var result = webTestClient.get()
@@ -168,7 +166,7 @@ class SigningResourceTest {
 			.returnResult().getResponseBody();
 
 		// Assert
-		verify(signingServiceMock).getSigningRequest(MUNICIPALITY_ID, signingId);
+		verify(signingServiceMock).getSigningRequest(signingId);
 		assertThat(result).isNotNull();
 	}
 
@@ -177,7 +175,7 @@ class SigningResourceTest {
 		// Arrange
 		final var signingId = "someSigningId";
 		final var partyId = "somePartyId";
-		when(signingServiceMock.getSignatory(MUNICIPALITY_ID, signingId, partyId)).thenReturn(new Signatory());
+		when(signingServiceMock.getSignatory(signingId, partyId)).thenReturn(new Signatory());
 
 		// Act & Assert
 		final var result = webTestClient.get()
@@ -189,7 +187,7 @@ class SigningResourceTest {
 			.getResponseBody();
 
 		// Assert
-		verify(signingServiceMock).getSignatory(MUNICIPALITY_ID, signingId, partyId);
+		verify(signingServiceMock).getSignatory(signingId, partyId);
 		assertThat(result).isNotNull();
 	}
 

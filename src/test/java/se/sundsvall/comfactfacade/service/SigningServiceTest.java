@@ -8,6 +8,7 @@ import generated.se.sundsvall.comfact.SigningInstanceInput;
 import generated.se.sundsvall.comfact.SigningInstancePatch;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -67,7 +68,7 @@ class SigningServiceTest {
 				.build()))
 			.build();
 
-		when(partyClientMock.getLegalId(MUNICIPALITY_ID, partyId, "PRIVATE")).thenReturn("someLegalId");
+		when(partyClientMock.getLegalIds(MUNICIPALITY_ID, List.of(partyId))).thenReturn(Map.of(partyId, "someLegalId"));
 		when(comfactIntegrationMock.createSigningInstance(any(SigningInstanceInput.class)))
 			.thenReturn(new generated.se.sundsvall.comfact.SigningInstance()
 				.signingInstanceId("123")
@@ -100,7 +101,7 @@ class SigningServiceTest {
 				.build()))
 			.build();
 
-		when(partyClientMock.getLegalId(MUNICIPALITY_ID, partyId, "PRIVATE")).thenReturn("someLegalId");
+		when(partyClientMock.getLegalIds(MUNICIPALITY_ID, List.of(partyId))).thenReturn(Map.of(partyId, "someLegalId"));
 
 		// Act
 		signingService.updateSigningRequest(MUNICIPALITY_ID, signingId, signingRequest);
@@ -116,7 +117,7 @@ class SigningServiceTest {
 		final var signingId = "someSigningId";
 
 		// Act
-		signingService.cancelSigningRequest(MUNICIPALITY_ID, signingId);
+		signingService.cancelSigningRequest(signingId);
 
 		// Assert
 		verify(comfactIntegrationMock).withdrawSigningInstance(signingId);
@@ -135,7 +136,7 @@ class SigningServiceTest {
 		when(comfactIntegrationMock.getSigningInstance(signingId)).thenReturn(response);
 
 		// Act
-		final var result = signingService.getSigningRequest(MUNICIPALITY_ID, signingId);
+		final var result = signingService.getSigningRequest(signingId);
 
 		// Assert
 		assertThat(result).isNotNull();
@@ -158,7 +159,7 @@ class SigningServiceTest {
 		when(pageableMock.getSort()).thenReturn(Sort.by(Sort.Order.asc("created")));
 
 		// Act
-		final var result = signingService.getSigningRequests(MUNICIPALITY_ID, pageableMock);
+		final var result = signingService.getSigningRequests(pageableMock);
 
 		// Assert
 		assertThat(result).isNotNull();
@@ -180,7 +181,7 @@ class SigningServiceTest {
 			.thenReturn(new generated.se.sundsvall.comfact.Signatory().partyId(partyId));
 
 		// Act
-		final var result = signingService.getSignatory(MUNICIPALITY_ID, signingId, partyId);
+		final var result = signingService.getSignatory(signingId, partyId);
 
 		// Assert
 		assertThat(result).isNotNull();
