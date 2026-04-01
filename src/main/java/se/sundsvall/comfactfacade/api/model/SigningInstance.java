@@ -41,13 +41,13 @@ public class SigningInstance {
 	@Schema(description = "The customer reference", examples = "1234567890")
 	private String customerReference;
 
-	@Schema(description = "The date and time when the signing instance was created.", examples = "2021-12-31T23:59:59Z")
+	@Schema(description = "The date and time when the signing instance was created.", examples = "2026-11-22T15:30:00+02:00")
 	private OffsetDateTime created;
 
-	@Schema(description = "The date and time when the signing instance was last changed.", examples = "2021-12-31T23:59:59Z")
+	@Schema(description = "The date and time when the signing instance was last changed.", examples = "2026-11-22T15:30:00+02:00")
 	private OffsetDateTime changed;
 
-	@Schema(description = "The date and time when the signing instance expires", examples = "2021-12-31T23:59:59Z")
+	@Schema(description = "The date and time when the signing instance expires", examples = "2026-11-22T15:30:00+02:00")
 	private OffsetDateTime expires;
 
 	@Schema(description = "Information about the main document to sign.")

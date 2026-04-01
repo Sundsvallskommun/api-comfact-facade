@@ -18,9 +18,11 @@ import se.sundsvall.comfactfacade.api.model.Signatory;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.SigningsResponse;
+import se.sundsvall.comfactfacade.api.model.UpdateSigningRequest;
 import se.sundsvall.comfactfacade.service.SigningService;
 import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
 
+import static java.time.OffsetDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -112,27 +114,22 @@ class SigningResourceTest {
 	void updateSigningRequest() {
 		// Arrange
 		final var signingId = "someSigningId";
-		final var signingRequest = SigningRequest.builder()
-			.withSignatories(List.of(Signatory.builder().withIdentifications(List.of(Identification.builder().withAlias("EmailCode").build())).withEmail("someEmail").build()))
-			.withInitiator(Party.builder().withEmail("someEmail").build())
-			.withDocument(Document.builder()
-				.withFileName("someFileName")
-				.withMimeType("application/pdf")
-				.withContent("someContent")
-				.build())
+		final var updateRequest = UpdateSigningRequest.builder()
+			.withExpires(now())
+			.withStatus("active")
 			.build();
 
 		// Act
 		webTestClient.patch()
 			.uri("/{municipalityId}/signings/{signingId}", MUNICIPALITY_ID, signingId)
 			.contentType(APPLICATION_JSON)
-			.bodyValue(signingRequest)
+			.bodyValue(updateRequest)
 			.exchange()
 			.expectStatus()
 			.isNoContent();
 
 		// Assert
-		verify(signingServiceMock).updateSigningRequest(MUNICIPALITY_ID, signingId, signingRequest);
+		verify(signingServiceMock).updateSigningRequest(signingId, updateRequest);
 	}
 
 	@Test
