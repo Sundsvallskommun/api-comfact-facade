@@ -1,7 +1,17 @@
 {
 	"request": {
 		"method": "POST",
-		"url": "/api/v3/signing-instances"
+		"url": "/api/v3/signing-instances",
+		"bodyPatterns": [
+			{
+				"equalToJson": {
+					"customerReferenceNumber": "1234567890",
+					"workflow": "parallel"
+				},
+				"ignoreArrayOrder": true,
+				"ignoreExtraElements": true
+			}
+		]
 	},
 	"response": {
 		"status": 200,

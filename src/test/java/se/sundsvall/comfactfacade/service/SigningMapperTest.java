@@ -203,7 +203,6 @@ class SigningMapperTest {
 	@Test
 	void toSigningInstancePatch() {
 		// Arrange
-		final var signingId = "signingId";
 		final var signingRequest = SigningRequest.builder()
 			.withExpires(now())
 			.build();
@@ -609,7 +608,7 @@ class SigningMapperTest {
 		try {
 			Base64.decode(s);
 			return true;
-		} catch (final IllegalArgumentException e) {
+		} catch (final IllegalArgumentException _) {
 			return false;
 		}
 	}

@@ -1,7 +1,16 @@
 {
 	"request": {
 		"method": "PATCH",
-		"url": "/api/v3/signing-instances/1"
+		"url": "/api/v3/signing-instances/1",
+		"bodyPatterns": [
+			{
+				"equalToJson": {
+					"expires": "2021-12-31T23:59:59Z"
+				},
+				"ignoreArrayOrder": true,
+				"ignoreExtraElements": false
+			}
+		]
 	},
 	"response": {
 		"status": 200,

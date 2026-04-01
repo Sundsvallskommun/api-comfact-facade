@@ -1,7 +1,22 @@
 {
 	"request": {
 		"method": "POST",
-		"url": "/api/v3/signing-instance-infos/search-filters"
+		"url": "/api/v3/signing-instance-infos/search-filters",
+		"bodyPatterns": [
+			{
+				"equalToJson": {
+					"paginator": {
+						"orderByDescending": true,
+						"orderByProperty": "created",
+						"page": 0,
+						"pageSize": 8
+					},
+					"predicates": []
+				},
+				"ignoreArrayOrder": true,
+				"ignoreExtraElements": false
+			}
+		]
 	},
 	"response": {
 		"headers": {

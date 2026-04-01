@@ -1,7 +1,94 @@
 {
 	"request": {
 		"method": "POST",
-		"url": "/api/v3/signing-instances"
+		"url": "/api/v3/signing-instances",
+		"bodyPatterns": [
+			{
+				"equalToJson": {
+					"additionalParties": [
+						{
+							"emailAddress": "john.doe@sundsvall.se",
+							"language": "sv",
+							"mobilePhoneNumber": "0701740605",
+							"name": "John Doe",
+							"organization": "Sundsvall Municipality",
+							"partyId": "550e8400-e29b-41d4-a716-446655440000",
+							"title": "CEO"
+						}
+					],
+					"automaticReminder": {
+						"enabled": true,
+						"hourInterval": 24,
+						"reminderMessages": [
+							{
+								"body": "Dear John Doe, please sign the document.",
+								"language": "sv",
+								"subject": "Please sign the document"
+							}
+						],
+						"startDate": "2021-12-31T23:59:59Z"
+					},
+					"customerReferenceNumber": "1234567890",
+					"document": {
+						"content": "ZEdWemRBPT0=",
+						"documentName": "Business Contract",
+						"fileName": "document.pdf",
+						"mimeType": "application/pdf"
+					},
+					"documentAttachments": [
+						{
+							"content": "ZEdWemRBPT0=",
+							"documentName": "Business Contract",
+							"fileName": "document.pdf",
+							"mimeType": "application/pdf"
+						}
+					],
+					"expires": "2021-12-31T23:59:59Z",
+					"initiator": {
+						"distributionEnabled": true,
+						"emailAddress": "john.doe@sundsvall.se",
+						"language": "sv",
+						"mobilePhoneNumber": "0701740605",
+						"name": "John Doe",
+						"organization": "Sundsvall Municipality",
+						"partyId": "550e8400-e29b-41d4-a716-446655440000",
+						"title": "CEO"
+					},
+					"language": "sv",
+					"notificationMessages": [
+						{
+							"body": "Dear John Doe, please sign the document.",
+							"language": "sv",
+							"subject": "Please sign the document"
+						}
+					],
+					"signatories": [
+						{
+							"authenticationMethods": [
+								"SmsCode"
+							],
+							"distributionMethod": "attached",
+							"emailAddress": "john.doe@sundsvall.se",
+							"language": "sv",
+							"mobilePhoneNumber": "0701740605",
+							"name": "John Doe",
+							"notificationMessage": {
+								"body": "Dear John Doe, please sign the document.",
+								"language": "sv",
+								"subject": "Please sign the document"
+							},
+							"organization": "Sundsvall Municipality",
+							"partyId": "550e8400-e29b-41d4-a716-446655440000",
+							"personalNumber": "197001011234",
+							"title": "CEO"
+						}
+					],
+					"workflow": "sequential"
+				},
+				"ignoreArrayOrder": true,
+				"ignoreExtraElements": false
+			}
+		]
 	},
 	"response": {
 		"status": 400,
