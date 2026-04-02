@@ -15,6 +15,7 @@ import se.sundsvall.comfactfacade.api.model.Identification;
 import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.Signatory;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
+import se.sundsvall.comfactfacade.api.model.UpdateSigningRequest;
 import se.sundsvall.comfactfacade.service.SigningService;
 import se.sundsvall.dept44.problem.Problem;
 import se.sundsvall.dept44.problem.violations.ConstraintViolationProblem;
@@ -275,6 +276,38 @@ class SigningResourceFailureTest {
 			assertThat(violations).hasSize(3);
 			assertThat(violations).extracting("field").containsExactlyInAnyOrder("document.fileName", "document.content", "document.mimeType");
 			assertThat(violations).extracting("message").containsExactlyInAnyOrder("not a valid BASE64-encoded string", "must not be blank", "must be one of: [application/pdf]");
+		});
+
+		verifyNoInteractions(signingServiceMock);
+	}
+
+	@Test
+	void updateSigningRequest_withInvalidStatus() {
+
+		// Arrange
+		final var signingId = "someSigningId";
+		final var updateRequest = UpdateSigningRequest.builder()
+			.withStatus("invalid")
+			.build();
+
+		// Act
+		final var response = webTestClient.patch()
+			.uri("/{municipalityId}/signings/{signingId}", MUNICIPALITY_ID, signingId)
+			.contentType(APPLICATION_JSON)
+			.bodyValue(updateRequest)
+			.exchange()
+			.expectStatus().isBadRequest()
+			.expectHeader().contentType(APPLICATION_PROBLEM_JSON)
+			.expectBody(ConstraintViolationProblem.class)
+			.returnResult()
+			.getResponseBody();
+
+		// Assert
+		assertThat(response).isNotNull();
+		assertThat(response.getViolations()).satisfies(violations -> {
+			assertThat(violations).hasSize(1);
+			assertThat(violations.getFirst().field()).isEqualTo("status");
+			assertThat(violations.getFirst().message()).isEqualTo("Invalid status: 'invalid'. Valid values are: withdrawn, active");
 		});
 
 		verifyNoInteractions(signingServiceMock);
