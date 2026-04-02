@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "3.0"
 servers:
-  - url: http://localhost:54867
+  - url: http://localhost:58747
     description: Generated server url
 tags:
   - name: Signings
@@ -579,10 +579,10 @@ components:
             $ref: "#/components/schemas/Violation"
         title:
           type: string
-        detail:
-          type: string
         causeAsProblem:
           $ref: "#/components/schemas/ThrowableProblem"
+        detail:
+          type: string
         instance:
           type: string
           format: uri
@@ -744,13 +744,13 @@ components:
           format: date-time
           description: The date and time when the signing instance was created.
           examples:
-            - 2026-11-22T15:30:00+02:00
+            - 2026-04-02T11:20:00+02:00
         changed:
           type: string
           format: date-time
           description: The date and time when the signing instance was last changed.
           examples:
-            - 2026-11-22T15:30:00+02:00
+            - 2026-04-02T11:20:00+02:00
         expires:
           type: string
           format: date-time
