@@ -21,8 +21,8 @@ public class ComfactIntegration {
 		return comfactClient.createSigningInstance(input);
 	}
 
-	public SigningInstance updateSigningInstance(final String signingInstanceId, final SigningInstancePatch patch) {
-		return comfactClient.updateSigningInstance(signingInstanceId, patch);
+	public void updateSigningInstance(final String signingInstanceId, final SigningInstancePatch patch) {
+		comfactClient.updateSigningInstance(signingInstanceId, patch);
 	}
 
 	public SigningInstance getSigningInstance(final String signingInstanceId) {

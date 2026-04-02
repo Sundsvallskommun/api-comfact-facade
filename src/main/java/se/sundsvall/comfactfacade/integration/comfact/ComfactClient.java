@@ -42,12 +42,11 @@ public interface ComfactClient {
 	/**
 	 * Update a signing instance.
 	 *
-	 * @param  signingInstanceId the signing instance id
-	 * @param  patch             the patch to apply
-	 * @return                   {@link SigningInstance} containing the updated signing instance
+	 * @param signingInstanceId the signing instance id
+	 * @param patch             the patch to apply
 	 */
-	@PatchMapping(path = "/signing-instances/{signingInstanceId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	SigningInstance updateSigningInstance(@PathVariable String signingInstanceId, SigningInstancePatch patch);
+	@PatchMapping(path = "/signing-instances/{signingInstanceId}", consumes = APPLICATION_JSON_VALUE)
+	void updateSigningInstance(@PathVariable String signingInstanceId, SigningInstancePatch patch);
 
 	/**
 	 * Search signing instance infos with filtering and pagination.
