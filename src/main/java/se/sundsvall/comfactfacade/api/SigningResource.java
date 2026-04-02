@@ -11,7 +11,6 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -111,22 +110,6 @@ class SigningResource {
 		@Valid @RequestBody final UpdateSigningRequest updateSigningRequest) {
 
 		signingService.updateSigningRequest(signingId, updateSigningRequest);
-		return noContent()
-			.header(CONTENT_TYPE, ALL_VALUE)
-			.build();
-	}
-
-	@DeleteMapping(path = "{signingId}", produces = ALL_VALUE)
-	@Operation(summary = "Annul a signing instance.")
-	@ApiResponses(value = {
-		@ApiResponse(responseCode = "204", description = "Successful operation", useReturnTypeSchema = true),
-		@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
-	})
-	ResponseEntity<Void> cancelSigningRequest(
-		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
-		@PathVariable final String signingId) {
-
-		signingService.cancelSigningRequest(signingId);
 		return noContent()
 			.header(CONTENT_TYPE, ALL_VALUE)
 			.build();

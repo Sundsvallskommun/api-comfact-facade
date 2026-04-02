@@ -54,10 +54,6 @@ public class SigningService {
 		comfactIntegration.updateSigningInstance(signingId, SigningMapper.toSigningInstancePatch(updateSigningRequest));
 	}
 
-	public void cancelSigningRequest(final String signingId) {
-		comfactIntegration.withdrawSigningInstance(signingId);
-	}
-
 	public SigningInstance getSigningRequest(final String signingId) {
 		final var response = comfactIntegration.getSigningInstance(signingId);
 		return toSigningResponse(response);

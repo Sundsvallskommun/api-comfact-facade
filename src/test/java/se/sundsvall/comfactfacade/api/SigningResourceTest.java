@@ -133,22 +133,6 @@ class SigningResourceTest {
 	}
 
 	@Test
-	void cancelSigningRequest() {
-		// Arrange
-		final String signingId = "someSigningId";
-
-		// Act
-		webTestClient.delete()
-			.uri("/{municipalityId}/signings/{signingId}", MUNICIPALITY_ID, signingId)
-			.exchange()
-			.expectStatus()
-			.isNoContent();
-
-		// Assert
-		verify(signingServiceMock).cancelSigningRequest(signingId);
-	}
-
-	@Test
 	void getSigningRequest() {
 		// Arrange
 		final var signingId = "someSigningId";

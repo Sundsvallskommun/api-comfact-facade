@@ -169,53 +169,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-    delete:
-      tags:
-        - Signings
-      summary: Annul a signing instance.
-      operationId: cancelSigningRequest
-      parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: signingId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "204":
-          description: Successful operation
-        "404":
-          description: Not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "502":
-          description: Bad Gateway
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
     patch:
       tags:
         - Signings

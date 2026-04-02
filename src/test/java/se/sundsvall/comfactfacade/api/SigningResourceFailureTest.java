@@ -40,30 +40,6 @@ class SigningResourceFailureTest {
 	private WebTestClient webTestClient;
 
 	@Test
-	void cancelSigningRequest_NotFound() {
-		// Arrange
-		final String signingId = "someSigningId";
-		doThrow(Problem.valueOf(HttpStatus.NOT_FOUND, "The signing request with id someSigningId was not found")).when(signingServiceMock).cancelSigningRequest(signingId);
-
-		// Act
-		final var result = webTestClient.delete()
-			.uri("/{municipalityId}/signings/{signingId}", MUNICIPALITY_ID, signingId)
-			.exchange()
-			.expectStatus().isNotFound()
-			.expectHeader().contentType(APPLICATION_PROBLEM_JSON)
-			.expectBody(Problem.class)
-			.returnResult()
-			.getResponseBody();
-
-		// Assert
-		assertThat(result).isNotNull();
-		assertThat(result.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
-		assertThat(result.getTitle()).isEqualTo("Not Found");
-		assertThat(result.getDetail()).isEqualTo("The signing request with id someSigningId was not found");
-		verify(signingServiceMock).cancelSigningRequest(signingId);
-	}
-
-	@Test
 	void createSigningRequest_withoutInitiator() {
 
 		// Arrange

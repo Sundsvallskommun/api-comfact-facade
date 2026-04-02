@@ -116,18 +116,6 @@ class SigningServiceTest {
 	}
 
 	@Test
-	void cancelSigningRequest() {
-		// Arrange
-		final var signingId = "someSigningId";
-
-		// Act
-		signingService.cancelSigningRequest(signingId);
-
-		// Assert
-		verify(comfactIntegrationMock).withdrawSigningInstance(signingId);
-	}
-
-	@Test
 	void getSigningRequest() {
 		// Arrange
 		final var signingId = "someSigningId";

@@ -1,6 +1,5 @@
 package se.sundsvall.comfactfacade.apptests;
 
-import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.PATCH;
 import static org.springframework.http.HttpMethod.POST;
@@ -69,17 +68,7 @@ class ComfactIT extends AbstractAppTest {
 	}
 
 	@Test
-	void test5_cancelSigningRequest() {
-
-		setupCall()
-			.withServicePath(PATH + "/1")
-			.withHttpMethod(DELETE)
-			.withExpectedResponseStatus(NO_CONTENT)
-			.sendRequestAndVerifyResponse();
-	}
-
-	@Test
-	void test6_getSignatory() {
+	void test5_getSignatory() {
 
 		setupCall()
 			.withServicePath(PATH + "/1/signatory/1")
@@ -90,7 +79,7 @@ class ComfactIT extends AbstractAppTest {
 	}
 
 	@Test
-	void test7_createSigningRequestReturnsFault() {
+	void test6_createSigningRequestReturnsFault() {
 
 		setupCall()
 			.withServicePath(PATH)
@@ -102,7 +91,7 @@ class ComfactIT extends AbstractAppTest {
 	}
 
 	@Test
-	void test8_createSigningRequestWithParallelFlowType() {
+	void test7_createSigningRequestWithParallelFlowType() {
 
 		setupCall()
 			.withServicePath(PATH)
