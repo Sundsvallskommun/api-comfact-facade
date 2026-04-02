@@ -7,8 +7,11 @@ import generated.se.sundsvall.comfact.Property;
 import generated.se.sundsvall.comfact.SearchResult;
 import generated.se.sundsvall.comfact.SigningInstanceInfo;
 import generated.se.sundsvall.comfact.Status;
+import generated.se.sundsvall.comfact.StatusPatch;
 import generated.se.sundsvall.comfact.Workflow;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.jose4j.base64url.Base64;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
@@ -19,10 +22,13 @@ import se.sundsvall.comfactfacade.api.model.NotificationMessage;
 import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.Reminder;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
+import se.sundsvall.comfactfacade.api.model.UpdateSigningRequest;
+import se.sundsvall.dept44.problem.ThrowableProblem;
 
 import static java.time.OffsetDateTime.now;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.within;
 
 class SigningMapperTest {
@@ -206,16 +212,18 @@ class SigningMapperTest {
 	@Test
 	void toSigningInstancePatch() {
 		// Arrange
-		final var signingRequest = SigningRequest.builder()
+		final var updateRequest = UpdateSigningRequest.builder()
 			.withExpires(now())
+			.withStatus("withdrawn")
 			.build();
 
 		// Act
-		final var result = SigningMapper.toSigningInstancePatch(signingRequest);
+		final var result = SigningMapper.toSigningInstancePatch(updateRequest);
 
 		// Assert
 		assertThat(result).isNotNull();
 		assertThat(result.getExpires()).isCloseTo(now(), within(1, SECONDS));
+		assertThat(result.getStatus()).isEqualTo(StatusPatch.WITHDRAWN);
 	}
 
 	@Test

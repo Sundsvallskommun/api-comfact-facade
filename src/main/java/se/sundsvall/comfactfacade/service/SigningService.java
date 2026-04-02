@@ -11,6 +11,7 @@ import se.sundsvall.comfactfacade.api.model.Signatory;
 import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.SigningsResponse;
+import se.sundsvall.comfactfacade.api.model.UpdateSigningRequest;
 import se.sundsvall.comfactfacade.integration.comfact.ComfactIntegration;
 import se.sundsvall.comfactfacade.integration.party.PartyClient;
 import se.sundsvall.dept44.problem.Problem;
@@ -49,17 +50,8 @@ public class SigningService {
 			.build();
 	}
 
-	public void updateSigningRequest(final String municipalityId, final String signingId, final SigningRequest signingRequest) {
-		final var input = toSigningInstanceInput(signingRequest);
-		fetchPersonalNumbers(input, municipalityId);
-
-		// For update, we create a new signing instance with the updated data
-		// The REST API uses PATCH for updates with SigningInstancePatch
-		comfactIntegration.updateSigningInstance(signingId, SigningMapper.toSigningInstancePatch(signingRequest));
-	}
-
-	public void cancelSigningRequest(final String signingId) {
-		comfactIntegration.withdrawSigningInstance(signingId);
+	public void updateSigningRequest(final String signingId, final UpdateSigningRequest updateSigningRequest) {
+		comfactIntegration.updateSigningInstance(signingId, SigningMapper.toSigningInstancePatch(updateSigningRequest));
 	}
 
 	public SigningInstance getSigningRequest(final String signingId) {

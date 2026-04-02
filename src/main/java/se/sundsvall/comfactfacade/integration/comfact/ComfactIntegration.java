@@ -6,7 +6,6 @@ import generated.se.sundsvall.comfact.Signatory;
 import generated.se.sundsvall.comfact.SigningInstance;
 import generated.se.sundsvall.comfact.SigningInstanceInput;
 import generated.se.sundsvall.comfact.SigningInstancePatch;
-import generated.se.sundsvall.comfact.StatusPatch;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,12 +21,8 @@ public class ComfactIntegration {
 		return comfactClient.createSigningInstance(input);
 	}
 
-	public SigningInstance updateSigningInstance(final String signingInstanceId, final SigningInstancePatch patch) {
-		return comfactClient.updateSigningInstance(signingInstanceId, patch);
-	}
-
-	public void withdrawSigningInstance(final String signingInstanceId) {
-		comfactClient.updateSigningInstance(signingInstanceId, new SigningInstancePatch().status(StatusPatch.WITHDRAWN));
+	public void updateSigningInstance(final String signingInstanceId, final SigningInstancePatch patch) {
+		comfactClient.updateSigningInstance(signingInstanceId, patch);
 	}
 
 	public SigningInstance getSigningInstance(final String signingInstanceId) {

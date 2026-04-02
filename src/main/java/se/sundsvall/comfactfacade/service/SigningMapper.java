@@ -9,6 +9,7 @@ import generated.se.sundsvall.comfact.SearchFilter;
 import generated.se.sundsvall.comfact.SearchResult;
 import generated.se.sundsvall.comfact.SigningInstanceInput;
 import generated.se.sundsvall.comfact.SigningInstancePatch;
+import generated.se.sundsvall.comfact.StatusPatch;
 import generated.se.sundsvall.comfact.Workflow;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.SigningsResponse;
 import se.sundsvall.comfactfacade.api.model.Status;
+import se.sundsvall.comfactfacade.api.model.UpdateSigningRequest;
 import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
 import se.sundsvall.dept44.problem.Problem;
 
@@ -124,9 +126,12 @@ public final class SigningMapper {
 			.build();
 	}
 
-	static SigningInstancePatch toSigningInstancePatch(final SigningRequest signingRequest) {
+	static SigningInstancePatch toSigningInstancePatch(final UpdateSigningRequest updateSigningRequest) {
 		return new SigningInstancePatch()
-			.expires(signingRequest.getExpires());
+			.expires(updateSigningRequest.getExpires())
+			.status(Optional.ofNullable(updateSigningRequest.getStatus())
+				.map(StatusPatch::fromValue)
+				.orElse(null));
 	}
 
 	static SigningInstanceInput toSigningInstanceInput(final SigningRequest signingRequest) {
@@ -297,7 +302,7 @@ public final class SigningMapper {
 				.withTotalRecords(Optional.ofNullable(p.getTotalItems()).orElse(0))
 				.withTotalPages(calculateTotalPages(p))
 				.withSortBy(List.of(p.getOrderByProperty().getValue()))
-				.withSortDirection(p.getOrderByDescending() ? Sort.Direction.DESC : Sort.Direction.ASC))
+				.withSortDirection(Boolean.TRUE.equals(p.getOrderByDescending()) ? Sort.Direction.DESC : Sort.Direction.ASC))
 			.orElse(null);
 	}
 

@@ -10,6 +10,7 @@ import generated.se.sundsvall.comfact.SigningInstanceInfo;
 import generated.se.sundsvall.comfact.SigningInstanceInput;
 import generated.se.sundsvall.comfact.SigningInstancePatch;
 import generated.se.sundsvall.comfact.Status;
+import generated.se.sundsvall.comfact.StatusPatch;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.Sort;
 import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.Signatory;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
+import se.sundsvall.comfactfacade.api.model.UpdateSigningRequest;
 import se.sundsvall.comfactfacade.integration.comfact.ComfactIntegration;
 import se.sundsvall.comfactfacade.integration.party.PartyClient;
 
@@ -98,33 +100,19 @@ class SigningServiceTest {
 	void updateSigningRequest() {
 		// Arrange
 		final var signingId = "someSigningId";
-		final var partyId = "partyId";
-		final var signingRequest = SigningRequest.builder()
-			.withSignatories(List.of(Signatory.builder()
-				.withPartyId(partyId)
-				.build()))
+		final var updateRequest = UpdateSigningRequest.builder()
+			.withExpires(java.time.OffsetDateTime.now())
+			.withStatus("active")
 			.build();
 
-		when(partyClientMock.getLegalIds(MUNICIPALITY_ID, List.of(partyId))).thenReturn(Map.of(partyId, "someLegalId"));
-
 		// Act
-		signingService.updateSigningRequest(MUNICIPALITY_ID, signingId, signingRequest);
+		signingService.updateSigningRequest(signingId, updateRequest);
 
 		// Assert
 		verify(comfactIntegrationMock).updateSigningInstance(eq(signingId), patchCaptor.capture());
 		assertThat(patchCaptor.getValue()).isNotNull();
-	}
-
-	@Test
-	void cancelSigningRequest() {
-		// Arrange
-		final var signingId = "someSigningId";
-
-		// Act
-		signingService.cancelSigningRequest(signingId);
-
-		// Assert
-		verify(comfactIntegrationMock).withdrawSigningInstance(signingId);
+		assertThat(patchCaptor.getValue().getExpires()).isNotNull();
+		assertThat(patchCaptor.getValue().getStatus()).isEqualTo(StatusPatch.ACTIVE);
 	}
 
 	@Test

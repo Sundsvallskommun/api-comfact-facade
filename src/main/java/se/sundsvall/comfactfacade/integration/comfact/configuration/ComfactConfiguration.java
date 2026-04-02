@@ -13,6 +13,7 @@ import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Configuration
@@ -25,7 +26,7 @@ public class ComfactConfiguration {
 	@Bean
 	FeignBuilderCustomizer feignBuilderCustomizer(final ComfactProperties properties, final ClientRegistrationRepository clientRegistrationRepository) {
 		return FeignMultiCustomizer.create()
-			.withErrorDecoder(new ProblemErrorDecoder(CLIENT_ID, List.of(BAD_REQUEST.value(), NOT_FOUND.value())))
+			.withErrorDecoder(new ProblemErrorDecoder(CLIENT_ID, List.of(BAD_REQUEST.value(), NOT_FOUND.value(), CONFLICT.value())))
 			.withRetryableOAuth2InterceptorForClientRegistration(clientRegistrationRepository.findByRegistrationId(CLIENT_ID), Set.of())
 			.withRequestTimeoutsInSeconds(properties.connectTimeout(), properties.readTimeout())
 			.composeCustomizersToOne();

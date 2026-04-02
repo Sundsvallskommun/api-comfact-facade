@@ -33,7 +33,7 @@ public class SigningRequest {
 	@Schema(description = "The customer reference", examples = "1234567890")
 	private String customerReference;
 
-	@Schema(description = "The date and time when the signing request expires.", examples = "2021-12-31T23:59:59Z")
+	@Schema(description = "The date and time when the signing request expires.", examples = "2026-11-22T15:30:00+02:00")
 	private OffsetDateTime expires;
 
 	@Valid

@@ -18,6 +18,6 @@
 		"headers": {
 			"Content-Type": "application/json"
 		},
-		"bodyFileName": "test8_createSigningRequestWithParallelFlowType/responses/SigningInstance.json"
+		"bodyFileName": "test7_createSigningRequestWithParallelFlowType/responses/SigningInstance.json"
 	}
 }

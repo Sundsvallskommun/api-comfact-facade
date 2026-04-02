@@ -95,6 +95,6 @@
 		"headers": {
 			"Content-Type": "application/problem+json"
 		},
-		"bodyFileName": "test7_createSigningRequestReturnsFault/responses/Error.json"
+		"bodyFileName": "test6_createSigningRequestReturnsFault/responses/Error.json"
 	}
 }
