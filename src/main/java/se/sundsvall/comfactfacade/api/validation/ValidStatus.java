@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidStatus {
 
-	// Will be replaced
+	// Will be replaced by the actual message produced by ValidStatusValidator.
 	String message() default "Invalid status. Valid values are: active, withdrawn";
 
 	Class<?>[] groups() default {};
