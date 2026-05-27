@@ -1,13 +1,13 @@
 openapi: 3.1.0
 info:
   title: api-comfact-facade
-  contact: {}
+  contact: { }
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
   version: "3.0"
 servers:
-  - url: http://localhost:58747
+  - url: http://localhost:59777
     description: Generated server url
 tags:
   - name: Signings
@@ -307,7 +307,9 @@ components:
       type: object
       properties:
         name:
-          type: string
+          type:
+            - string
+            - "null"
           description: The Document Name visible to the user in the signing process.
           examples:
             - Business Contract
@@ -428,7 +430,7 @@ components:
           format: int32
           description: The interval in hours between each reminder
           examples:
-            - "24"
+            - 24
         startDateTime:
           type: string
           format: date-time
@@ -579,10 +581,10 @@ components:
             $ref: "#/components/schemas/Violation"
         title:
           type: string
-        causeAsProblem:
-          $ref: "#/components/schemas/ThrowableProblem"
         detail:
           type: string
+        causeAsProblem:
+          $ref: "#/components/schemas/ThrowableProblem"
         instance:
           type: string
           format: uri
@@ -602,7 +604,7 @@ components:
         instance:
           type: string
           format: uri
-        causeAsProblem: {}
+        causeAsProblem: { }
     Violation:
       type: object
       properties:
@@ -664,35 +666,35 @@ components:
           format: int32
           description: Current page
           examples:
-            - "5"
+            - 5
           readOnly: true
         limit:
           type: integer
           format: int32
           description: Displayed objects per page
           examples:
-            - "20"
+            - 20
           readOnly: true
         count:
           type: integer
           format: int32
           description: Displayed objects on current page
           examples:
-            - "13"
+            - 13
           readOnly: true
         totalRecords:
           type: integer
           format: int64
           description: Total amount of hits based on provided search parameters
           examples:
-            - "98"
+            - 98
           readOnly: true
         totalPages:
           type: integer
           format: int32
           description: Total amount of pages based on provided search parameters
           examples:
-            - "23"
+            - 23
           readOnly: true
         sortBy:
           type: array
@@ -801,4 +803,4 @@ components:
           description: The status message
           examples:
             - The signing instance is halted.
-  securitySchemes: {}
+  securitySchemes: { }
