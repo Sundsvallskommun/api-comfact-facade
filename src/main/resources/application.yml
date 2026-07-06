@@ -24,6 +24,9 @@ spring:
             # Hence why we change to client_secret_post
             client-authentication-method: client_secret_post
             provider: comfact
+          esigning:
+            authorization-grant-type: client_credentials
+            provider: esigning
 mdc:
   municipalityId:
     enabled: true
@@ -33,6 +36,9 @@ integration:
     connectTimeout: 5
     readTimeout: 30
   party:
+    connectTimeout: 5
+    readTimeout: 30
+  esigning:
     connectTimeout: 5
     readTimeout: 30
 

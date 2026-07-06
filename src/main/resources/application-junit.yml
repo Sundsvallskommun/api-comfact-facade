@@ -11,6 +11,8 @@ integration:
     url: http://comfact.url
   party:
     url: http://party.url
+  esigning:
+    url: http://esigning.url
 
 spring:
   security:
@@ -21,10 +23,15 @@ spring:
             token-uri: http://token.url
           comfact:
             token-uri: http://token.url
+          esigning:
+            token-uri: http://token.url
         registration:
           party:
             client-id: the-client-id
             client-secret: the-client-secret
           comfact:
+            client-id: the-client-id
+            client-secret: the-client-secret
+          esigning:
             client-id: the-client-id
             client-secret: the-client-secret

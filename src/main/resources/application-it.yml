@@ -10,6 +10,8 @@ integration:
     url: http://localhost:${wiremock.server.port:}
   party:
     url: http://localhost:${wiremock.server.port:}/party
+  esigning:
+    url: http://localhost:${wiremock.server.port:}/esigning
 
 spring:
   security:
@@ -20,10 +22,15 @@ spring:
             token-uri: http://localhost:${wiremock.server.port:}/api-gateway/token
           comfact:
             token-uri: http://localhost:${wiremock.server.port:}/api-gateway/token
+          esigning:
+            token-uri: http://localhost:${wiremock.server.port:}/api-gateway/token
         registration:
           party:
             client-id: the-client-id
             client-secret: the-client-secret
           comfact:
             client-id: Spänks!
+            client-secret: the-client-secret
+          esigning:
+            client-id: the-client-id
             client-secret: the-client-secret
