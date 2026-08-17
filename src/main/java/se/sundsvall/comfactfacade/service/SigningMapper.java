@@ -1,6 +1,7 @@
 package se.sundsvall.comfactfacade.service;
 
 import generated.se.sundsvall.comfact.AutomaticReminder;
+import generated.se.sundsvall.comfact.DistributionMethod;
 import generated.se.sundsvall.comfact.Initiator;
 import generated.se.sundsvall.comfact.Message;
 import generated.se.sundsvall.comfact.Paginator;
@@ -170,7 +171,9 @@ public final class SigningMapper {
 			.notificationMessage(toMessage(signatory.getNotificationMessage()))
 			.authenticationMethods(
 				Optional.ofNullable(signatory.getIdentifications()).stream().flatMap(List::stream).map(Identification::getAlias).toList())
-			.language(signatory.getLanguage());
+			.language(signatory.getLanguage())
+			// Set explicitly: the generated model no longer initializes the schema default 'attached'.
+			.distributionMethod(DistributionMethod.ATTACHED);
 	}
 
 	static List<Message> toMessageList(final NotificationMessage notificationMessage) {
@@ -301,7 +304,8 @@ public final class SigningMapper {
 				.withLimit(p.getPageSize())
 				.withTotalRecords(Optional.ofNullable(p.getTotalItems()).orElse(0))
 				.withTotalPages(calculateTotalPages(p))
-				.withSortBy(List.of(p.getOrderByProperty().getValue()))
+				// Default restored explicitly: the generated model no longer initializes it to 'created'.
+				.withSortBy(List.of(Optional.ofNullable(p.getOrderByProperty()).orElse(Property.CREATED).getValue()))
 				.withSortDirection(Boolean.TRUE.equals(p.getOrderByDescending()) ? Sort.Direction.DESC : Sort.Direction.ASC))
 			.orElse(null);
 	}
