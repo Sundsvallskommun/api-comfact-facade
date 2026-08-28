@@ -14,6 +14,7 @@ import org.hibernate.annotations.TimeZoneStorage;
 import org.hibernate.annotations.UuidGenerator;
 
 import static java.time.OffsetDateTime.now;
+import static java.time.ZoneId.systemDefault;
 import static java.time.temporal.ChronoUnit.MICROS;
 import static org.hibernate.annotations.TimeZoneStorageType.NORMALIZE;
 
@@ -66,12 +67,12 @@ public class AccountEntity {
 
 	@PrePersist
 	void onCreate() {
-		created = now().truncatedTo(MICROS);
+		created = now(systemDefault()).truncatedTo(MICROS);
 	}
 
 	@PreUpdate
 	void onUpdate() {
-		modified = now().truncatedTo(MICROS);
+		modified = now(systemDefault()).truncatedTo(MICROS);
 	}
 
 	public String getId() {

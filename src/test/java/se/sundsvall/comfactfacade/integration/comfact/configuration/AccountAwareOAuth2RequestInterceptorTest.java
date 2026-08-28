@@ -18,7 +18,9 @@ class AccountAwareOAuth2RequestInterceptorTest {
 
 	@Test
 	void applyWithoutAccountContextThrows() {
-		assertThatThrownBy(() -> interceptor.apply(new RequestTemplate()))
+		final var requestTemplate = new RequestTemplate();
+
+		assertThatThrownBy(() -> interceptor.apply(requestTemplate))
 			.isInstanceOf(IllegalStateException.class)
 			.hasMessage("No Comfact account credentials set on the current thread");
 	}
