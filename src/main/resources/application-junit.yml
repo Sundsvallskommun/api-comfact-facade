@@ -6,30 +6,50 @@ logging:
     root: INFO
 
 #========================================
+properties:
+  credentials:
+    secret-key: WbVG8XC%m&9Z!7a$xyKGWzB^#kUSoUUs
+
 integration:
   comfact:
     url: http://comfact.url
+    token-url: http://token.url
   party:
     url: http://party.url
   esigning:
     url: http://esigning.url
 
 spring:
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:mariadb:10.6:///
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        hbm2ddl:
+          schema-generation:
+            script:
+              append: false
+      jakarta:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            database:
+              action: update
+            scripts:
+              action: create
+              create-target: target/database/generated-schema.sql
   security:
     oauth2:
       client:
         provider:
           party:
             token-uri: http://token.url
-          comfact:
-            token-uri: http://token.url
           esigning:
             token-uri: http://token.url
         registration:
           party:
-            client-id: the-client-id
-            client-secret: the-client-secret
-          comfact:
             client-id: the-client-id
             client-secret: the-client-secret
           esigning:

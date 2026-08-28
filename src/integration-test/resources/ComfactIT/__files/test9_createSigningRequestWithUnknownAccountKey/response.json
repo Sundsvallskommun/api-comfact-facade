@@ -1,0 +1,5 @@
+{
+	"detail": "No account found for municipalityId '2281' and account key 'unknown-key'",
+	"title": "Bad Request",
+	"status": 400
+}

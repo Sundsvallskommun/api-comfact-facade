@@ -25,11 +25,14 @@ import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
 import static java.time.OffsetDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static se.sundsvall.comfactfacade.Constants.MUNICIPALITY_ID;
+import static se.sundsvall.comfactfacade.api.ApiConstants.ACCOUNT_KEY_HEADER;
 
 @SpringBootTest(classes = Application.class, webEnvironment = RANDOM_PORT)
 @ActiveProfiles("junit")
@@ -46,7 +49,7 @@ class SigningResourceTest {
 	void getSigningRequests() {
 
 		// Arrange
-		when(signingServiceMock.getSigningRequests(any()))
+		when(signingServiceMock.getSigningRequests(eq(MUNICIPALITY_ID), isNull(), any()))
 			.thenReturn(SigningsResponse.builder()
 				.withSigningInstances(List.of(new SigningInstance(), new SigningInstance()))
 				.withPagingAndSortingMetaData(PagingAndSortingMetaData.create())
@@ -61,7 +64,7 @@ class SigningResourceTest {
 			.getResponseBody();
 
 		// Assert
-		verify(signingServiceMock).getSigningRequests(any());
+		verify(signingServiceMock).getSigningRequests(eq(MUNICIPALITY_ID), isNull(), any());
 		assertThat(result).isNotNull();
 		assertThat(result.getSigningInstances()).hasSize(2);
 		assertThat(result.getPagingAndSortingMetaData()).isNotNull();
@@ -84,7 +87,7 @@ class SigningResourceTest {
 				.build())
 			.build();
 
-		when(signingServiceMock.createSigningRequest(MUNICIPALITY_ID, signingRequest))
+		when(signingServiceMock.createSigningRequest(MUNICIPALITY_ID, null, signingRequest))
 			.thenReturn(CreateSigningResponse.builder()
 				.withSigningId("someSigningId")
 				.withSignatoryUrls(Map.of("somePartyId", "someUrl"))
@@ -107,7 +110,48 @@ class SigningResourceTest {
 		assertThat(result.getSigningId()).isEqualTo("someSigningId");
 		assertThat(result.getSignatoryUrls()).hasSize(1);
 		assertThat(result.getSignatoryUrls()).containsEntry("somePartyId", "someUrl");
-		verify(signingServiceMock).createSigningRequest(MUNICIPALITY_ID, signingRequest);
+		verify(signingServiceMock).createSigningRequest(MUNICIPALITY_ID, null, signingRequest);
+	}
+
+	@Test
+	void createSigningRequestWithAccountKeyHeader() {
+
+		// Arrange
+		final var accountKey = "social-services";
+		final var signingRequest = SigningRequest.builder()
+			.withSignatories(List.of(Signatory.builder()
+				.withIdentifications(List.of(Identification.builder().withAlias("SmsCode").build()))
+				.withEmail("someEmail").build()))
+			.withInitiator(Party.builder().withEmail("someEmail").build())
+			.withDocument(Document.builder()
+				.withFileName("someFileName")
+				.withMimeType("application/pdf")
+				.withContent("someContent")
+				.build())
+			.build();
+
+		when(signingServiceMock.createSigningRequest(MUNICIPALITY_ID, accountKey, signingRequest))
+			.thenReturn(CreateSigningResponse.builder()
+				.withSigningId("someSigningId")
+				.build());
+
+		// Act
+		final var result = webTestClient.post()
+			.uri("/{municipalityId}/signings", MUNICIPALITY_ID)
+			.header(ACCOUNT_KEY_HEADER, accountKey)
+			.contentType(APPLICATION_JSON)
+			.bodyValue(signingRequest)
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectBody(CreateSigningResponse.class)
+			.returnResult()
+			.getResponseBody();
+
+		// Assert
+		assertThat(result).isNotNull();
+		assertThat(result.getSigningId()).isEqualTo("someSigningId");
+		verify(signingServiceMock).createSigningRequest(MUNICIPALITY_ID, accountKey, signingRequest);
 	}
 
 	@Test
@@ -129,14 +173,14 @@ class SigningResourceTest {
 			.isNoContent();
 
 		// Assert
-		verify(signingServiceMock).updateSigningRequest(signingId, updateRequest);
+		verify(signingServiceMock).updateSigningRequest(MUNICIPALITY_ID, null, signingId, updateRequest);
 	}
 
 	@Test
 	void getSigningRequest() {
 		// Arrange
 		final var signingId = "someSigningId";
-		when(signingServiceMock.getSigningRequest(signingId)).thenReturn(new SigningInstance());
+		when(signingServiceMock.getSigningRequest(MUNICIPALITY_ID, null, signingId)).thenReturn(new SigningInstance());
 
 		// Act
 		final var result = webTestClient.get()
@@ -147,7 +191,7 @@ class SigningResourceTest {
 			.returnResult().getResponseBody();
 
 		// Assert
-		verify(signingServiceMock).getSigningRequest(signingId);
+		verify(signingServiceMock).getSigningRequest(MUNICIPALITY_ID, null, signingId);
 		assertThat(result).isNotNull();
 	}
 
@@ -156,7 +200,7 @@ class SigningResourceTest {
 		// Arrange
 		final var signingId = "someSigningId";
 		final var partyId = "somePartyId";
-		when(signingServiceMock.getSignatory(signingId, partyId)).thenReturn(new Signatory());
+		when(signingServiceMock.getSignatory(MUNICIPALITY_ID, null, signingId, partyId)).thenReturn(new Signatory());
 
 		// Act & Assert
 		final var result = webTestClient.get()
@@ -168,7 +212,7 @@ class SigningResourceTest {
 			.getResponseBody();
 
 		// Assert
-		verify(signingServiceMock).getSignatory(signingId, partyId);
+		verify(signingServiceMock).getSignatory(MUNICIPALITY_ID, null, signingId, partyId);
 		assertThat(result).isNotNull();
 	}
 

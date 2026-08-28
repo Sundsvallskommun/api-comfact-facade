@@ -5,31 +5,43 @@ logging:
   level:
     root: INFO
 
+properties:
+  credentials:
+    secret-key: WbVG8XC%m&9Z!7a$xyKGWzB^#kUSoUUs
+
 integration:
   comfact:
     url: http://localhost:${wiremock.server.port:}
+    token-url: http://localhost:${wiremock.server.port:}/api-gateway/token
   party:
     url: http://localhost:${wiremock.server.port:}/party
   esigning:
     url: http://localhost:${wiremock.server.port:}/esigning
 
 spring:
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:mariadb:10.6:///
+  flyway:
+    enabled: true
+  jpa:
+    properties:
+      jakarta:
+        persistence:
+          schema-generation:
+            database:
+              action: validate
   security:
     oauth2:
       client:
         provider:
           party:
             token-uri: http://localhost:${wiremock.server.port:}/api-gateway/token
-          comfact:
-            token-uri: http://localhost:${wiremock.server.port:}/api-gateway/token
           esigning:
             token-uri: http://localhost:${wiremock.server.port:}/api-gateway/token
         registration:
           party:
             client-id: the-client-id
-            client-secret: the-client-secret
-          comfact:
-            client-id: Spänks!
             client-secret: the-client-secret
           esigning:
             client-id: the-client-id

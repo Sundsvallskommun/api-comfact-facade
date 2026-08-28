@@ -1,0 +1,7 @@
+{
+	"accountKey": "social-services",
+	"comfactAccountId": "comfact-account-9",
+	"description": "Duplicate key attempt",
+	"clientId": "client-dup",
+	"clientSecret": "secret-dup"
+}
