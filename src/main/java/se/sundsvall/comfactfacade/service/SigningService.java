@@ -4,7 +4,6 @@ import generated.se.sundsvall.comfact.SigningInstanceInput;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Supplier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import se.sundsvall.comfactfacade.api.model.CreateSigningResponse;
@@ -31,22 +30,21 @@ public class SigningService {
 
 	private final PartyClient partyClient;
 
-	private final AccountService accountService;
-
-	public SigningService(final ComfactIntegration comfactIntegration, final PartyClient partyClient, final AccountService accountService) {
+	public SigningService(final ComfactIntegration comfactIntegration, final PartyClient partyClient) {
 		this.comfactIntegration = comfactIntegration;
 		this.partyClient = partyClient;
-		this.accountService = accountService;
 	}
 
-	public CreateSigningResponse createSigningRequest(final String municipalityId, final String accountKey, final SigningRequest signingRequest) {
-		final var account = accountService.resolveAccount(municipalityId, accountKey);
-
+	public CreateSigningResponse createSigningRequest(final String municipalityId, final SigningRequest signingRequest) {
 		final var input = toSigningInstanceInput(signingRequest);
-		Optional.ofNullable(account.comfactAccountId()).ifPresent(input::setAccountId);
+		// The account is resolved per request by ComfactAccountInterceptor; its optional Comfact account
+		// configuration id is passed on the signing instance.
+		ComfactAccountContext.get()
+			.map(AccountCredentials::comfactAccountId)
+			.ifPresent(input::setAccountId);
 		fetchPersonalNumbers(input, municipalityId);
 
-		final var response = callWithAccount(account, () -> comfactIntegration.createSigningInstance(input));
+		final var response = comfactIntegration.createSigningInstance(input);
 
 		final var urlMap = new HashMap<String, String>();
 		response.getSignatories().forEach(signatory -> Optional.ofNullable(signatory.getSignatoryUrl())
@@ -58,42 +56,23 @@ public class SigningService {
 			.build();
 	}
 
-	public void updateSigningRequest(final String municipalityId, final String accountKey, final String signingId, final UpdateSigningRequest updateSigningRequest) {
-		final var account = accountService.resolveAccount(municipalityId, accountKey);
-		callWithAccount(account, () -> {
-			comfactIntegration.updateSigningInstance(signingId, SigningMapper.toSigningInstancePatch(updateSigningRequest));
-			return null;
-		});
+	public void updateSigningRequest(final String signingId, final UpdateSigningRequest updateSigningRequest) {
+		comfactIntegration.updateSigningInstance(signingId, SigningMapper.toSigningInstancePatch(updateSigningRequest));
 	}
 
-	public SigningInstance getSigningRequest(final String municipalityId, final String accountKey, final String signingId) {
-		final var account = accountService.resolveAccount(municipalityId, accountKey);
-		final var response = callWithAccount(account, () -> comfactIntegration.getSigningInstance(signingId));
+	public SigningInstance getSigningRequest(final String signingId) {
+		final var response = comfactIntegration.getSigningInstance(signingId);
 		return toSigningResponse(response);
 	}
 
-	public SigningsResponse getSigningRequests(final String municipalityId, final String accountKey, final Pageable pageable) {
-		final var account = accountService.resolveAccount(municipalityId, accountKey);
-		final var response = callWithAccount(account, () -> comfactIntegration.searchSigningInstanceInfos(toSearchFilter(pageable)));
+	public SigningsResponse getSigningRequests(final Pageable pageable) {
+		final var response = comfactIntegration.searchSigningInstanceInfos(toSearchFilter(pageable));
 		return toSigningsResponse(response);
 	}
 
-	public Signatory getSignatory(final String municipalityId, final String accountKey, final String signingId, final String partyId) {
-		final var account = accountService.resolveAccount(municipalityId, accountKey);
-		final var response = callWithAccount(account, () -> comfactIntegration.getSignatory(signingId, partyId));
+	public Signatory getSignatory(final String signingId, final String partyId) {
+		final var response = comfactIntegration.getSignatory(signingId, partyId);
 		return SigningMapper.toSignatory(response);
-	}
-
-	/**
-	 * Runs the given Comfact call with the resolved account's credentials active on the thread.
-	 */
-	private <T> T callWithAccount(final AccountCredentials account, final Supplier<T> call) {
-		try {
-			ComfactAccountContext.set(account);
-			return call.get();
-		} finally {
-			ComfactAccountContext.remove();
-		}
 	}
 
 	private void fetchPersonalNumbers(final SigningInstanceInput input, final String municipalityId) {

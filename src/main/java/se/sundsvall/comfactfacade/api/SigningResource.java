@@ -52,6 +52,9 @@ import static se.sundsvall.comfactfacade.api.ApiConstants.ACCOUNT_KEY_HEADER;
 })
 class SigningResource {
 
+	// The x-account-key header parameters below are consumed by ComfactAccountInterceptor (which resolves the
+	// Comfact account for the request) - they are declared here for OpenAPI documentation.
+
 	private final SigningService signingService;
 
 	SigningResource(final SigningService signingService) {
@@ -73,7 +76,7 @@ class SigningResource {
 			example = "social-services") final String accountKey,
 		final Pageable pageable) {
 
-		return ok(signingService.getSigningRequests(municipalityId, accountKey, pageable));
+		return ok(signingService.getSigningRequests(pageable));
 	}
 
 	@GetMapping(path = "{signingId}", produces = APPLICATION_JSON_VALUE)
@@ -89,7 +92,7 @@ class SigningResource {
 			example = "social-services") final String accountKey,
 		@PathVariable final String signingId) {
 
-		return ok(signingService.getSigningRequest(municipalityId, accountKey, signingId));
+		return ok(signingService.getSigningRequest(signingId));
 	}
 
 	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -104,7 +107,7 @@ class SigningResource {
 			example = "social-services") final String accountKey,
 		@Valid @RequestBody final SigningRequest signingRequest) {
 
-		return ok(signingService.createSigningRequest(municipalityId, accountKey, signingRequest));
+		return ok(signingService.createSigningRequest(municipalityId, signingRequest));
 	}
 
 	@PatchMapping(path = "{signingId}", consumes = APPLICATION_JSON_VALUE, produces = ALL_VALUE)
@@ -123,7 +126,7 @@ class SigningResource {
 		@PathVariable final String signingId,
 		@Valid @RequestBody final UpdateSigningRequest updateSigningRequest) {
 
-		signingService.updateSigningRequest(municipalityId, accountKey, signingId, updateSigningRequest);
+		signingService.updateSigningRequest(signingId, updateSigningRequest);
 		return noContent()
 			.header(CONTENT_TYPE, ALL_VALUE)
 			.build();
@@ -143,6 +146,6 @@ class SigningResource {
 		@PathVariable final String signingId,
 		@PathVariable final String partyId) {
 
-		return ok(signingService.getSignatory(municipalityId, accountKey, signingId, partyId));
+		return ok(signingService.getSignatory(signingId, partyId));
 	}
 }
