@@ -1,0 +1,20 @@
+[
+	{
+		"id": "5a1efd51-1b1e-4a20-9673-6b6f79f27f01",
+		"accountKey": "default-unit",
+		"description": "Default unit account",
+		"defaultAccount": true,
+		"created": "${json-unit.any-string}",
+		"clientId": "client-one"
+	},
+	{
+		"id": "5a1efd51-1b1e-4a20-9673-6b6f79f27f02",
+		"accountKey": "social-services",
+		"comfactAccountId": "comfact-account-2",
+		"description": "Social services account",
+		"defaultAccount": false,
+		"created": "${json-unit.any-string}",
+		"modified": "${json-unit.any-string}",
+		"clientId": "client-two"
+	}
+]

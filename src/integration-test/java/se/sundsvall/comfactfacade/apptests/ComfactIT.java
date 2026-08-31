@@ -8,12 +8,19 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.jdbc.Sql;
 
 import se.sundsvall.comfactfacade.Application;
 import se.sundsvall.dept44.test.AbstractAppTest;
 import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
 
+import static se.sundsvall.comfactfacade.api.ApiConstants.ACCOUNT_KEY_HEADER;
+
 @WireMockAppTestSuite(files = "classpath:/ComfactIT/", classes = Application.class)
+@Sql({
+	"/db/scripts/truncate.sql",
+	"/db/scripts/testdata-it.sql"
+})
 class ComfactIT extends AbstractAppTest {
 
 	private static final String MUNICIPALITY_ID = "2281";
@@ -95,6 +102,45 @@ class ComfactIT extends AbstractAppTest {
 
 		setupCall()
 			.withServicePath(PATH)
+			.withHttpMethod(POST)
+			.withRequest(REQUEST_FILE)
+			.withExpectedResponseStatus(OK)
+			.withExpectedResponse(RESPONSE_FILE)
+			.sendRequestAndVerifyResponse();
+	}
+
+	@Test
+	void test8_createSigningRequestWithAccountKey() {
+
+		setupCall()
+			.withServicePath(PATH)
+			.withHttpMethod(POST)
+			.withHeader(ACCOUNT_KEY_HEADER, "social-services")
+			.withRequest(REQUEST_FILE)
+			.withExpectedResponseStatus(OK)
+			.withExpectedResponse(RESPONSE_FILE)
+			.sendRequestAndVerifyResponse();
+	}
+
+	@Test
+	void test9_createSigningRequestWithUnknownAccountKey() {
+
+		setupCall()
+			.withServicePath(PATH)
+			.withHttpMethod(POST)
+			.withHeader(ACCOUNT_KEY_HEADER, "unknown-key")
+			.withRequest(REQUEST_FILE)
+			.withExpectedResponseStatus(BAD_REQUEST)
+			.withExpectedResponse(RESPONSE_FILE)
+			.sendRequestAndVerifyResponse();
+	}
+
+	@Test
+	void test10_createSigningRequestWithDefaultAccount() {
+
+		// Municipality 2262 has a default account configured - no header sent, its comfact account id is used.
+		setupCall()
+			.withServicePath("/2262/signings")
 			.withHttpMethod(POST)
 			.withRequest(REQUEST_FILE)
 			.withExpectedResponseStatus(OK)

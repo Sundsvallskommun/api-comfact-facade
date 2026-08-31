@@ -16,6 +16,7 @@ import se.sundsvall.comfactfacade.api.model.Party;
 import se.sundsvall.comfactfacade.api.model.Signatory;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.UpdateSigningRequest;
+import se.sundsvall.comfactfacade.service.AccountService;
 import se.sundsvall.comfactfacade.service.SigningService;
 import se.sundsvall.dept44.problem.Problem;
 import se.sundsvall.dept44.problem.violations.ConstraintViolationProblem;
@@ -36,6 +37,9 @@ class SigningResourceFailureTest {
 
 	@MockitoBean
 	private SigningService signingServiceMock;
+
+	@MockitoBean
+	private AccountService accountServiceMock;
 
 	@Autowired
 	private WebTestClient webTestClient;

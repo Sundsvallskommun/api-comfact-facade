@@ -13,6 +13,7 @@ import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.SigningsResponse;
 import se.sundsvall.comfactfacade.api.model.UpdateSigningRequest;
 import se.sundsvall.comfactfacade.integration.comfact.ComfactIntegration;
+import se.sundsvall.comfactfacade.integration.comfact.configuration.ComfactAccountContext;
 import se.sundsvall.comfactfacade.integration.party.PartyClient;
 import se.sundsvall.dept44.problem.Problem;
 
@@ -36,6 +37,11 @@ public class SigningService {
 
 	public CreateSigningResponse createSigningRequest(final String municipalityId, final SigningRequest signingRequest) {
 		final var input = toSigningInstanceInput(signingRequest);
+		// The account is resolved per request by ComfactAccountInterceptor; its optional Comfact account
+		// configuration id is passed on the signing instance.
+		ComfactAccountContext.get()
+			.map(AccountCredentials::comfactAccountId)
+			.ifPresent(input::setAccountId);
 		fetchPersonalNumbers(input, municipalityId);
 
 		final var response = comfactIntegration.createSigningInstance(input);

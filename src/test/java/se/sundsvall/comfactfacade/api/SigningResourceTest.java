@@ -19,6 +19,7 @@ import se.sundsvall.comfactfacade.api.model.SigningInstance;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.SigningsResponse;
 import se.sundsvall.comfactfacade.api.model.UpdateSigningRequest;
+import se.sundsvall.comfactfacade.service.AccountService;
 import se.sundsvall.comfactfacade.service.SigningService;
 import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
 
@@ -30,6 +31,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static se.sundsvall.comfactfacade.Constants.MUNICIPALITY_ID;
+import static se.sundsvall.comfactfacade.api.ApiConstants.ACCOUNT_KEY_HEADER;
 
 @SpringBootTest(classes = Application.class, webEnvironment = RANDOM_PORT)
 @ActiveProfiles("junit")
@@ -38,6 +40,9 @@ class SigningResourceTest {
 
 	@MockitoBean
 	private SigningService signingServiceMock;
+
+	@MockitoBean
+	private AccountService accountServiceMock;
 
 	@Autowired
 	private WebTestClient webTestClient;
@@ -108,6 +113,48 @@ class SigningResourceTest {
 		assertThat(result.getSignatoryUrls()).hasSize(1);
 		assertThat(result.getSignatoryUrls()).containsEntry("somePartyId", "someUrl");
 		verify(signingServiceMock).createSigningRequest(MUNICIPALITY_ID, signingRequest);
+	}
+
+	@Test
+	void createSigningRequestWithAccountKeyHeader() {
+
+		// Arrange
+		final var accountKey = "social-services";
+		final var signingRequest = SigningRequest.builder()
+			.withSignatories(List.of(Signatory.builder()
+				.withIdentifications(List.of(Identification.builder().withAlias("SmsCode").build()))
+				.withEmail("someEmail").build()))
+			.withInitiator(Party.builder().withEmail("someEmail").build())
+			.withDocument(Document.builder()
+				.withFileName("someFileName")
+				.withMimeType("application/pdf")
+				.withContent("someContent")
+				.build())
+			.build();
+
+		when(signingServiceMock.createSigningRequest(MUNICIPALITY_ID, signingRequest))
+			.thenReturn(CreateSigningResponse.builder()
+				.withSigningId("someSigningId")
+				.build());
+
+		// Act
+		final var result = webTestClient.post()
+			.uri("/{municipalityId}/signings", MUNICIPALITY_ID)
+			.header(ACCOUNT_KEY_HEADER, accountKey)
+			.contentType(APPLICATION_JSON)
+			.bodyValue(signingRequest)
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectBody(CreateSigningResponse.class)
+			.returnResult()
+			.getResponseBody();
+
+		// Assert
+		assertThat(result).isNotNull();
+		assertThat(result.getSigningId()).isEqualTo("someSigningId");
+		verify(signingServiceMock).createSigningRequest(MUNICIPALITY_ID, signingRequest);
+		verify(accountServiceMock).resolveAccount(MUNICIPALITY_ID, accountKey);
 	}
 
 	@Test

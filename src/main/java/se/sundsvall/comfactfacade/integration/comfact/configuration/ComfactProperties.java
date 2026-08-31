@@ -5,5 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("integration.comfact")
 public record ComfactProperties(
 	int connectTimeout,
-	int readTimeout) {
+	int readTimeout,
+	String tokenUrl) {
 }

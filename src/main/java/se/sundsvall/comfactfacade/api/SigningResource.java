@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se.sundsvall.comfactfacade.api.model.CreateSigningResponse;
@@ -35,6 +36,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
+import static se.sundsvall.comfactfacade.api.ApiConstants.ACCOUNT_KEY_HEADER;
 
 @RestController
 @Validated
@@ -49,6 +51,9 @@ import static org.springframework.http.ResponseEntity.ok;
 	@ApiResponse(responseCode = "502", description = "Bad Gateway", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 })
 class SigningResource {
+
+	// The x-account-key header parameters below are consumed by ComfactAccountInterceptor (which resolves the
+	// Comfact account for the request) - they are declared here for OpenAPI documentation.
 
 	private final SigningService signingService;
 
@@ -66,6 +71,9 @@ class SigningResource {
 	})
 	ResponseEntity<SigningsResponse> getSigningRequests(
 		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
+		@RequestHeader(name = ACCOUNT_KEY_HEADER, required = false) @Parameter(name = ACCOUNT_KEY_HEADER,
+			description = "Key selecting which Comfact account to use. When omitted, the municipality's default account is used.",
+			example = "social-services") final String accountKey,
 		final Pageable pageable) {
 
 		return ok(signingService.getSigningRequests(pageable));
@@ -79,6 +87,9 @@ class SigningResource {
 	})
 	ResponseEntity<SigningInstance> getSigningRequest(
 		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
+		@RequestHeader(name = ACCOUNT_KEY_HEADER, required = false) @Parameter(name = ACCOUNT_KEY_HEADER,
+			description = "Key selecting which Comfact account to use. When omitted, the municipality's default account is used.",
+			example = "social-services") final String accountKey,
 		@PathVariable final String signingId) {
 
 		return ok(signingService.getSigningRequest(signingId));
@@ -91,6 +102,9 @@ class SigningResource {
 	})
 	ResponseEntity<CreateSigningResponse> createSigningRequest(
 		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
+		@RequestHeader(name = ACCOUNT_KEY_HEADER, required = false) @Parameter(name = ACCOUNT_KEY_HEADER,
+			description = "Key selecting which Comfact account to use. When omitted, the municipality's default account is used.",
+			example = "social-services") final String accountKey,
 		@Valid @RequestBody final SigningRequest signingRequest) {
 
 		return ok(signingService.createSigningRequest(municipalityId, signingRequest));
@@ -106,6 +120,9 @@ class SigningResource {
 	})
 	ResponseEntity<Void> updateSigningRequest(
 		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
+		@RequestHeader(name = ACCOUNT_KEY_HEADER, required = false) @Parameter(name = ACCOUNT_KEY_HEADER,
+			description = "Key selecting which Comfact account to use. When omitted, the municipality's default account is used.",
+			example = "social-services") final String accountKey,
 		@PathVariable final String signingId,
 		@Valid @RequestBody final UpdateSigningRequest updateSigningRequest) {
 
@@ -123,6 +140,9 @@ class SigningResource {
 	})
 	ResponseEntity<Signatory> getSignatory(
 		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
+		@RequestHeader(name = ACCOUNT_KEY_HEADER, required = false) @Parameter(name = ACCOUNT_KEY_HEADER,
+			description = "Key selecting which Comfact account to use. When omitted, the municipality's default account is used.",
+			example = "social-services") final String accountKey,
 		@PathVariable final String signingId,
 		@PathVariable final String partyId) {
 

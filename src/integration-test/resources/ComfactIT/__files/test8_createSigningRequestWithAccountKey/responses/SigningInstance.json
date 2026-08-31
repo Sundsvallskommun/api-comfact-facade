@@ -1,0 +1,18 @@
+{
+	"signingInstanceId": "74e756409c534b34a32969aa593e568e",
+	"status": "created",
+	"signatories": [
+		{
+			"partyId": "1234",
+			"signatoryUrl": "https://endpoint.url/signingwebsite?id=1234"
+		},
+		{
+			"partyId": "456",
+			"signatoryUrl": "https://endpoint.url/signingwebsite?id=456"
+		},
+		{
+			"partyId": "23456",
+			"signatoryUrl": "https://endpoint.url/signingwebsite?id=1235"
+		}
+	]
+}

@@ -1,0 +1,4 @@
+insert into account (id, municipality_id, account_key, comfact_account_id, client_id, client_secret, description, default_account, created, modified)
+values ('5a1efd51-1b1e-4a20-9673-6b6f79f27f01', '2281', 'default-unit', null, 'client-one', 'azPzfEWCdhuNddWVH5KP73W7ii6B6b1X17DgUstKKX9ZRhEAYXU=', 'Default unit account', 1, '2026-08-01 12:00:00.000', null),
+       ('5a1efd51-1b1e-4a20-9673-6b6f79f27f02', '2281', 'social-services', 'comfact-account-2', 'client-two', 'SiIg2O3iqPqkUmHVvUFtEBDlV7gA0YtJrAaZPLA7ONDLGQXCvCg=', 'Social services account', 0, '2026-08-01 12:00:00.000', '2026-08-15 08:30:00.000'),
+       ('5a1efd51-1b1e-4a20-9673-6b6f79f27f03', '2262', 'default-unit', 'comfact-account-3', 'client-three', '25t+niU3epjdsd/0Toxs/5uA0K1yVaRO/vbJnY3fxE/LO/tJAyNHNA==', 'Timrå default account', 1, '2026-08-01 12:00:00.000', null);

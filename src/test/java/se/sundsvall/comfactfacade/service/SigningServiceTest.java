@@ -14,6 +14,7 @@ import generated.se.sundsvall.comfact.StatusPatch;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -28,6 +29,7 @@ import se.sundsvall.comfactfacade.api.model.Signatory;
 import se.sundsvall.comfactfacade.api.model.SigningRequest;
 import se.sundsvall.comfactfacade.api.model.UpdateSigningRequest;
 import se.sundsvall.comfactfacade.integration.comfact.ComfactIntegration;
+import se.sundsvall.comfactfacade.integration.comfact.configuration.ComfactAccountContext;
 import se.sundsvall.comfactfacade.integration.party.PartyClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,6 +41,11 @@ import static se.sundsvall.comfactfacade.Constants.MUNICIPALITY_ID;
 
 @ExtendWith(MockitoExtension.class)
 class SigningServiceTest {
+
+	@AfterEach
+	void cleanup() {
+		ComfactAccountContext.remove();
+	}
 
 	@Mock
 	private PartyClient partyClientMock;
@@ -92,8 +99,43 @@ class SigningServiceTest {
 		assertThat(result.getSignatoryUrls()).containsEntry("partyId", "someUrl");
 		verify(comfactIntegrationMock).createSigningInstance(inputCaptor.capture());
 		assertThat(inputCaptor.getValue()).isNotNull();
+		assertThat(inputCaptor.getValue().getAccountId()).isNull();
 		assertThat(inputCaptor.getValue().getSignatories()).hasSize(1).satisfies(
 			signatories -> assertThat(signatories.getFirst().getPartyId()).isEqualTo(partyId));
+	}
+
+	@Test
+	void createSigningRequestWithResolvedAccount() {
+		// Arrange
+		final var request = SigningRequest.builder().build();
+
+		ComfactAccountContext.set(new AccountCredentials("id", "clientId", "clientSecret", "comfact-account-1"));
+		when(comfactIntegrationMock.createSigningInstance(any(SigningInstanceInput.class)))
+			.thenReturn(new SigningInstance().signingInstanceId("123").signatories(List.of()));
+
+		// Act
+		signingService.createSigningRequest(MUNICIPALITY_ID, request);
+
+		// Assert
+		verify(comfactIntegrationMock).createSigningInstance(inputCaptor.capture());
+		assertThat(inputCaptor.getValue().getAccountId()).isEqualTo("comfact-account-1");
+	}
+
+	@Test
+	void createSigningRequestWithResolvedAccountWithoutComfactAccountId() {
+		// Arrange
+		final var request = SigningRequest.builder().build();
+
+		ComfactAccountContext.set(new AccountCredentials("id", "clientId", "clientSecret", null));
+		when(comfactIntegrationMock.createSigningInstance(any(SigningInstanceInput.class)))
+			.thenReturn(new SigningInstance().signingInstanceId("123").signatories(List.of()));
+
+		// Act
+		signingService.createSigningRequest(MUNICIPALITY_ID, request);
+
+		// Assert
+		verify(comfactIntegrationMock).createSigningInstance(inputCaptor.capture());
+		assertThat(inputCaptor.getValue().getAccountId()).isNull();
 	}
 
 	@Test
