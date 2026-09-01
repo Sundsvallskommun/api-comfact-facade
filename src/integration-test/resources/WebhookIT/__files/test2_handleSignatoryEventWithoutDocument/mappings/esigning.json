@@ -1,0 +1,30 @@
+{
+	"request": {
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer 0000000000000000AAAAAAAAAAAAAAAA"
+			}
+		},
+		"method": "POST",
+		"urlPattern": "/esigning/2281/e-signing/webhooks/comfact",
+		"bodyPatterns": [
+			{
+				"equalToJson": {
+					"eventTrigger": "signatoryActionDeclined",
+					"signingInstanceId": "comfact-456",
+					"statusCode": "declined",
+					"expires": "2026-09-30T12:00:00+02:00",
+					"signatory": {
+						"partyId": "party-2",
+						"action": "declined"
+					},
+					"timestamp": "2026-09-01T10:00:00+02:00"
+				},
+				"ignoreExtraElements": false
+			}
+		]
+	},
+	"response": {
+		"status": 200
+	}
+}

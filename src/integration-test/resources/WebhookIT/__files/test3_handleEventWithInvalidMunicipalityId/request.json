@@ -1,0 +1,30 @@
+{
+	"eventTrigger": "signingInstanceCompleted",
+	"signingInstanceInfo": {
+		"signingInstanceId": "comfact-123",
+		"customerReferenceNumber": "550e8400-e29b-41d4-a716-446655440000",
+		"status": "completed",
+		"accountId": "account-1",
+		"userId": "user-1",
+		"referenceNumber": "ref-1",
+		"expires": "2026-09-30T12:00:00+02:00",
+		"created": "2026-09-01T08:00:00+02:00",
+		"changed": "2026-09-01T09:00:00+02:00"
+	},
+	"signatoryInfo": {
+		"partyId": "party-1",
+		"name": "Test Testorsson",
+		"signatoryAction": {
+			"action": "approved",
+			"reason": "Approved by delegation",
+			"timestamp": "2026-09-01T09:00:00+02:00"
+		}
+	},
+	"signedDocument": {
+		"documentName": "Business Contract",
+		"fileName": "signed.pdf",
+		"mimeType": "application/pdf",
+		"content": "dGVzdA=="
+	},
+	"timestamp": "2026-09-01T09:00:00+02:00"
+}

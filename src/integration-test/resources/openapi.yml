@@ -7,14 +7,61 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "4.0"
 servers:
-- url: http://localhost:49192
+- url: http://localhost:57589
   description: Generated server url
 tags:
 - name: Accounts
   description: Comfact account configuration mappings
 - name: Signings
   description: Signing operations
+- name: Webhooks
+  description: Inbound provider event webhooks
 paths:
+  /{municipalityId}/webhooks/comfact:
+    post:
+      tags:
+      - Webhooks
+      summary: Receive a Comfact signing event.
+      description: "Called by Comfact when a signing instance event occurs, not by\
+        \ other Sundsvall services. The event is forwarded, unchanged, to api-service-e-signing."
+      operationId: handleComfactEvent
+      parameters:
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ComfactEventNotification"
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "502":
+          description: Bad Gateway
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
   /{municipalityId}/signings:
     get:
       tags:
@@ -562,6 +609,279 @@ paths:
       x-wso2-mutual-ssl: Optional
 components:
   schemas:
+    ComfactDocument:
+      type: object
+      description: The model for representing a document in a signing instance.
+      properties:
+        documentName:
+          type:
+          - string
+          - "null"
+          description: "The document name, or title, displayed in user interfaces."
+        fileName:
+          type:
+          - string
+          - "null"
+          description: The filename used when the document is handled as a file.
+        encoding:
+          type:
+          - string
+          - "null"
+          description: Any applicable character encoding (IANA) of the content.
+        mimeType:
+          type: string
+          description: The MIME type (IANA) indicating the format of the content.
+        content:
+          type: string
+          format: byte
+          description: The raw data bytes holding the actual document content.
+        documentId:
+          type:
+          - string
+          - "null"
+          description: A unique ID of the document in the parent signing instance.
+      required:
+      - content
+      - mimeType
+    ComfactEventNotification:
+      type: object
+      description: A model for notifying a webhook about a signing instance event.
+      properties:
+        eventTrigger:
+          type: string
+          description: The trigger that initiated the webhook event notification.
+          enum:
+          - signingInstanceCreated
+          - signatoryActionApproved
+          - signatoryActionDeclined
+          - signingInstanceCompleted
+          - signingInstanceWithdrawn
+          - signingInstanceExpired
+          - signingInstanceHalted
+          - signingInstanceReactivated
+        signingInstanceInfo:
+          $ref: "#/components/schemas/ComfactSigningInstanceInfo"
+          description: The summary representation of the affected signing instance.
+        signatoryInfo:
+          $ref: "#/components/schemas/ComfactSignatoryInfo"
+          description: Information about the signatory that approved or declined.
+        signedDocument:
+          $ref: "#/components/schemas/ComfactDocument"
+          description: Signed version of the original document and its attachments.
+        signedDocumentAttachments:
+          type: array
+          description: Signed attachments are only available in custom scenarios.
+          items:
+            $ref: "#/components/schemas/ComfactDocument"
+        timestamp:
+          type: string
+          format: date-time
+          description: Date and time when the event notification was triggered.
+      required:
+      - eventTrigger
+      - signingInstanceInfo
+      - timestamp
+    ComfactSignatoryAction:
+      type: object
+      description: Action indicating whether a signatory has approved or declined.
+      properties:
+        reason:
+          type:
+          - string
+          - "null"
+          description: The reason given for either approving or declining.
+        action:
+          type: string
+          description: Main indicator for the action taken by the signatory.
+          enum:
+          - approved
+          - declined
+        timestamp:
+          type: string
+          format: date-time
+          description: Date and time when the signatory action was registered.
+      required:
+      - action
+      - timestamp
+    ComfactSignatoryInfo:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - "null"
+          description: The full name of the person represented by this party.
+        title:
+          type:
+          - string
+          - "null"
+          description: The title of the person represented by this party.
+        organization:
+          type:
+          - string
+          - "null"
+          description: The organization that this person may be representing.
+        emailAddress:
+          type:
+          - string
+          - "null"
+          format: email
+          description: The email address to use when sending email notifications.
+        mobilePhoneNumber:
+          type:
+          - string
+          - "null"
+          description: The mobile phone number (E.164) to use for notifications.
+        partyId:
+          type:
+          - string
+          - "null"
+          description: A unique ID of the party in the parent signing instance.
+        language:
+          type:
+          - string
+          - "null"
+          description: "The language (ISO 639, ISO 3166) to use in notifications."
+        personalNumber:
+          type:
+          - string
+          - "null"
+          description: National identification number used in eID authentication.
+        accountId:
+          type:
+          - string
+          - "null"
+          description: An account ID for authentication using a custom provider.
+        signatoryAction:
+          $ref: "#/components/schemas/ComfactSignatoryAction"
+          description: Only present once the signatory has approved or declined.
+    ComfactSigningInstanceInfo:
+      type: object
+      description: The summary representation of a signing instance resource.
+      properties:
+        customerReferenceNumber:
+          type:
+          - string
+          - "null"
+          description: An optional reference that can be used for tracking.
+        expires:
+          type: string
+          format: date-time
+          description: Date and time when the signing instance will expire.
+        accountId:
+          type: string
+          description: The unique ID of the associated account configuration.
+        userId:
+          type: string
+          description: The unique ID of the user that owns the signing instance.
+        groupId:
+          type:
+          - string
+          - "null"
+          description: The ID of the group to which the signing instance belongs.
+        status:
+          type: string
+          description: Indicates the overall status of the signing instance.
+          enum:
+          - created
+          - active
+          - approved
+          - declined
+          - completed
+          - withdrawn
+          - expired
+          - halted
+          - faulty
+        referenceNumber:
+          type: string
+          description: A user-friendly reference that can be used for tracking.
+        created:
+          type: string
+          format: date-time
+          description: Date and time when the signing instance was first created.
+        changed:
+          type: string
+          format: date-time
+          description: Date and time when the signing instance was last changed.
+        deleted:
+          type: string
+          format: date-time
+          description: Date and time when the signing instance will be deleted.
+        signingInstanceId:
+          type: string
+          description: A unique ID assigned to the signing instance upon creation.
+      required:
+      - accountId
+      - changed
+      - created
+      - deleted
+      - expires
+      - referenceNumber
+      - signingInstanceId
+      - status
+      - userId
+    Problem:
+      type: object
+      properties:
+        instance:
+          type: string
+          format: uri
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        detail:
+          type: string
+        status:
+          type: integer
+          format: int32
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        status:
+          type: integer
+          format: int32
+        violations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Violation"
+        title:
+          type: string
+        instance:
+          type: string
+          format: uri
+        detail:
+          type: string
+        causeAsProblem:
+          $ref: "#/components/schemas/ThrowableProblem"
+    ThrowableProblem:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+        causeAsProblem: {}
+    Violation:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
     Document:
       type: object
       properties:
@@ -809,68 +1129,6 @@ components:
       - document
       - initiator
       - signatories
-    Problem:
-      type: object
-      properties:
-        title:
-          type: string
-        detail:
-          type: string
-        instance:
-          type: string
-          format: uri
-        type:
-          type: string
-          format: uri
-        status:
-          type: integer
-          format: int32
-    ConstraintViolationProblem:
-      type: object
-      properties:
-        type:
-          type: string
-          format: uri
-        status:
-          type: integer
-          format: int32
-        violations:
-          type: array
-          items:
-            $ref: "#/components/schemas/Violation"
-        title:
-          type: string
-        detail:
-          type: string
-        causeAsProblem:
-          $ref: "#/components/schemas/ThrowableProblem"
-        instance:
-          type: string
-          format: uri
-    ThrowableProblem:
-      type: object
-      properties:
-        type:
-          type: string
-          format: uri
-        title:
-          type: string
-        status:
-          type: integer
-          format: int32
-        detail:
-          type: string
-        instance:
-          type: string
-          format: uri
-        causeAsProblem: {}
-    Violation:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
     CreateSigningResponse:
       type: object
       properties:

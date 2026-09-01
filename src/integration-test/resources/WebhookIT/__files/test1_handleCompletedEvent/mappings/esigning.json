@@ -1,0 +1,38 @@
+{
+	"request": {
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer 0000000000000000AAAAAAAAAAAAAAAA"
+			}
+		},
+		"method": "POST",
+		"urlPattern": "/esigning/2281/e-signing/webhooks/comfact",
+		"bodyPatterns": [
+			{
+				"equalToJson": {
+					"eventTrigger": "signingInstanceCompleted",
+					"signingInstanceId": "comfact-123",
+					"customerReference": "550e8400-e29b-41d4-a716-446655440000",
+					"statusCode": "completed",
+					"expires": "2026-09-30T12:00:00+02:00",
+					"signatory": {
+						"partyId": "party-1",
+						"action": "approved",
+						"reason": "Approved by delegation"
+					},
+					"signedDocument": {
+						"name": "Business Contract",
+						"fileName": "signed.pdf",
+						"mimeType": "application/pdf",
+						"content": "dGVzdA=="
+					},
+					"timestamp": "2026-09-01T09:00:00+02:00"
+				},
+				"ignoreExtraElements": false
+			}
+		]
+	},
+	"response": {
+		"status": 200
+	}
+}

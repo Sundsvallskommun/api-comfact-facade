@@ -1,0 +1,19 @@
+{
+	"eventTrigger": "signatoryActionDeclined",
+	"signingInstanceInfo": {
+		"signingInstanceId": "comfact-456",
+		"status": "declined",
+		"accountId": "account-1",
+		"userId": "user-1",
+		"referenceNumber": "ref-2",
+		"expires": "2026-09-30T12:00:00+02:00"
+	},
+	"signatoryInfo": {
+		"partyId": "party-2",
+		"signatoryAction": {
+			"action": "declined",
+			"timestamp": "2026-09-01T10:00:00+02:00"
+		}
+	},
+	"timestamp": "2026-09-01T10:00:00+02:00"
+}
