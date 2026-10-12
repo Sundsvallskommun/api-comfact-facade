@@ -1,19 +1,17 @@
 package se.sundsvall.comfactfacade.apptests;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.jdbc.Sql;
+import se.sundsvall.comfactfacade.Application;
+import se.sundsvall.dept44.test.AbstractAppTest;
+import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
+
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.PATCH;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.test.context.jdbc.Sql;
-
-import se.sundsvall.comfactfacade.Application;
-import se.sundsvall.dept44.test.AbstractAppTest;
-import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
-
 import static se.sundsvall.comfactfacade.api.ApiConstants.ACCOUNT_KEY_HEADER;
 
 @WireMockAppTestSuite(files = "classpath:/ComfactIT/", classes = Application.class)
@@ -27,7 +25,6 @@ class ComfactIT extends AbstractAppTest {
 	private static final String PATH = "/" + MUNICIPALITY_ID + "/signings";
 	private static final String RESPONSE_FILE = "response.json";
 	private static final String REQUEST_FILE = "request.json";
-
 
 	@Test
 	void test1_getSigningRequests() {

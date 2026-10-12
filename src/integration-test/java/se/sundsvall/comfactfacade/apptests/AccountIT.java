@@ -3,7 +3,6 @@ package se.sundsvall.comfactfacade.apptests;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.jdbc.Sql;
-
 import se.sundsvall.comfactfacade.Application;
 import se.sundsvall.dept44.test.AbstractAppTest;
 import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;

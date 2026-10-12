@@ -1,7 +1,6 @@
 package se.sundsvall.comfactfacade.apptests;
 
 import org.junit.jupiter.api.Test;
-
 import se.sundsvall.comfactfacade.Application;
 import se.sundsvall.dept44.test.AbstractAppTest;
 import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
